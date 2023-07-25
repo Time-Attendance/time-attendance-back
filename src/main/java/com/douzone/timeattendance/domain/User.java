@@ -20,6 +20,7 @@ public class User {
     private String position;
     private String gender;
     private Boolean distribution;
+    private LocalDateTime privilegeAssignedDate;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
