@@ -4,14 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
-public class Holiday {
+public class DeptPrivilege {
 
-    private Long holidayId;
-    private LocalDate date;
-    private String name;
-    private String payType;
+    private Long userId;
+    private Long deptId;
+    private LocalDateTime privilegeDate;
 }
