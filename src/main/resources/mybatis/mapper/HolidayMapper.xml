@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.HolidayMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="holidayId">
+        insert into holiday(date, name, pay_type)
+        values (#{date}, #{name}, #{payType})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from holiday
+        where holiday_id = #{id}
+    </delete>
+
+    <select id="findById" resultType="Holiday">
+        select holiday_id, date, name, pay_type
+        from holiday
+        where holiday_id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Holiday">
+        select holiday_id, date, name, pay_type
+        from holiday
+    </select>
+
+    <select id="existsDate" resultType="java.lang.Boolean">
+        select exists(select 1
+                      from holiday
+                      where date = #{date})
+    </select>
+
+</mapper>
