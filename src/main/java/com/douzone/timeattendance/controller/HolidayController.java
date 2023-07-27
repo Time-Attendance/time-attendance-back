@@ -6,6 +6,8 @@ import com.douzone.timeattendance.service.HolidayService;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,22 +28,28 @@ public class HolidayController {
     }
 
     @GetMapping("/{holidayId}")
-    public HolidayResponse findById(@PathVariable Long holidayId) {
-        return holidayService.findHolidayById(holidayId);
+    public ResponseEntity<HolidayResponse> findById(@PathVariable Long holidayId) {
+        return ResponseEntity.ok()
+                             .body(holidayService.findHolidayById(holidayId));
     }
 
     @GetMapping
-    public List<HolidayResponse> findAll() {
-        return holidayService.findAllHolidays();
+    public ResponseEntity<List<HolidayResponse>> findAll() {
+        return ResponseEntity.ok()
+                             .body(holidayService.findAllHolidays());
     }
 
     @PostMapping
-    public void create(@RequestBody @Valid HolidayCreateRequest holidayCreateRequest) {
+    public ResponseEntity<Void> create(@RequestBody @Valid HolidayCreateRequest holidayCreateRequest) {
         holidayService.createHoliday(holidayCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                             .build();
     }
 
     @DeleteMapping("{holidayId}")
-    public void delete(@PathVariable Long holidayId) {
+    public ResponseEntity<Void> delete(@PathVariable Long holidayId) {
         holidayService.deleteHoliday(holidayId);
+        return ResponseEntity.noContent()
+                             .build();
     }
 }
