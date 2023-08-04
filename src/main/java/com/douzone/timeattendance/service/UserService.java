@@ -8,6 +8,7 @@ import com.douzone.timeattendance.exception.user.InvalidCompanyCodeException;
 import com.douzone.timeattendance.mapper.CompanyMapper;
 import com.douzone.timeattendance.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final CompanyMapper companyMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public void signup(UserCreateRequest userCreateRequest) {
         //중복 이메일 검증
@@ -27,10 +29,13 @@ public class UserService {
         Company company = companyMapper.findByCode(userCreateRequest.getCompanyCode())
                                        .orElseThrow(InvalidCompanyCodeException::new);
 
+        //비밀번호 암호화
+        String encryptedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
+
         User user = new User(
             userCreateRequest.getName(),
             userCreateRequest.getEmail(),
-            userCreateRequest.getPassword(), //TODO: 비밀번호 암호화
+            encryptedPassword,
             userCreateRequest.getPhone(),
             userCreateRequest.getBirthday(),
             "USER", //TODO: enum 사용
