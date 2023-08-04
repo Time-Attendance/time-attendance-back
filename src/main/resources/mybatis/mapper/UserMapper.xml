@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.UserMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
+        insert into user(name,
+                         email,
+                         password,
+                         phone,
+                         hire_date,
+                         birthday,
+                         dept,
+                         position,
+                         distribution,
+                         date_created,
+                         date_updated,
+                         date_deleted,
+                         is_deleted,
+                         role,
+                         company_id)
+        values (#{name},
+                #{email},
+                #{password},
+                #{phone},
+                null,
+                #{birthday},
+                null,
+                null,
+                false,
+                now(),
+                now(),
+                null,
+                false,
+                #{role},
+                #{companyId})
+    </insert>
+
+    <select id="existsEmail" resultType="java.lang.Boolean">
+        select exists(select *
+                      from user
+                      where email = #{email})
+    </select>
+
+</mapper>
