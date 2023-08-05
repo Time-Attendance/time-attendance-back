@@ -42,4 +42,25 @@
                       where email = #{email})
     </select>
 
+    <select id="findByEmail" resultType="User">
+        select user_id,
+               name,
+               email,
+               password,
+               phone,
+               hire_date,
+               birthday,
+               dept,
+               position,
+               distribution,
+               date_created,
+               date_updated,
+               date_deleted,
+               is_deleted,
+               role,
+               company_id
+        from user
+        where email = #{email}
+    </select>
+
 </mapper>
