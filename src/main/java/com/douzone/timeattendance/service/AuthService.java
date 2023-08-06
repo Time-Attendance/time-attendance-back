@@ -5,7 +5,7 @@ import com.douzone.timeattendance.dto.auth.JwtResponse;
 import com.douzone.timeattendance.dto.auth.LoginRequest;
 import com.douzone.timeattendance.exception.user.EmailOrPasswordMismatchException;
 import com.douzone.timeattendance.mapper.UserMapper;
-import com.douzone.timeattendance.util.JwtUtil;
+import com.douzone.timeattendance.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.douzone.timeattendance.util;
+package com.douzone.timeattendance.global.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
