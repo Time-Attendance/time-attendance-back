@@ -1,19 +1,17 @@
 package com.douzone.timeattendance.domain;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserGroupRecord {
-
-    private Long userGroupRecordId;
-    private LocalDate time;
+public class DeptPrivilege {
     private Long userId;
-    private Long workGroupId;
-
+    private Long deptId;
+    private LocalDateTime privilegeDate;
 }
