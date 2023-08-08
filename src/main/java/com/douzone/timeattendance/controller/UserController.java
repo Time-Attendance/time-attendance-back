@@ -1,6 +1,7 @@
 package com.douzone.timeattendance.controller;
 
 import com.douzone.timeattendance.dto.auth.LoginUserEmail;
+import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.global.auth.LoginUser;
 import com.douzone.timeattendance.service.UserService;
@@ -42,5 +43,17 @@ public class UserController {
         userService.signup(userCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                              .build();
+    }
+
+    /**
+     * 현재 로그인 한 사용자의 정보를 응답하는 핸들러입니다.
+     *
+     * @param loginUserEmail 토큰 검증이 완료된 사용자의 email
+     * @return LoginUserResponse 객체
+     */
+    @GetMapping("/me")
+    public ResponseEntity<LoginUserResponse> loginUserInfo(@LoginUser LoginUserEmail loginUserEmail) {
+        return ResponseEntity.ok()
+                             .body(userService.loginUserInfo(loginUserEmail));
     }
 }

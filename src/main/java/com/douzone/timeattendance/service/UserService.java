@@ -2,9 +2,12 @@ package com.douzone.timeattendance.service;
 
 import com.douzone.timeattendance.domain.Company;
 import com.douzone.timeattendance.domain.User;
+import com.douzone.timeattendance.dto.auth.LoginUserEmail;
+import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
 import com.douzone.timeattendance.exception.user.InvalidCompanyCodeException;
+import com.douzone.timeattendance.exception.user.NoSuchUserException;
 import com.douzone.timeattendance.mapper.CompanyMapper;
 import com.douzone.timeattendance.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +50,16 @@ public class UserService {
         }
 
         userMapper.insert(user);
+    }
+
+    @Transactional(readOnly = true)
+    public LoginUserResponse loginUserInfo(LoginUserEmail loginUserEmail) {
+        //사용자 검색
+        User user = userMapper.findByEmail(loginUserEmail.getEmail())
+                              .orElseThrow(NoSuchUserException::new);
+
+        //로그인 사용자 정보 객체 생성
+        return LoginUserResponse.from(user);
     }
 
     /**
