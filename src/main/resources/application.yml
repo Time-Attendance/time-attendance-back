@@ -13,3 +13,8 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+# jwt 시크릿키는 32바이트 이상이어야 함.
+# 원칙적으로 시크릿 키는 절대 외부로 노출되면 안되지만, 현재는 임의로 진행하겠습니다.
+jwt:
+  token:
+    secret-key: "douzone_timeattendance_secret_key"
