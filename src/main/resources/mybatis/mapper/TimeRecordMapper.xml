@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.TimeRecordMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="timeRecordId">
+        INSERT INTO time_record(user_id, `date`, `work`, work_state, date_created, date_updated)
+        VALUES (#{userId}, #{date}, #{work}, #{workState}, NOW(), NOW())
+    </insert>
+
+    <!-- TODO: 동적 쿼리 적용 -->
+    <update id="update">
+        UPDATE time_record
+        <set>
+            <if test="leaveWork != null">
+                leave_work = #{leaveWork},
+            </if>
+            date_updated = NOW()
+        </set>
+        WHERE user_id = #{userId}
+        AND date = #{date}
+    </update>
+
+    <select id="findByDate" resultType="TimeRecord">
+        SELECT time_record_id,
+               user_id,
+               `date`,
+               `work`,
+               leave_work,
+               work_state,
+               date_created,
+               date_updated
+        FROM time_record
+        WHERE user_id = #{userId}
+          AND date = #{date}
+    </select>
+
+    <select id="existsByUserIdAndDate" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT time_record_id
+                      FROM time_record
+                      WHERE user_id = #{userId}
+                        AND date = #{date})
+    </select>
+
+</mapper>
