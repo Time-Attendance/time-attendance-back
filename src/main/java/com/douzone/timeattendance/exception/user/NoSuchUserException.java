@@ -13,6 +13,6 @@ public class NoSuchUserException extends TimeAttendanceException {
 
     @Override
     public int getStatusCode() {
-        return HttpStatus.BAD_REQUEST.value();
+        return HttpStatus.NOT_FOUND.value();
     }
 }
