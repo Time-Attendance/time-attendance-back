@@ -7,8 +7,8 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public class LoginUserEmail {
+public class AuthInfo {
 
-    private final String email;
+    private final Long userId;
 
 }
