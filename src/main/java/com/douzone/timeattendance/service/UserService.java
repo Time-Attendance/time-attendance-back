@@ -2,7 +2,7 @@ package com.douzone.timeattendance.service;
 
 import com.douzone.timeattendance.domain.Company;
 import com.douzone.timeattendance.domain.User;
-import com.douzone.timeattendance.dto.auth.LoginUserEmail;
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
@@ -53,9 +53,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public LoginUserResponse loginUserInfo(LoginUserEmail loginUserEmail) {
+    public LoginUserResponse loginUserInfo(AuthInfo authInfo) {
         //사용자 검색
-        User user = userMapper.findByEmail(loginUserEmail.getEmail())
+        User user = userMapper.findByUserId(authInfo.getUserId())
                               .orElseThrow(NoSuchUserException::new);
 
         //로그인 사용자 정보 객체 생성

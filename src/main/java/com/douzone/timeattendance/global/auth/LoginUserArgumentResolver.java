@@ -1,6 +1,6 @@
 package com.douzone.timeattendance.global.auth;
 
-import com.douzone.timeattendance.dto.auth.LoginUserEmail;
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.exception.auth.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -25,17 +25,17 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     private String jwtSecretKey;
 
     /**
-     * 핸들러 메서드에 LoginUser 어노테이션과 LoginUserEmail 클래스가 적용된 메서드인지 확인합니다.
+     * 핸들러 메서드에 LoginUser 어노테이션과 AuthInfo 클래스가 적용된 메서드인지 확인합니다.
      *
      * @param parameter the method parameter to check
-     * @return LoginUser 어노테이션과 LoginUserEmail 객체가 적용되어 있다면 true
+     * @return LoginUser 어노테이션과 AuthInfo 클래스가 적용되어 있다면 true
      */
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasLoginUserAnnotation = parameter.hasParameterAnnotation(LoginUser.class);
-        boolean hasLoginUserEmailType = LoginUserEmail.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasAuthInfoType = AuthInfo.class.isAssignableFrom(parameter.getParameterType());
 
-        return hasLoginUserAnnotation && hasLoginUserEmailType;
+        return hasLoginUserAnnotation && hasAuthInfoType;
     }
 
     @Override
@@ -58,10 +58,10 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                      .build()
                                      .parseClaimsJws(extractToken(jws));
 
-            //토큰에서 email 추출
-            String email = claims.getBody()
-                                 .getSubject();
-            return new LoginUserEmail(email);
+            //토큰에서 정보 추출
+            String userId = claims.getBody()
+                                  .getSubject();
+            return new AuthInfo(Long.valueOf(userId));
         } catch (JwtException e) { //유효하지 않은 토큰일 시 예외 발생
             throw new UnauthorizedException();
         }

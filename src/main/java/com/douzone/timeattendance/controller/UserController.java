@@ -1,6 +1,6 @@
 package com.douzone.timeattendance.controller;
 
-import com.douzone.timeattendance.dto.auth.LoginUserEmail;
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.global.auth.LoginUser;
@@ -24,16 +24,15 @@ public class UserController {
 
     /**
      * 로그인 한 사용자 정보를 가져올 수 있는 샘플 코드입니다.
+     * LoginUser 어노테이션과 AuthInfo 객체를 핸들러 메서드의 인자로 선언하면,
+     * 요청을 보낸 사용자의 정보를 알 수 있습니다.
+     * authInfo 객체를 통해 DB에서 사용자를 조회한 후, 비즈니스 로직을 처리하면 됩니다.
      *
-     * LoginUser 어노테이션과 LoginUserEmail 객체를 핸들러 메서드의 인자로 선언하면,
-     * 요청을 보낸 사용자의 이메일을 알 수 있습니다.
-     * 이메일을 통해 DB에서 사용자를 조회한 후, 비즈니스 로직을 처리하면 됩니다.
-     *
-     * @param loginUserEmail 토큰 검증이 완료된 사용자의 email
+     * @param authInfo 토큰 검증이 완료된 사용자의 정보
      */
-    @GetMapping("/test")
-    public ResponseEntity<String> signup(@LoginUser LoginUserEmail loginUserEmail) {
-        System.out.println("loginUserEmail.getEmail() = " + loginUserEmail.getEmail());
+    @GetMapping("/sample")
+    public ResponseEntity sample(@LoginUser AuthInfo authInfo) {
+        System.out.println("로그인 한 사용자의 userId = " + authInfo.getUserId());
         return ResponseEntity.ok()
                              .build();
     }
@@ -48,12 +47,12 @@ public class UserController {
     /**
      * 현재 로그인 한 사용자의 정보를 응답하는 핸들러입니다.
      *
-     * @param loginUserEmail 토큰 검증이 완료된 사용자의 email
+     * @param authInfo 토큰 검증이 완료된 사용자의 정보
      * @return LoginUserResponse 객체
      */
     @GetMapping("/me")
-    public ResponseEntity<LoginUserResponse> loginUserInfo(@LoginUser LoginUserEmail loginUserEmail) {
+    public ResponseEntity<LoginUserResponse> loginUserInfo(@LoginUser AuthInfo authInfo) {
         return ResponseEntity.ok()
-                             .body(userService.loginUserInfo(loginUserEmail));
+                             .body(userService.loginUserInfo(authInfo));
     }
 }

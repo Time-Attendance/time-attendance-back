@@ -30,11 +30,7 @@ public class AuthService {
         validatePassword(loginRequest.getPassword(), user.getPassword());
 
         //토큰 생성
-        String accessToken = jwtUtil.createAccessToken(
-            user.getEmail(),
-            user.getName(),
-            user.getUserId(),
-            user.getRole());
+        String accessToken = jwtUtil.createAccessToken(user.getUserId());
 
         return new JwtResponse(accessToken);
     }
