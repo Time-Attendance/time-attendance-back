@@ -14,7 +14,7 @@ public class TimeRecord {
 
     private Long timeRecordId;
     private LocalDate date;
-    private LocalTime work;
+    private LocalTime startWork;
     private LocalTime leaveWork;
     private String workState; //WorkState enum 사용 고려
     private LocalDateTime dateCreated;
@@ -26,9 +26,9 @@ public class TimeRecord {
      * 추후 관리자가 지난 출퇴근 기록을 직접 생성할 수도 있으므로 빌더 패턴을 사용했습니다.
      */
     @Builder
-    public TimeRecord(LocalDate date, LocalTime work, LocalTime leaveWork, String workState, Long userId) {
+    public TimeRecord(LocalDate date, LocalTime startWork, LocalTime leaveWork, String workState, Long userId) {
         this.date = date;
-        this.work = work;
+        this.startWork = startWork;
         this.leaveWork = leaveWork;
         this.workState = workState;
         this.userId = userId;

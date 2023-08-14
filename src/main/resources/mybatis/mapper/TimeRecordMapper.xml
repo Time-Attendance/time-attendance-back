@@ -4,8 +4,8 @@
 <mapper namespace="com.douzone.timeattendance.mapper.TimeRecordMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="timeRecordId">
-        INSERT INTO time_record(user_id, `date`, `work`, work_state, date_created, date_updated)
-        VALUES (#{userId}, #{date}, #{work}, #{workState}, NOW(), NOW())
+        INSERT INTO time_record(user_id, `date`, start_work, work_state, date_created, date_updated)
+        VALUES (#{userId}, #{date}, #{startWork}, #{workState}, NOW(), NOW())
     </insert>
 
     <!-- TODO: 동적 쿼리 적용 -->
@@ -25,7 +25,7 @@
         SELECT time_record_id,
                user_id,
                `date`,
-               `work`,
+               start_work,
                leave_work,
                work_state,
                date_created,

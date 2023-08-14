@@ -10,7 +10,7 @@ public class TimeRecordResponse {
 
     private Long timeRecordId;
     private LocalDate date;
-    private LocalTime work;
+    private LocalTime startWork;
     private LocalTime leaveWork;
     private String workState; //WorkState enum 사용 고려
     private Long userId;
@@ -18,7 +18,7 @@ public class TimeRecordResponse {
     public TimeRecordResponse(TimeRecord timeRecord) {
         this.timeRecordId = timeRecord.getTimeRecordId();
         this.date = timeRecord.getDate();
-        this.work = timeRecord.getWork();
+        this.startWork = timeRecord.getStartWork();
         this.leaveWork = timeRecord.getLeaveWork();
         this.workState = timeRecord.getWorkState();
         this.userId = timeRecord.getUserId();
