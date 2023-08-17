@@ -4,7 +4,7 @@
 <mapper namespace="com.douzone.timeattendance.mapper.UserMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
-        insert into user(name,
+        INSERT INTO user(name,
                          email,
                          password,
                          phone,
@@ -19,17 +19,17 @@
                          is_deleted,
                          role,
                          company_id)
-        values (#{name},
+        VALUES (#{name},
                 #{email},
                 #{password},
                 #{phone},
-                null,
+                #{hireDate},
                 #{birthday},
-                null,
-                null,
+                #{dept},
+                #{position},
                 false,
-                now(),
-                now(),
+                NOW(),
+                NOW(),
                 null,
                 false,
                 #{role},
@@ -37,13 +37,13 @@
     </insert>
 
     <select id="existsEmail" resultType="java.lang.Boolean">
-        select exists(select *
-                      from user
-                      where email = #{email})
+        SELECT EXISTS(SELECT *
+                      FROM user
+                      WHERE email = #{email})
     </select>
 
     <select id="findByUserId" resultType="User">
-        select user_id,
+        SELECT user_id,
                name,
                email,
                password,
@@ -59,12 +59,12 @@
                is_deleted,
                role,
                company_id
-        from user
-        where user_id = #{userId}
+        FROM user
+        WHERE user_id = #{userId}
     </select>
 
     <select id="findByEmail" resultType="User">
-        select user_id,
+        SELECT user_id,
                name,
                email,
                password,
@@ -80,8 +80,15 @@
                is_deleted,
                role,
                company_id
-        from user
-        where email = #{email}
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <select id="findAll" resultType="User">
+        SELECT *
+        FROM user
+        WHERE company_id = #{companyId}
+          AND is_deleted = false
     </select>
 
 </mapper>
