@@ -7,27 +7,24 @@
 
     <!-- 사용자 정보와 해당 사용자가 관리하고 있는 부서 정보를 함께 조회 -->
     <select id="findPrivilegeList" resultType="com.douzone.timeattendance.dto.privilege.FindPrivilegeResponse">
-        SELECT
-            u.user_id,
-            u.name,
-            u.email,
-            u.phone,
-            u.position,
-            u.dept_id AS user_dept_id,
-            d.name AS user_dept_name,
-            dp.dept_id AS privilege_dept_id,
-            d2.name AS privilege_dept_name,
-            dp.privilege_date
-        FROM
-            user u
-                LEFT JOIN
-            dept_privilege dp ON u.user_id = dp.user_id
-                LEFT JOIN
-            dept d ON u.dept_id = d.dept_id
-                LEFT JOIN
-            dept d2 ON dp.dept_id = d2.dept_id
-        WHERE
-            dp.dept_id IS NOT NULL;
+        SELECT u.user_id,
+               u.name,
+               u.email,
+               u.phone,
+               u.position,
+               u.dept_id  AS user_dept_id,
+               d.name     AS user_dept_name,
+               dp.dept_id AS privilege_dept_id,
+               d2.name    AS privilege_dept_name,
+               dp.privilege_date
+        FROM user u
+                 LEFT JOIN
+             dept_privilege dp ON u.user_id = dp.user_id
+                 LEFT JOIN
+             dept d ON u.dept_id = d.dept_id
+                 LEFT JOIN
+             dept d2 ON dp.dept_id = d2.dept_id
+        WHERE dp.dept_id IS NOT NULL;
     </select>
 
     <!-- 사용자 정보와 해당 사용자가 관리하고 있는 부서 정보를 함께 조회 (이름으로 검색) -->
@@ -52,5 +49,28 @@
         WHERE u.name LIKE CONCAT('%', #{name}, '%')
           AND dp.dept_id IS NOT NULL;
     </select>
+
+
+    <!-- 삭제: 선택한 user_id에 해당하는 특정 dp.dept_id만 삭제 -->
+
+    <delete id ="deleteDeptPrivilege">
+        DELETE
+        FROM dept_privilege
+        WHERE user_id = #{userId}
+          AND dept_id = #{deptId};
+    </delete>
+
+
+    <!-- 추가: 새로운 dp.dept_id 추가 -->
+
+    <insert id = "insertDeptPrivilege">
+        INSERT
+        INTO dept_privilege (user_id, dept_id, privilege_date)
+        VALUES
+        <foreach collection="deptIds" item="deptId" separator=",">
+            (#{userId}, #{deptId}, Now())
+        </foreach>
+    </insert>
+
 
 </mapper>
