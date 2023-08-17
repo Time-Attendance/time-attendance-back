@@ -18,15 +18,28 @@ public class User {
     private String phone;
     private LocalDate hireDate;
     private LocalDate birthday;
-    private Long deptId;
+    private String dept;
     private String position;
-    private String gender;
     private Boolean distribution;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
-    private Boolean isAdmin;
+    private String role; //Role enum 사용 고려
     private Long companyId;
-    private Long workGroupId;
+
+    public User(String name, String email, String password, String phone, LocalDate birthday, String role, Long companyId) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.role = role;
+        this.companyId = companyId;
+    }
+
+    //@Setter 사용보다는 변경 메서드를 제공하는 것이 좋습니다.
+    public void grantAdmin() {
+        this.role = "ADMIN";
+    }
 }

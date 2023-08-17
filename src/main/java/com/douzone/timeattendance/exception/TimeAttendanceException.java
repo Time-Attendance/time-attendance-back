@@ -9,3 +9,4 @@ public abstract class TimeAttendanceException extends RuntimeException {
     public abstract int getStatusCode();
 
 }
+

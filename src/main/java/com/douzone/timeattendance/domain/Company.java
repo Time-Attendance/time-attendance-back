@@ -12,6 +12,7 @@ public class Company {
 
     private Long companyId;
     private String name;
+    private String code;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
