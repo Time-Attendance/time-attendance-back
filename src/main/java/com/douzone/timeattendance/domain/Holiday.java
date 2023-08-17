@@ -9,10 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Holiday {
 
-    private Long holidayId;
+    private Long holidayId; //PK
     private LocalDate date;
     private String name;
     private String payType;
+    private Long companyId; //FK
 
     public Holiday(LocalDate date, String name, String payType) {
         this.date = date;

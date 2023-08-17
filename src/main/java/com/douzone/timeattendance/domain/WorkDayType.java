@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class WorkDayType {
 
-    private Long workDayTypeId;
+    private Long workDayTypeId;     //PK
     private String mon;
     private String tue;
     private String wed;
@@ -16,5 +16,5 @@ public class WorkDayType {
     private String fri;
     private String sat;
     private String sun;
-    private Long workGroupId;
+    private Long workGroupId;       //FK(관계 X)
 }

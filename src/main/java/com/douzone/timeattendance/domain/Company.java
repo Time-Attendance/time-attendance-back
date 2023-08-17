@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Company {
 
-    private Long companyId;
+    private Long companyId; //PK
     private String name;
     private String code;
     private LocalDateTime dateCreated;

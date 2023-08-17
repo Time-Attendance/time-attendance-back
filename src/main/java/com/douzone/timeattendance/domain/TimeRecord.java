@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TimeRecord {
 
-    private Long timeRecordId;
+    private Long timeRecordId;      //PK
     private LocalDate date;
     private LocalTime startWork;
     private LocalTime leaveWork;
     private String workState; //WorkState enum 사용 고려
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
-    private Long userId;
+    private Long userId;            //FK(관계 X)
 
     /**
      * 생성자 대신 빌더 패턴을 사용하면 객체를 유연하게 생성할 수 있습니다.

@@ -10,9 +10,9 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class TimeRange {
 
-    private Long timeRangeId;
+    private Long timeRangeId;   //PK
     private String type;
     private LocalTime start;
     private LocalTime end;
-    private Long workGroupId;
+    private Long workGroupId;   //FK
 }

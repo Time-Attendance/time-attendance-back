@@ -12,14 +12,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class Settlement {
 
-    private Long settlementId;
+    private Long settlementId;          //PK
     private Date date;
     private LocalTime workingTime;
     private LocalTime overTime;
     private String dayType;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
-    private Long userId;
+    private Long userId;                //FK(관계 X)
+    private Long workGroupRecordId;     //FK
 
 
 }

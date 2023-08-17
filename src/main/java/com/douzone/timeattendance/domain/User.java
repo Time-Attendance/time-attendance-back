@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class User {
 
-    private Long userId;
+    private Long userId;                //PK
     private String name;
     private String email;
     private String password;
@@ -25,8 +25,8 @@ public class User {
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
-    private String role; //Role enum 사용 고려
-    private Long companyId;
+    private String role;                //Role enum 사용 고려
+    private Long companyId;             //FK
 
     public User(String name, String email, String password, String phone, LocalDate birthday, String role, Long companyId) {
         this.name = name;

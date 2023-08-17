@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class WorkGroup {
 
-    private Long workGroupId;
+    private Long workGroupId;       //PK
     private String name;
     private String type;
     private LocalDateTime dateCreated;
@@ -18,4 +18,5 @@ public class WorkGroup {
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
     private Boolean isOn;
+    private Long companyId;         //FK
 }
