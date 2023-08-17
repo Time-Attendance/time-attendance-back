@@ -17,4 +17,9 @@ public class Company {
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
+
+    public Company(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
 }
