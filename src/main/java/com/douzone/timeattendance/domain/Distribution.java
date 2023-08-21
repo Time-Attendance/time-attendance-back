@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 @NoArgsConstructor
-public class distribution {
+public class Distribution {
 
     private Long distributionId;    //PK
     private LocalDateTime date;
