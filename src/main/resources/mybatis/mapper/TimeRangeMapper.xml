@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.douzone.timeattendance.mapper.TimeRangeMapper">
+    <select id="findByWorkGroupId" parameterType="Long" resultType="TimeRange">
+        SELECT *
+        FROM Time_range
+        WHERE work_group_id = #{workGroupId}
+    </select>
+    <insert id="insertTimeRange" parameterType="TimeRange">
+        INSERT INTO Time_range(type, start, end, work_group_id)
+        VALUES (#{type}, #{start}, #{end}, #{workGroupId})
+    </insert>
+</mapper>

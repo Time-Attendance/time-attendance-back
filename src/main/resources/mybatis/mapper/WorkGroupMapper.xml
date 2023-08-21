@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.douzone.timeattendance.mapper.WorkGroupMapper">
+    <select id="findAllWorkGroups" resultType="WorkGroup">
+        SELECT *
+        FROM Work_group
+    </select>
+    <select id="findByWorkGroupName" parameterType="String" resultType="WorkGroup">
+        SELECT *
+        FROM Work_group
+        WHERE name = #{name}
+    </select>
+    <select id="findLatestId" resultType="Long">
+        SELECT MAX(work_group_id) FROM Work_group;
+    </select>
+    <insert id="insertWorkGroup" parameterType="WorkGroup">
+        INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on)
+        VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn})
+    </insert>
+
+    <select id="findAllWorkGroupResponseDto" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
+        SELECT wg.work_group_id AS id,
+               wg.name,
+               wg.type,
+               wg.is_on,
+               wg.date_updated,
+               (SELECT COUNT(*)
+                FROM distribution d
+                WHERE d.work_group_id = wg.work_group_id) AS numOfMembers,
+               CONCAT(wdt.mon,
+                      ', ',
+                      wdt.tue,
+                      ', ',
+                      wdt.wed,
+                      ', ',
+                      wdt.thu,
+                      ', ',
+                      wdt.fri,
+                      ', ',
+                      wdt.sat,
+                      ', ',
+                      wdt.sun)                            AS workDays,
+               tr.timeRangeType,
+               tr.start,
+               tr.end
+        FROM work_group wg
+                 LEFT JOIN
+             work_day_type wdt ON wg.work_group_id = wdt.work_group_id
+                 LEFT JOIN
+             (SELECT work_group_id,
+                     GROUP_CONCAT(type SEPARATOR ', ')  AS timeRangeType,
+                     GROUP_CONCAT(start SEPARATOR ', ') AS start,
+                     GROUP_CONCAT(end
+                SEPARATOR ', ') AS end
+              FROM
+                  time_range
+              GROUP BY work_group_id) tr ON wg.work_group_id = tr.work_group_id
+    </select>
+
+    <select id="getWorkGroupSimpleInfo" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto">
+        SELECT work_group_id                              AS id,
+               name,
+               type,
+               (SELECT COUNT(*)
+                FROM user u
+                WHERE u.work_group_id = wg.work_group_id) AS numOfMembers
+        FROM Work_group wg;
+    </select>
+</mapper>
