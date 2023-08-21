@@ -1,4 +1,4 @@
-package com.douzone.timeattendance.dto;
+package com.douzone.timeattendance.dto.workgroup;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

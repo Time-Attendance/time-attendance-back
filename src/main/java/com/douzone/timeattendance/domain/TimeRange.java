@@ -1,6 +1,6 @@
 package com.douzone.timeattendance.domain;
 
-import com.douzone.timeattendance.dto.TimeRangeRequestDto;
+import com.douzone.timeattendance.dto.timerange.TimeRangeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

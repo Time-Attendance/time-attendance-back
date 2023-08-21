@@ -1,6 +1,6 @@
 package com.douzone.timeattendance.domain;
 
-import com.douzone.timeattendance.dto.WorkDayTypeRequestDto;
+import com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,8 +1,8 @@
 package com.douzone.timeattendance.service;
 
 import com.douzone.timeattendance.domain.WorkGroup;
-import com.douzone.timeattendance.dto.WorkGroupResponseDto;
-import com.douzone.timeattendance.dto.WorkGroupSimpleDto;
+import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
+import com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto;
 import com.douzone.timeattendance.mapper.WorkGroupMapper;
 import org.springframework.stereotype.Service;
 

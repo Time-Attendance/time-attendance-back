@@ -3,23 +3,24 @@ package com.douzone.timeattendance.controller;
 import com.douzone.timeattendance.domain.TimeRange;
 import com.douzone.timeattendance.domain.WorkDayType;
 import com.douzone.timeattendance.domain.WorkGroup;
-import com.douzone.timeattendance.dto.*;
+import com.douzone.timeattendance.dto.timerange.TimeRangeRequestDto;
+import com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto;
+import com.douzone.timeattendance.dto.workgroup.WorkGroupRequestDto;
+import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
+import com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto;
 import com.douzone.timeattendance.service.TimeRangeService;
 import com.douzone.timeattendance.service.UserService;
 import com.douzone.timeattendance.service.WorkDayTypeService;
 import com.douzone.timeattendance.service.WorkGroupService;
-import jdk.vm.ci.meta.Local;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.time.*;
 import java.util.List;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -37,72 +38,17 @@ public class WorkGroupController {
         this.userService = userService;
     }
 
-//    @GetMapping("/api/getWorkGroupResponseDtoList")
-//    public List<WorkGroupResponseDto> getWorkGroupResponseDtoList() {
-//        List<WorkGroupResponseDto> workGroupResponseDtoList = new ArrayList<>();
-//        List<WorkGroup> workGroupList = workGroupService.findAllWorkGroups();
-//
-//        for (WorkGroup workGroup : workGroupList) {
-//            WorkGroupResponseDto workGroupResponseDto = new WorkGroupResponseDto();
-//            workGroupResponseDto.setId(workGroup.getWorkGroupId());
-//            workGroupResponseDto.setName(workGroup.getName());
-//            workGroupResponseDto.setType(workGroup.getType());
-//            workGroupResponseDto.setNumOfMembers(userService.countUsersByWorkGroupId(workGroupResponseDto.getId()));
-//
-//            List<TimeRange> timeRangeList = timeRangeService.findByWorkGroupId(workGroupResponseDto.getId());
-//            WorkDayType workDayType = workDayTypeService.findByWorkGroupId(workGroupResponseDto.getId());
-//
-//            List<String> timeRangeTypeList = new ArrayList<>();
-//            List<LocalTime> startList = new ArrayList<>();
-//            List<LocalTime> endList = new ArrayList<>();
-//
-//            for (TimeRange timeRange : timeRangeList) {
-//                timeRangeTypeList.add(timeRange.getType());
-//                startList.add(timeRange.getStart());
-//                endList.add(timeRange.getEnd());
-//            }
-//
-//            workGroupResponseDto.setTimeRangeType(timeRangeTypeList);
-//            workGroupResponseDto.setStart(startList);
-//            workGroupResponseDto.setEnd(endList);
-//
-//            List<String> workDayList = new ArrayList<>();
-//            Class workDayTypeClass = workDayType.getClass();
-//            Field[] fields = workDayTypeClass.getDeclaredFields();
-//
-//            for (Field field : fields) {
-//                try {
-//                    field.setAccessible(true);
-//                    String fieldName = field.getName();
-//                    Object fieldValue = field.get(workDayType);
-//
-//                    if (fieldValue.equals("워크")) {
-//                        workDayList.add(fieldName);
-//                    }
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            workGroupResponseDto.setWorkDays(workDayList);
-//
-//            workGroupResponseDtoList.add(workGroupResponseDto);
-//        }
-//
-//        return workGroupResponseDtoList;
-//    }
-
-    @GetMapping("/api/getWorkGroupResponseDtoList")
+    @GetMapping("/api/workgroups")
     public List<WorkGroupResponseDto> getWorkGroupResponseDtoList() {
         return workGroupService.findAllWorkGroupResponseDto();
     }
 
-    @GetMapping("/api/getWorkGroupSimpleInfo")
+    @GetMapping("/api/workgroups-simple")
     public List<WorkGroupSimpleDto> getWorkGroupSimpleInfo() {
         return workGroupService.getWorkGroupSimpleInfo();
     }
 
-    @PostMapping("/api/newGroup")
+    @PostMapping("/api/workgroups")
     public String newGroup(@RequestBody WorkGroupRequestDto workGroupRequestDto) {
         WorkGroup workGroup = new WorkGroup();
         workGroup.setName(workGroupRequestDto.getName());

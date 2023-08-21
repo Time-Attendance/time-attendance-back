@@ -18,15 +18,15 @@
         VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn})
     </insert>
 
-    <select id="findAllWorkGroupResponseDto" resultType="com.douzone.timeattendance.dto.WorkGroupResponseDto">
+    <select id="findAllWorkGroupResponseDto" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
         SELECT wg.work_group_id AS id,
                wg.name,
                wg.type,
                wg.is_on,
                wg.date_updated,
                (SELECT COUNT(*)
-                FROM user u
-                WHERE u.work_group_id = wg.work_group_id) AS numOfMembers,
+                FROM distribution d
+                WHERE d.work_group_id = wg.work_group_id) AS numOfMembers,
                CONCAT(wdt.mon,
                       ', ',
                       wdt.tue,
@@ -57,7 +57,7 @@
               GROUP BY work_group_id) tr ON wg.work_group_id = tr.work_group_id
     </select>
 
-    <select id="getWorkGroupSimpleInfo" resultType="com.douzone.timeattendance.dto.WorkGroupSimpleDto">
+    <select id="getWorkGroupSimpleInfo" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto">
         SELECT work_group_id                              AS id,
                name,
                type,

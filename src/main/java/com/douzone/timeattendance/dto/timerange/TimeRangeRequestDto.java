@@ -1,4 +1,4 @@
-package com.douzone.timeattendance.dto;
+package com.douzone.timeattendance.dto.timerange;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
