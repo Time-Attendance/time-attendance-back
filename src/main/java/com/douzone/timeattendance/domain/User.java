@@ -38,6 +38,19 @@ public class User {
         this.companyId = companyId;
     }
 
+    public User(String name, String email, String password, String phone, LocalDate hireDate, LocalDate birthday, String dept, String position, String role, Long companyId) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.hireDate = hireDate;
+        this.birthday = birthday;
+        this.dept = dept;
+        this.position = position;
+        this.role = role;
+        this.companyId = companyId;
+    }
+
     //@Setter 사용보다는 변경 메서드를 제공하는 것이 좋습니다.
     public void grantAdmin() {
         this.role = "ADMIN";

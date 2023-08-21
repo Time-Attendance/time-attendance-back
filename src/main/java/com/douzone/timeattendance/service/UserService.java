@@ -5,11 +5,15 @@ import com.douzone.timeattendance.domain.User;
 import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
+import com.douzone.timeattendance.dto.user.UserResponse;
+import com.douzone.timeattendance.dto.user.UserSearchDto;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
 import com.douzone.timeattendance.exception.user.InvalidCompanyCodeException;
 import com.douzone.timeattendance.exception.user.NoSuchUserException;
 import com.douzone.timeattendance.mapper.CompanyMapper;
 import com.douzone.timeattendance.mapper.UserMapper;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,5 +76,12 @@ public class UserService {
         if (userMapper.existsEmail(email)) {
             throw new AlreadyExistsEmailException();
         }
+    }
+
+    public List<UserResponse> getUsers(UserSearchDto searchDto) {
+        return userMapper.findAll(searchDto)
+                         .stream()
+                         .map(UserResponse::new)
+                         .collect(Collectors.toList());
     }
 }

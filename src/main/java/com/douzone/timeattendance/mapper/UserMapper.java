@@ -1,6 +1,8 @@
 package com.douzone.timeattendance.mapper;
 
 import com.douzone.timeattendance.domain.User;
+import com.douzone.timeattendance.dto.user.UserSearchDto;
+import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +17,5 @@ public interface UserMapper {
 
     Optional<User> findByEmail(String email);
 
+    List<User> findAll(UserSearchDto searchDto);
 }
