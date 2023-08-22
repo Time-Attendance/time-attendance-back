@@ -4,7 +4,8 @@
 <mapper namespace="com.douzone.timeattendance.mapper.UserMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO user(name,
+        INSERT INTO user(user_code,
+                         name,
                          email,
                          password,
                          phone,
@@ -19,7 +20,8 @@
                          is_deleted,
                          role,
                          company_id)
-        VALUES (#{name},
+        VALUES (#{userCode},
+                #{name},
                 #{email},
                 #{password},
                 #{phone},
@@ -96,6 +98,14 @@
         FROM user
         WHERE company_id = #{companyId}
           AND is_deleted = false
+    </select>
+
+    <select id="getNextSequence" resultType="Integer">
+        SELECT COUNT(*) + 1
+        FROM user
+        WHERE company_id = #{companyId}
+          AND MONTH(hire_date) = MONTH(CURDATE())
+          AND YEAR(hire_date) = YEAR(CURDATE())
     </select>
 
 </mapper>

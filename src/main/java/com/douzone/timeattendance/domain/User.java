@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class User {
 
     private Long userId;                //PK
+    private String userCode;
     private String name;
     private String email;
     private String password;
@@ -28,17 +29,8 @@ public class User {
     private String role;                //Role enum 사용 고려
     private Long companyId;             //FK
 
-    public User(String name, String email, String password, String phone, LocalDate birthday, String role, Long companyId) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.birthday = birthday;
-        this.role = role;
-        this.companyId = companyId;
-    }
-
-    public User(String name, String email, String password, String phone, LocalDate hireDate, LocalDate birthday, String dept, String position, String role, Long companyId) {
+    public User(String userCode, String name, String email, String password, String phone, LocalDate hireDate, LocalDate birthday, String dept, String position, String role, Long companyId) {
+        this.userCode = userCode;
         this.name = name;
         this.email = email;
         this.password = password;
