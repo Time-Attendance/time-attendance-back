@@ -21,5 +21,7 @@ public interface UserMapper {
 
     List<User> findAll(UserSearchDto searchDto);
 
+    int getNextSequence(Long companyId);
+
     void update(@Param("userId") Long userId, @Param("updateDto") UserUpdateDto updateDto);
 }

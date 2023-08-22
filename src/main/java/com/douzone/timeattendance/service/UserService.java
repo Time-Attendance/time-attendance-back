@@ -10,10 +10,13 @@ import com.douzone.timeattendance.dto.user.UserSearchDto;
 import com.douzone.timeattendance.dto.user.UserUpdateDto;
 import com.douzone.timeattendance.dto.user.UserUpdateRequest;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
-import com.douzone.timeattendance.exception.user.InvalidCompanyCodeException;
+import com.douzone.timeattendance.exception.company.InvalidCompanyCodeException;
 import com.douzone.timeattendance.exception.user.NoSuchUserException;
+import com.douzone.timeattendance.global.util.UserUtil;
 import com.douzone.timeattendance.mapper.CompanyMapper;
 import com.douzone.timeattendance.mapper.UserMapper;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,15 +43,23 @@ public class UserService {
 
         //비밀번호 암호화
         String encryptedPassword = passwordEncoder.encode(userCreateRequest.getPassword());
+        //사원번호 생성
+        String userCode = generateUserCode(company.getCompanyId());
+        //랜덤부서 생성
+        String randomDepartment = UserUtil.getRandomDepartment();
 
         User user = new User(
-            userCreateRequest.getName(),
-            userCreateRequest.getEmail(),
-            encryptedPassword,
-            userCreateRequest.getPhone(),
-            userCreateRequest.getBirthday(),
-            "USER", //TODO: enum 사용
-            company.getCompanyId());
+                userCode,
+                userCreateRequest.getName(),
+                userCreateRequest.getEmail(),
+                encryptedPassword,
+                userCreateRequest.getPhone(),
+                LocalDate.now(),
+                userCreateRequest.getBirthday(),
+                randomDepartment,
+                "사원",
+                "USER", //TODO: enum 사용
+                company.getCompanyId());
 
         //처음으로 가입하는 사용자에게 관리자 권한 부여
         if (!companyMapper.existsUserInCompany(company.getCompanyId())) {
@@ -94,7 +105,6 @@ public class UserService {
 
     /**
      * 회원가입 시, 이미 가입된 이메일의 경우 예외를 발생시킵니다.
-     *
      * @param email
      */
     @Transactional(readOnly = true)
@@ -102,5 +112,17 @@ public class UserService {
         if (userMapper.existsEmail(email)) {
             throw new AlreadyExistsEmailException();
         }
+    }
+
+    /**
+     * 사원번호 생성
+     * ex) 202308001
+     */
+    @Transactional(readOnly = true)
+    public String generateUserCode(Long companyId) {
+        String yearMonth = LocalDate.now()
+                                    .format(DateTimeFormatter.ofPattern("yyyyMM"));
+        int sequence = userMapper.getNextSequence(companyId);
+        return String.format("%s%03d", yearMonth, sequence);
     }
 }

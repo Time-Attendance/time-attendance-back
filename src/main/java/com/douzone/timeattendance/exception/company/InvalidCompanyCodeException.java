@@ -1,4 +1,4 @@
-package com.douzone.timeattendance.exception.user;
+package com.douzone.timeattendance.exception.company;
 
 import com.douzone.timeattendance.exception.TimeAttendanceException;
 import org.springframework.http.HttpStatus;

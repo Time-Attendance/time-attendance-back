@@ -8,6 +8,7 @@ import lombok.Getter;
 public class UserResponse {
 
     private Long userId;
+    private String userCode;
     private String name;
     private String email;
     private String phone;
@@ -20,6 +21,7 @@ public class UserResponse {
 
     public UserResponse(User user) {
         this.userId = user.getUserId();
+        this.userCode = user.getUserCode();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
