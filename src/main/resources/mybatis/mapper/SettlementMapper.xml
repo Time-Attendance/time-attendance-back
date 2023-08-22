@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.SettlementMapper">
+
+    <!--정산 테이블 전체 조회-->
+    <select id="findAll" resultType="com.douzone.timeattendance.dto.settlement.SettlementResponse"
+    parameterType="com.douzone.timeattendance.dto.settlement.SettlementFindRequest">
+        SELECT st.settlement_id AS settlementId,
+               st.date AS date,
+        u.user_id AS userId,
+        u.name AS name,
+        u.dept AS dept,
+        u.position AS position,
+        wgr.work_group_type AS workGroupType,
+        tr.start_work AS startWork,
+        tr.leave_work AS leaveWork,
+        wgr.time_range_type AS timeRangeType,
+        wgr.start AS start,
+        wgr.end AS end,
+        st.working_time AS workingTime,
+        st.overtime AS overtime,
+        tr.work_state AS workState,
+        st.day_type AS dayType,
+        wgr.work_group_record_id AS workGroupRecordId
+        FROM settlement AS st
+        JOIN user AS u ON st.user_id = u.user_id
+        JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date
+        JOIN work_group_record AS wgr ON st.work_group_record_id = wgr.work_group_record_id
+         <![CDATA[
+        WHERE st.date >= #{start} AND st.date <= #{end}
+        ]]>
+
+    </select>
+
+    <!--정산 스케줄러 실행-->
+    <insert id="insertSettlement" useGeneratedKeys="true" keyProperty="settlementId">
+        INSERT INTO settlement(user_id, "date", working_time, overtime, day_type, date_created, date_updated, work_group_record_id)
+        VALUES(#{userId}, #{date}, #{workingTime}, #{overtime}, #{dayType}, #{dateCreated}, #{dateUpdated}, #{workGroupRecordId})
+    </insert>
+</mapper>
