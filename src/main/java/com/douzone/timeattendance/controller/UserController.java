@@ -5,6 +5,7 @@ import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.dto.user.UserResponse;
 import com.douzone.timeattendance.dto.user.UserSearchDto;
+import com.douzone.timeattendance.dto.user.UserUpdateRequest;
 import com.douzone.timeattendance.global.auth.LoginUser;
 import com.douzone.timeattendance.service.UserService;
 import java.util.List;
@@ -14,9 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,7 +36,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers(
-            @ModelAttribute UserSearchDto searchDto) {
+            @ModelAttribute @Valid UserSearchDto searchDto) {
         return ResponseEntity.ok()
                              .body(userService.getUsers(searchDto));
     }
@@ -44,7 +48,7 @@ public class UserController {
      * @param authInfo 토큰 검증이 완료된 사용자의 정보
      */
     @GetMapping("/sample")
-    public ResponseEntity sample(@LoginUser AuthInfo authInfo) {
+    public ResponseEntity<Void> sample(@LoginUser AuthInfo authInfo) {
         System.out.println("로그인 한 사용자의 userId = " + authInfo.getUserId());
         return ResponseEntity.ok()
                              .build();
@@ -67,5 +71,25 @@ public class UserController {
     public ResponseEntity<LoginUserResponse> loginUserInfo(@LoginUser AuthInfo authInfo) {
         return ResponseEntity.ok()
                              .body(userService.loginUserInfo(authInfo));
+    }
+
+    /**
+     * 단일 회원 권한 변경
+     */
+    @PatchMapping("/{userId}")
+    public ResponseEntity<Void> updateUserRole(@PathVariable Long userId, @RequestParam String role) {
+        userService.updateUser(userId, role);
+        return ResponseEntity.ok()
+                             .build();
+    }
+
+    /**
+     * 다중 회원 권한 변경
+     */
+    @PatchMapping
+    public ResponseEntity<Void> updateUsersRole(@RequestBody List<UserUpdateRequest> userUpdateRequests) {
+        userService.updateUsers(userUpdateRequests);
+        return ResponseEntity.ok()
+                             .build();
     }
 }
