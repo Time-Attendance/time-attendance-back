@@ -13,12 +13,14 @@ public class LoginUserResponse {
     private final String name;
     private final Long userId;
     private final String role;
+    private final Long companyId;
 
-    private LoginUserResponse(String email, String name, Long userId, String role) {
+    private LoginUserResponse(String email, String name, Long userId, String role, Long companyId) {
         this.email = email;
         this.name = name;
         this.userId = userId;
         this.role = role;
+        this.companyId = companyId;
     }
 
     public static LoginUserResponse from(User user) {
@@ -26,6 +28,7 @@ public class LoginUserResponse {
             user.getEmail(),
             user.getName(),
             user.getUserId(),
-            user.getRole());
+            user.getRole(),
+            user.getCompanyId());
     }
 }
