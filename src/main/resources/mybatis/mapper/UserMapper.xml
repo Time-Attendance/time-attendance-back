@@ -36,6 +36,13 @@
                 #{companyId})
     </insert>
 
+    <!-- TODO: 동적 쿼리 적용 -->
+    <update id="update">
+        UPDATE user
+        SET role = #{updateDto.role}
+        WHERE user_id = #{userId};
+    </update>
+
     <select id="existsEmail" resultType="java.lang.Boolean">
         SELECT EXISTS(SELECT *
                       FROM user

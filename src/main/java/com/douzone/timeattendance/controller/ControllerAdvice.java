@@ -3,8 +3,8 @@ package com.douzone.timeattendance.controller;
 import com.douzone.timeattendance.dto.ErrorResponse;
 import com.douzone.timeattendance.exception.TimeAttendanceException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,8 +14,8 @@ public class ControllerAdvice {
     /**
      * 유효성 검증에 실패한 예외를 처리합니다.
      */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> invalidRequestHandler(MethodArgumentNotValidException e) {
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorResponse> invalidRequestHandler(BindException e) {
         ErrorResponse response = ErrorResponse.builder()
                                               .code("400")
                                               .message("잘못된 요청입니다.")

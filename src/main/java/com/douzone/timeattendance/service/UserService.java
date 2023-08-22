@@ -7,6 +7,8 @@ import com.douzone.timeattendance.dto.user.LoginUserResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.dto.user.UserResponse;
 import com.douzone.timeattendance.dto.user.UserSearchDto;
+import com.douzone.timeattendance.dto.user.UserUpdateDto;
+import com.douzone.timeattendance.dto.user.UserUpdateRequest;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
 import com.douzone.timeattendance.exception.user.InvalidCompanyCodeException;
 import com.douzone.timeattendance.exception.user.NoSuchUserException;
@@ -66,6 +68,30 @@ public class UserService {
         return LoginUserResponse.from(user);
     }
 
+    @Transactional(readOnly = true)
+    public List<UserResponse> getUsers(UserSearchDto searchDto) {
+        return userMapper.findAll(searchDto)
+                         .stream()
+                         .map(UserResponse::new)
+                         .collect(Collectors.toList());
+    }
+
+    public void updateUser(Long userId, String role) {
+        userMapper.findByUserId(userId)
+                  .orElseThrow(NoSuchUserException::new);
+
+        UserUpdateDto updateDto = UserUpdateDto.builder()
+                                               .role(role)
+                                               .build();
+        userMapper.update(userId, updateDto);
+    }
+
+    public void updateUsers(List<UserUpdateRequest> userUpdateRequests) {
+        for (UserUpdateRequest updateRequest : userUpdateRequests) {
+            updateUser(updateRequest.getUserId(), updateRequest.getRole());
+        }
+    }
+
     /**
      * 회원가입 시, 이미 가입된 이메일의 경우 예외를 발생시킵니다.
      *
@@ -76,12 +102,5 @@ public class UserService {
         if (userMapper.existsEmail(email)) {
             throw new AlreadyExistsEmailException();
         }
-    }
-
-    public List<UserResponse> getUsers(UserSearchDto searchDto) {
-        return userMapper.findAll(searchDto)
-                         .stream()
-                         .map(UserResponse::new)
-                         .collect(Collectors.toList());
     }
 }
