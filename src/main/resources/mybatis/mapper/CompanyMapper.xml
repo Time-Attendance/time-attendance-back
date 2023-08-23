@@ -4,18 +4,26 @@
 <mapper namespace="com.douzone.timeattendance.mapper.CompanyMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="companyId">
-        INSERT INTO company(name,
-                            code,
-                            date_created,
-                            date_updated,
-                            date_deleted,
-                            is_deleted)
-        VALUES (#{name},
-                #{code},
-                NOW(),
-                NOW(),
-                NULL,
-                false)
+        INSERT INTO company(
+            name,
+            code,
+            <if test="logoUrl != null and logoUrl != ''">
+                logo_url,
+            </if>
+            date_created,
+            date_updated,
+            date_deleted,
+            is_deleted)
+        VALUES (
+            #{name},
+            #{code},
+            <if test="logoUrl != null and logoUrl != ''">
+                #{logoUrl},
+            </if>
+            NOW(),
+            NOW(),
+            NULL,
+            false)
     </insert>
 
     <select id="findByCode" resultType="Company">
