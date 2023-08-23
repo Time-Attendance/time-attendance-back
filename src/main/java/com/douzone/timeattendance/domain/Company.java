@@ -13,13 +13,15 @@ public class Company {
     private Long companyId; //PK
     private String name;
     private String code;
+    private String logoUrl;
     private LocalDateTime dateCreated;
     private LocalDateTime dateUpdated;
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
 
-    public Company(String name, String code) {
+    public Company(String name, String code, String logoUrl) {
         this.name = name;
         this.code = code;
+        this.logoUrl = logoUrl;
     }
 }
