@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class SettlementController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SettlementResponse>> findAll(@ModelAttribute SettlementFindRequest settlementFindRequest) {
+    public ResponseEntity<List<SettlementResponse>> findAll(@ModelAttribute @Valid SettlementFindRequest settlementFindRequest) {
         return ResponseEntity.ok().body(settlementService.findAll(settlementFindRequest));
     }
 }

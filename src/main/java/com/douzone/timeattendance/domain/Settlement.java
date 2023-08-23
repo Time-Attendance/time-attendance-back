@@ -14,6 +14,8 @@ public class Settlement {
 
     private Long settlementId;          //PK
     private Date date;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private LocalTime workingTime;
     private LocalTime overTime;
     private String dayType;
