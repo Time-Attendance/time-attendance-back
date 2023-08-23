@@ -24,7 +24,7 @@
         st.day_type AS dayType,
         wgr.work_group_record_id AS workGroupRecordId
         FROM settlement AS st
-        JOIN user AS u ON st.user_id = u.user_id
+        JOIN user AS u ON st.user_id = u.user_id AND u.company_id = #{companyId}
         JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date
         JOIN work_group_record AS wgr ON st.work_group_record_id = wgr.work_group_record_id
          <![CDATA[
