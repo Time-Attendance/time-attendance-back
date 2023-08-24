@@ -1,12 +1,15 @@
 package com.douzone.timeattendance.dto.user;
 
-import com.douzone.timeattendance.domain.User;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 클라이언트에서 현재 로그인한 사용자의 정보를 요청할 때, 응답하는 객체입니다.
  */
 @Getter
+@RequiredArgsConstructor
+@Builder
 public class LoginUserResponse {
 
     private final String email;
@@ -14,21 +17,6 @@ public class LoginUserResponse {
     private final Long userId;
     private final String role;
     private final Long companyId;
+    private final String companyLogoUrl;
 
-    private LoginUserResponse(String email, String name, Long userId, String role, Long companyId) {
-        this.email = email;
-        this.name = name;
-        this.userId = userId;
-        this.role = role;
-        this.companyId = companyId;
-    }
-
-    public static LoginUserResponse from(User user) {
-        return new LoginUserResponse(
-            user.getEmail(),
-            user.getName(),
-            user.getUserId(),
-            user.getRole(),
-            user.getCompanyId());
-    }
 }
