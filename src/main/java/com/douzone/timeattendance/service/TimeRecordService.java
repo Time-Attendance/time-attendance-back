@@ -5,7 +5,6 @@ import com.douzone.timeattendance.dto.timerecord.TimeRecordResponse;
 import com.douzone.timeattendance.dto.timerecord.TimeRecordUpdateDto;
 import com.douzone.timeattendance.exception.timerecord.AlreadyExistsWorkRecordException;
 import com.douzone.timeattendance.exception.timerecord.ImpossibleLeaveWorkException;
-import com.douzone.timeattendance.exception.timerecord.NoSuchTimeRecordException;
 import com.douzone.timeattendance.mapper.TimeRecordMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -72,7 +71,7 @@ public class TimeRecordService {
     public TimeRecordResponse findTimeRecordByDate(Long userId, LocalDate date) {
         return timeRecordMapper.findByDate(userId, date)
                                .map(TimeRecordResponse::new)
-                               .orElseThrow(NoSuchTimeRecordException::new);
+                               .orElseGet(TimeRecordResponse::new);
     }
 
     @Transactional(readOnly = true)

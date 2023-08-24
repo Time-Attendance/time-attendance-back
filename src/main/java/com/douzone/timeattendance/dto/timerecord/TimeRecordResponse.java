@@ -4,8 +4,10 @@ import com.douzone.timeattendance.domain.TimeRecord;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class TimeRecordResponse {
 
     private Long timeRecordId;
