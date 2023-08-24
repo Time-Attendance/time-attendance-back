@@ -17,8 +17,8 @@ values (1, '더존비즈온', 'd0fd4068-d79b-4f83-9a16-83a9197e0e74', '6f5449a4-
 
 # 관리자
 insert into user (user_id, user_code, name, email, password, phone, hire_date, birthday, dept, position, distribution, date_created, date_updated, date_deleted, is_deleted, role, company_id)
-values (1, '202301001', '관리자', 'admin@email.com', '$2a$10$z5a7ragMOcu1rULsYwCaXO0NEjMVU9SH07cAL5FW07/O.FUn.ami2', '', '1970-01-01', '1970-01-01', '관리자', '관리자', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', null, 0, 'SUPERADMIN', 0),
-       (2, '202301002', '테스트용', 'test@test.com', '$2a$10$qY6DuWcrl/y5hJjWszBz/uVGvPF0ivxM2v.d5b66I/MxzGGBIhxBm', '010-1234-5678', '2023-01-01', '1990-01-01', 'IT', '대리', 0, '2023-08-20 19:35:39', '2023-08-20 19:35:39', null, 0, 'ADMIN', 1);
+values (1, '', '관리자', 'admin@email.com', '$2a$10$z5a7ragMOcu1rULsYwCaXO0NEjMVU9SH07cAL5FW07/O.FUn.ami2', '', '1970-01-01', '1970-01-01', '관리자', '관리자', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', null, 0, 'SUPERADMIN', 0),
+       (2, '202301000', '테스트용', 'test@test.com', '$2a$10$qY6DuWcrl/y5hJjWszBz/uVGvPF0ivxM2v.d5b66I/MxzGGBIhxBm', '010-1234-5678', '2023-01-01', '1990-01-01', 'IT', '대리', 0, '2023-08-20 19:35:39', '2023-08-20 19:35:39', null, 0, 'ADMIN', 1);
 
 # 사용자 (비밀번호는 모두 123)
 insert into user (user_id, user_code, name, email, password, phone, hire_date, birthday, dept, position, distribution, date_created, date_updated, date_deleted, is_deleted, role, company_id)
