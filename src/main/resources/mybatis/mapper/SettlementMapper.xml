@@ -38,4 +38,17 @@
         INSERT INTO settlement(user_id, "date", working_time, overtime, day_type, date_created, date_updated, work_group_record_id)
         VALUES(#{userId}, #{date}, #{workingTime}, #{overtime}, #{dayType}, #{dateCreated}, #{dateUpdated}, #{workGroupRecordId})
     </insert>
+
+    <!--정산 회원 수정-->
+    <update id="updateSettlement" parameterType="com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest">
+        UPDATE settlement
+        SET
+            start_time = #{startTime},
+            end_time = #{endTime},
+            working_time = #{workingTime},
+            work_state = #{workState}
+        WHERE settlement_id = #{settlementId};
+    </update>
+
+
 </mapper>
