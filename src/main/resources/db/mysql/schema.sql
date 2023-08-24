@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS `time_record`;
+DROP TABLE IF EXISTS `work_group`;
+DROP TABLE IF EXISTS `time_range`;
+DROP TABLE IF EXISTS `work_day_type`;
+DROP TABLE IF EXISTS `settlement`;
+DROP TABLE IF EXISTS `company`;
+DROP TABLE IF EXISTS `work_group_record`;
+DROP TABLE IF EXISTS `distribution`;
+DROP TABLE IF EXISTS `user`;
+
 # 출퇴근기록
 CREATE TABLE `time_record`
 (
@@ -59,6 +69,8 @@ CREATE TABLE `settlement`
     `settlement_id`        bigint auto_increment NOT NULL,
     `user_id`              bigint                NOT NULL,
     `date`                 date                  NOT NULL,
+    `start_time`           time                  NOT NULL,
+    `end_time`             time                  NOT NULL,
     `working_time`         time                  NOT NULL,
     `overtime`             time                  NOT NULL,
     `day_type`             char(2)               NOT NULL,

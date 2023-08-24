@@ -17,7 +17,7 @@ values (1, '더존비즈온', 'd0fd4068-d79b-4f83-9a16-83a9197e0e74', '6f5449a4-
 
 # 관리자
 insert into user (user_id, user_code, name, email, password, phone, hire_date, birthday, dept, position, distribution, date_created, date_updated, date_deleted, is_deleted, role, company_id)
-values (1, '202301001', '관리자', 'admin@email.com', '$2a$10$z5a7ragMOcu1rULsYwCaXO0NEjMVU9SH07cAL5FW07/O.FUn.ami2', '010-1234-1234', '1990-01-01', '1990-01-01', '관리자', '관리자', 0, '2023-01-01 00:00:00', '2023-01-01 00:00:00', null, 0, 'SUPERADMIN', 0),
+values (1, '202301001', '관리자', 'admin@email.com', '$2a$10$z5a7ragMOcu1rULsYwCaXO0NEjMVU9SH07cAL5FW07/O.FUn.ami2', '', '1970-01-01', '1970-01-01', '관리자', '관리자', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', null, 0, 'SUPERADMIN', 0),
        (2, '202301002', '테스트용', 'test@test.com', '$2a$10$qY6DuWcrl/y5hJjWszBz/uVGvPF0ivxM2v.d5b66I/MxzGGBIhxBm', '010-1234-5678', '2023-01-01', '1990-01-01', 'IT', '대리', 0, '2023-08-20 19:35:39', '2023-08-20 19:35:39', null, 0, 'ADMIN', 1);
 
 # 사용자 (비밀번호는 모두 123)
@@ -541,137 +541,200 @@ values (1, '2023-01-02', 3, 2),
        (138, '2023-01-02', 140, 13),
        (139, '2023-01-02', 141, 13),
        (140, '2023-01-02', 142, 13),
-       (141, '2023-01-02', 123, 16),
-       (142, '2023-01-02', 124, 15),
-       (143, '2023-01-02', 125, 15),
-       (144, '2023-01-02', 126, 15),
-       (145, '2023-01-02', 127, 15),
-       (146, '2023-01-02', 128, 15),
-       (147, '2023-01-02', 129, 15),
-       (148, '2023-01-02', 130, 15),
-       (149, '2023-01-02', 131, 15),
-       (150, '2023-01-02', 132, 15),
-       (151, '2023-01-02', 133, 15),
-       (152, '2023-01-02', 134, 15),
-       (153, '2023-01-02', 135, 15),
-       (154, '2023-01-02', 136, 15),
-       (155, '2023-01-02', 137, 15),
-       (156, '2023-01-02', 138, 15),
-       (157, '2023-01-02', 139, 15),
-       (158, '2023-01-02', 140, 15),
-       (159, '2023-01-02', 141, 15),
-       (160, '2023-01-02', 142, 15),
-       (161, '2023-01-02', 143, 18),
-       (162, '2023-01-02', 144, 17),
-       (163, '2023-01-02', 145, 17),
-       (164, '2023-01-02', 146, 17),
-       (165, '2023-01-02', 147, 17),
-       (166, '2023-01-02', 148, 17),
-       (167, '2023-01-02', 149, 17),
-       (168, '2023-01-02', 150, 17),
-       (169, '2023-01-02', 151, 17),
-       (170, '2023-01-02', 152, 17),
-       (171, '2023-01-02', 153, 17),
-       (172, '2023-01-02', 154, 17),
-       (173, '2023-01-02', 155, 17),
-       (174, '2023-01-02', 156, 17),
-       (175, '2023-01-02', 157, 17),
-       (176, '2023-01-02', 158, 17),
-       (177, '2023-01-02', 159, 17),
-       (178, '2023-01-02', 160, 17),
-       (179, '2023-01-02', 161, 17),
-       (180, '2023-01-02', 162, 17),
-       (181, '2023-01-02', 163, 20),
-       (182, '2023-01-02', 164, 19),
-       (183, '2023-01-02', 165, 19),
-       (184, '2023-01-02', 166, 19),
-       (185, '2023-01-02', 167, 19),
-       (186, '2023-01-02', 168, 19),
-       (187, '2023-01-02', 169, 19),
-       (188, '2023-01-02', 170, 19),
-       (189, '2023-01-02', 171, 19),
-       (190, '2023-01-02', 172, 19),
-       (191, '2023-01-02', 173, 19),
-       (192, '2023-01-02', 174, 19),
-       (193, '2023-01-02', 175, 19),
-       (194, '2023-01-02', 176, 19),
-       (195, '2023-01-02', 177, 19),
-       (196, '2023-01-02', 178, 19),
-       (197, '2023-01-02', 179, 19),
-       (198, '2023-01-02', 180, 19),
-       (199, '2023-01-02', 181, 19),
-       (200, '2023-01-02', 182, 19);
+       (141, '2023-01-02', 143, 16),
+       (142, '2023-01-02', 144, 15),
+       (143, '2023-01-02', 145, 15),
+       (144, '2023-01-02', 146, 15),
+       (145, '2023-01-02', 147, 15),
+       (146, '2023-01-02', 148, 15),
+       (147, '2023-01-02', 149, 15),
+       (148, '2023-01-02', 150, 15),
+       (149, '2023-01-02', 151, 15),
+       (150, '2023-01-02', 152, 15),
+       (151, '2023-01-02', 153, 15),
+       (152, '2023-01-02', 154, 15),
+       (153, '2023-01-02', 155, 15),
+       (154, '2023-01-02', 156, 15),
+       (155, '2023-01-02', 157, 15),
+       (156, '2023-01-02', 158, 15),
+       (157, '2023-01-02', 159, 15),
+       (158, '2023-01-02', 160, 15),
+       (159, '2023-01-02', 161, 15),
+       (160, '2023-01-02', 162, 15),
+       (161, '2023-01-02', 163, 18),
+       (162, '2023-01-02', 164, 17),
+       (163, '2023-01-02', 165, 17),
+       (164, '2023-01-02', 166, 17),
+       (165, '2023-01-02', 167, 17),
+       (166, '2023-01-02', 168, 17),
+       (167, '2023-01-02', 169, 17),
+       (168, '2023-01-02', 170, 17),
+       (169, '2023-01-02', 171, 17),
+       (170, '2023-01-02', 172, 17),
+       (171, '2023-01-02', 173, 17),
+       (172, '2023-01-02', 174, 17),
+       (173, '2023-01-02', 175, 17),
+       (174, '2023-01-02', 176, 17),
+       (175, '2023-01-02', 177, 17),
+       (176, '2023-01-02', 178, 17),
+       (177, '2023-01-02', 179, 17),
+       (178, '2023-01-02', 180, 17),
+       (179, '2023-01-02', 181, 17),
+       (180, '2023-01-02', 182, 17),
+       (181, '2023-01-02', 183, 20),
+       (182, '2023-01-02', 184, 19),
+       (183, '2023-01-02', 185, 19),
+       (184, '2023-01-02', 186, 19),
+       (185, '2023-01-02', 187, 19),
+       (186, '2023-01-02', 188, 19),
+       (187, '2023-01-02', 189, 19),
+       (188, '2023-01-02', 190, 19),
+       (189, '2023-01-02', 191, 19),
+       (190, '2023-01-02', 192, 19),
+       (191, '2023-01-02', 193, 19),
+       (192, '2023-01-02', 194, 19),
+       (193, '2023-01-02', 195, 19),
+       (194, '2023-01-02', 196, 19),
+       (195, '2023-01-02', 197, 19),
+       (196, '2023-01-02', 198, 19),
+       (197, '2023-01-02', 199, 19),
+       (198, '2023-01-02', 200, 19),
+       (199, '2023-01-02', 201, 19),
+       (200, '2023-01-02', 202, 19);
 
 
 # 출퇴근기록 생성 프로시저
-DROP PROCEDURE IF EXISTS CreateTimeRecords;
+DROP PROCEDURE IF EXISTS CreateTimeRecordsAndSettlements;
 DELIMITER //
-CREATE PROCEDURE CreateTimeRecords()
+CREATE PROCEDURE CreateTimeRecordsAndSettlements()
 BEGIN
-    DECLARE i INT DEFAULT 1;
-    DECLARE cur_date DATE DEFAULT '2023-01-02';
-    DECLARE start_work TIME;
-    DECLARE leave_work TIME;
-    DECLARE work_state VARCHAR(10);
-    DECLARE date_created DATETIME;
-    DECLARE date_updated DATETIME;
-    DECLARE rounded_start_work TIME;
-    DECLARE late_day DATE;
+  DECLARE i INT DEFAULT 1;
+  DECLARE cur_date DATE DEFAULT '2023-01-02';
+  DECLARE start_work TIME;
+  DECLARE leave_work TIME;
+  DECLARE work_state VARCHAR(10);
+  DECLARE date_created DATETIME;
+  DECLARE date_updated DATETIME;
+  DECLARE rounded_start_work TIME;
+  DECLARE late_day DATE;
+  DECLARE start_time TIME;
+  DECLARE end_time TIME;
+  DECLARE working_time TIME;
+  DECLARE overtime TIME;
+  DECLARE work_group_record_id INT DEFAULT 1;
 
-    WHILE cur_date <= '2023-08-20' DO
-            IF DAYOFWEEK(cur_date) NOT IN (1, 7) THEN -- 주말 제외
-                SET i = 3;
-                WHILE i <= 202 DO
-                        SET late_day = DATE_ADD(DATE_SUB(LAST_DAY(cur_date), INTERVAL FLOOR(RAND() * 20) DAY), INTERVAL 1 DAY);
+  WHILE cur_date <= '2023-08-23' DO
+    IF DAYOFWEEK(cur_date) NOT IN (1, 7) THEN -- 주말 제외
+      SET i = 3;
+      WHILE i <= 202 DO
+        SET late_day = DATE_ADD(DATE_SUB(LAST_DAY(cur_date), INTERVAL FLOOR(RAND() * 20) DAY), INTERVAL 1 DAY);
 
-                        -- 시차근로제 회원
-                        IF i MOD 20 = 3 THEN
-                            SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 140) * 60)); -- 08:40 ~ 10:59 랜덤 시작 시간
+        IF i MOD 20 = 3 THEN
+        -- 시차근로제 회원
+          SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 140) * 60)); -- 08:40 ~ 10:59 랜덤 시작 시간
 
-                            -- 인정 출근시간을 30분 단위로 설정
-                            IF MINUTE(start_work) > 30 THEN
-                                SET rounded_start_work = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00'); -- 다음 시간으로 설정
-                            ELSE
-                                SET rounded_start_work = MAKETIME(HOUR(start_work), 30, 0); -- 해당 시간의 30분으로 설정
-                            END IF;
+          -- 인정 출근시간을 30분 단위로 설정
+          IF MINUTE(start_work) > 30 THEN
+            SET rounded_start_work = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00'); -- 다음 시간으로 설정
+          ELSEIF MINUTE(start_work) > 0 THEN
+            SET rounded_start_work = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '00:30:00'); -- 해당 시간의 30분으로 설정
+          ELSE
+            SET rounded_start_work = MAKETIME(HOUR(start_work), 0, 0); -- 해당 시간으로 설정
+          END IF;
 
-                            SET leave_work = ADDTIME(rounded_start_work, '09:00:00'); -- 퇴근 시간은 인정 출근 시간의 9시간 이후
+          SET leave_work = ADDTIME(rounded_start_work, SEC_TO_TIME((9 * 3600) + FLOOR(RAND() * 2 * 3600))); -- 퇴근 시간은 인정 출근 시간의 9~11시간 이후
 
-                            IF start_work > '11:00:00' THEN
-                                SET work_state = '근태이상';
-                            ELSE
-                                SET work_state = '정상근무';
-                            END IF;
-                        ELSE
-                            -- 일반근로제 회원
-                            IF cur_date = late_day THEN
-                                SET start_work = ADDTIME('09:01:00', SEC_TO_TIME(FLOOR(RAND() * 59) * 60)); -- 지각: 09:01 ~ 09:59
-                            ELSE
-                                SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 21) * 60)); -- 정상: 08:40 ~ 09:00
-                            END IF;
+          IF start_work > '11:00:00' THEN
+            SET work_state = '근태이상';
+          ELSE
+            SET work_state = '정상근무';
+          END IF;
+        ELSE
+        -- 일반근로제 회원
+          IF cur_date = late_day THEN
+            SET start_work = ADDTIME('09:01:00', SEC_TO_TIME(FLOOR(RAND() * 59) * 60)); -- 지각: 09:01 ~ 09:59
+          ELSE
+            SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 21) * 60)); -- 정상: 08:40 ~ 09:00
+          END IF;
 
-                            SET leave_work = TIME(CONCAT('18:', LPAD(FLOOR(RAND() * 60), 2, '0'), ':00')); -- 18:00 ~ 18:59 랜덤 종료 시간
+          SET leave_work = ADDTIME('18:00:00', SEC_TO_TIME(FLOOR(RAND() * 120) * 60)); -- 18:00 ~ 20:00 랜덤 종료 시간
 
-                            IF start_work > '09:00:00' THEN
-                                SET work_state = '근태이상';
-                            ELSE
-                                SET work_state = '정상근무';
-                            END IF;
-                        END IF;
+          IF start_work > '09:00:00' THEN
+            SET work_state = '근태이상';
+          ELSE
+            SET work_state = '정상근무';
+          END IF;
+        END IF;
 
-                        SET date_created = CONCAT(cur_date, ' ', start_work);
-                        SET date_updated = date_created;
+        SET date_created = CONCAT(cur_date, ' ', start_work);
+        SET date_updated = date_created;
 
-                        INSERT INTO `time_record` (`user_id`, `date`, `start_work`, `leave_work`, `work_state`, `date_created`, `date_updated`)
-                        VALUES (i, cur_date, start_work, leave_work, work_state, date_created, date_updated);
+        -- 출퇴근 기록 생성
+        INSERT INTO `time_record` (`user_id`, `date`, `start_work`, `leave_work`, `work_state`, `date_created`, `date_updated`)
+        VALUES (i, cur_date, start_work, leave_work, work_state, date_created, date_updated);
 
-                        SET i = i + 1;
-                    END WHILE;
-            END IF;
-            SET cur_date = DATE_ADD(cur_date, INTERVAL 1 DAY);
-        END WHILE;
+
+        -- ####### 정산 데이터 계산 #######
+        -- 인정 출퇴근 시간 계산
+        IF i MOD 20 = 3 THEN
+        -- 시차근로제 회원
+          SET start_time = rounded_start_work;
+          SET end_time = ADDTIME(rounded_start_work, '09:00:00');
+        ELSE
+        -- 일반근로제 회원
+          SET start_time = start_work;
+          SET end_time = '18:00:00';
+
+        -- 인정 출근시간을 30분 단위로 설정
+          IF MINUTE(start_work) > 30 THEN
+            SET start_time = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00'); -- 다음 시간으로 설정
+          ELSEIF MINUTE(start_work) > 0 THEN
+            SET start_time = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '00:30:00'); -- 해당 시간의 30분으로 설정
+          ELSE
+            SET start_time = MAKETIME(HOUR(start_work), 0, 0); -- 해당 시간으로 설정
+          END IF;
+        END IF;
+
+
+        -- 소정 근무시간 계산
+        SET working_time = TIMEDIFF(end_time, start_time);
+        SET working_time = SUBTIME(working_time, '01:00:00'); -- 1시간 휴식 제외
+        IF TIME_TO_SEC(working_time) > (8 * 3600) THEN
+          SET working_time = '08:00:00'; -- 8시간 이상일 경우 8시간으로 지정
+        END IF;
+
+        -- 초과 근무 시간 계산
+        IF i MOD 20 = 3 THEN
+        -- 시차근로제 회원
+          SET overtime = TIMEDIFF(leave_work, ADDTIME(rounded_start_work, '09:00:00'));
+          SET overtime = SEC_TO_TIME(FLOOR(TIME_TO_SEC(overtime) / 1800) * 1800); -- 30분 단위 반내림
+        ELSE
+        -- 일반근로제 회원
+          SET overtime = TIMEDIFF(leave_work, '18:00:00');
+          SET overtime = SEC_TO_TIME(FLOOR(TIME_TO_SEC(overtime) / 1800) * 1800); -- 30분 단위 반내림
+        END IF;
+
+
+        -- 근무그룹 기록 ID 계산
+        IF i MOD 20 = 3 THEN
+        -- 시차근로제 회원
+          SET work_group_record_id = (i - 3) / 10 + 2;
+        ELSE
+        -- 일반근로제 회원
+          SET work_group_record_id = ((i - 4) DIV 20) * 2 + 1;
+        END IF;
+
+        -- 정산 테이블에 레코드 추가
+        INSERT INTO `settlement` (`user_id`, `date`, `start_time`, `end_time`, `working_time`, `overtime`, `day_type`, `date_created`, `date_updated`, `work_group_record_id`)
+        VALUES (i, cur_date, start_time, end_time, working_time, overtime, '근무', DATE_ADD(date_created, INTERVAL 1 DAY), DATE_ADD(date_created, INTERVAL 1 DAY), work_group_record_id);
+
+        SET i = i + 1;
+      END WHILE;
+    END IF;
+    SET cur_date = DATE_ADD(cur_date, INTERVAL 1 DAY);
+  END WHILE;
 END;
 //
 DELIMITER ;
 
-CALL CreateTimeRecords();
+CALL CreateTimeRecordsAndSettlements();
