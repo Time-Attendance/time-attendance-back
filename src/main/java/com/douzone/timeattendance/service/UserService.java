@@ -75,8 +75,19 @@ public class UserService {
         User user = userMapper.findByUserId(authInfo.getUserId())
                               .orElseThrow(NoSuchUserException::new);
 
+        //회사 검색
+        Company company = companyMapper.findByCompanyId(user.getCompanyId())
+                                       .orElseGet(Company::new);
+
         //로그인 사용자 정보 객체 생성
-        return LoginUserResponse.from(user);
+        return LoginUserResponse.builder()
+                                .email(user.getEmail())
+                                .name(user.getName())
+                                .userId(user.getUserId())
+                                .role(user.getRole())
+                                .companyId(company.getCompanyId())
+                                .companyLogoUrl(company.getLogoUrl())
+                                .build();
     }
 
     @Transactional(readOnly = true)

@@ -10,6 +10,8 @@ public interface CompanyMapper {
 
     void insert(Company company);
 
+    Optional<Company> findByCompanyId(Long companyId);
+
     Optional<Company> findByCode(String code);
 
     List<Company> findAll();

@@ -50,4 +50,11 @@
         WHERE is_deleted = false
     </select>
 
+    <select id="findByCompanyId" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE company_id = #{companyId}
+          AND is_deleted = false
+    </select>
+
 </mapper>
