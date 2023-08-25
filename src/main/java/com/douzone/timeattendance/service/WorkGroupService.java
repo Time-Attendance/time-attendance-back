@@ -2,10 +2,10 @@ package com.douzone.timeattendance.service;
 
 import com.douzone.timeattendance.domain.WorkGroup;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
-import com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto;
 import com.douzone.timeattendance.mapper.WorkGroupMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,11 +32,15 @@ public class WorkGroupService {
         return workGroupMapper.findLatestId();
     }
 
-    public List<WorkGroupResponseDto> findAllWorkGroupResponseDto() {
-        return workGroupMapper.findAllWorkGroupResponseDto();
+    public List<WorkGroupResponseDto> findAllWorkGroupResponseDto(Long companyId) {
+        return workGroupMapper.findAllWorkGroupResponseDto(companyId);
     }
 
-    public  List<WorkGroupSimpleDto> getWorkGroupSimpleInfo() {
-        return workGroupMapper.getWorkGroupSimpleInfo();
+    public void updateDistribution(LocalDateTime date, List<Long> userIds, Long workGroupId) {
+        workGroupMapper.updateDistribution(date, userIds, workGroupId);
+    }
+
+    public void updateUserDistribution(List<Long> userIds, Long workGroupId) {
+        workGroupMapper.updateUserDistribution(userIds, workGroupId);
     }
 }

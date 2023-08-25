@@ -17,6 +17,7 @@ public class UserResponse {
     private String dept;
     private String position;
     private String role;
+    private Boolean distribution;
     private Long companyId;
 
     public UserResponse(User user) {
@@ -30,6 +31,7 @@ public class UserResponse {
         this.dept = user.getDept();
         this.position = user.getPosition();
         this.role = user.getRole();
+        this.distribution = user.getDistribution();
         this.companyId = user.getCompanyId();
     }
 }

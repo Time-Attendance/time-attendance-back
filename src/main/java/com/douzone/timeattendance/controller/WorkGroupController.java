@@ -5,24 +5,21 @@ import com.douzone.timeattendance.domain.WorkDayType;
 import com.douzone.timeattendance.domain.WorkGroup;
 import com.douzone.timeattendance.dto.timerange.TimeRangeRequestDto;
 import com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto;
+import com.douzone.timeattendance.dto.workgroup.DistributionRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
-import com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto;
 import com.douzone.timeattendance.service.TimeRangeService;
 import com.douzone.timeattendance.service.UserService;
 import com.douzone.timeattendance.service.WorkDayTypeService;
 import com.douzone.timeattendance.service.WorkGroupService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.time.*;
-import java.util.List;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @RestController
 public class WorkGroupController {
@@ -39,13 +36,8 @@ public class WorkGroupController {
     }
 
     @GetMapping("/api/workgroups")
-    public List<WorkGroupResponseDto> getWorkGroupResponseDtoList() {
-        return workGroupService.findAllWorkGroupResponseDto();
-    }
-
-    @GetMapping("/api/workgroups-simple")
-    public List<WorkGroupSimpleDto> getWorkGroupSimpleInfo() {
-        return workGroupService.getWorkGroupSimpleInfo();
+    public List<WorkGroupResponseDto> getWorkGroupResponseDtoList(@RequestParam(value = "companyId", required = true) Long companyId) {
+        return workGroupService.findAllWorkGroupResponseDto(companyId);
     }
 
     @PostMapping("/api/workgroups")
@@ -53,6 +45,7 @@ public class WorkGroupController {
         WorkGroup workGroup = new WorkGroup();
         workGroup.setName(workGroupRequestDto.getName());
         workGroup.setType(workGroupRequestDto.getType());
+        workGroup.setCompanyId(workGroupRequestDto.getCompanyId());
 
         Date date = new Date(System.currentTimeMillis());
         java.util.Date utilDate = new java.util.Date(date.getTime());
@@ -80,4 +73,27 @@ public class WorkGroupController {
 
         return "All inserted!";
     }
+
+    @PostMapping("/api/workgroups/distribution")
+    public String updateDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
+        if (distributionRequestDto.getWorkGroupId() == null) {
+            distributionRequestDto.setWorkGroupId(0L);
+        }
+        Date currentDate = new Date(System.currentTimeMillis());
+        java.util.Date utilDate = new java.util.Date(currentDate.getTime());
+        Instant instant = utilDate.toInstant();
+        LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        distributionRequestDto.setDate(localDateTime);
+
+        workGroupService.updateDistribution(distributionRequestDto.getDate(), distributionRequestDto.getUserIds(), distributionRequestDto.getWorkGroupId());
+        workGroupService.updateUserDistribution(distributionRequestDto.getUserIds(), distributionRequestDto.getWorkGroupId());
+
+        return "Updated!";
+    }
+
+//    @DeleteMapping("/api/workgroups/${workGroupId}")
+//    public String deleteWorkgroup() {
+//
+//    }
 }

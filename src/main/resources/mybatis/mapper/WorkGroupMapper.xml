@@ -14,11 +14,11 @@
         SELECT MAX(work_group_id) FROM Work_group;
     </select>
     <insert id="insertWorkGroup" parameterType="WorkGroup">
-        INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on)
-        VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn})
+        INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on, company_id)
+        VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn}, #{companyId})
     </insert>
 
-    <select id="findAllWorkGroupResponseDto" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
+    <select id="findAllWorkGroupResponseDto" parameterType="Long" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
         SELECT wg.work_group_id AS id,
                wg.name,
                wg.type,
@@ -55,15 +55,30 @@
               FROM
                   time_range
               GROUP BY work_group_id) tr ON wg.work_group_id = tr.work_group_id
+        WHERE wg.company_id = #{companyId};
     </select>
-
-    <select id="getWorkGroupSimpleInfo" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupSimpleDto">
-        SELECT work_group_id                              AS id,
-               name,
-               type,
-               (SELECT COUNT(*)
-                FROM user u
-                WHERE u.work_group_id = wg.work_group_id) AS numOfMembers
-        FROM Work_group wg;
-    </select>
+    <update id="updateDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        UPDATE Distribution
+        SET work_group_id = #{workGroupId}, date = #{date}
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
+    <update id="updateUserDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        UPDATE User
+        SET distribution =
+        <choose>
+            <when test="workGroupId != 0">
+                true
+            </when>
+            <otherwise>
+                false
+            </otherwise>
+        </choose>
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
 </mapper>

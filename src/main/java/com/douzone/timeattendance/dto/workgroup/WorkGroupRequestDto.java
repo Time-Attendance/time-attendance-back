@@ -12,10 +12,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class WorkGroupRequestDto {
+    private Long id;
     private String name;
     private String type;
     private WorkDayTypeRequestDto workDayType;
     private List<String> timeRangeType;
     private List<LocalTime> start;
     private List<LocalTime> end;
+    private Long companyId;
 }
