@@ -5,6 +5,7 @@ import com.douzone.timeattendance.dto.settlement.SettlementFindRequest;
 import com.douzone.timeattendance.dto.settlement.SettlementResponse;
 import com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest;
 import com.douzone.timeattendance.service.SettlementService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/settlements")
+@RequiredArgsConstructor
 public class SettlementController {
 
     private final SettlementService settlementService;
-
-    @Autowired
-    public SettlementController(SettlementService settlementService) {
-        this.settlementService = settlementService;
-    }
 
     @GetMapping
     public ResponseEntity<List<SettlementResponse>> findAll(@ModelAttribute @Valid SettlementFindRequest settlementFindRequest) {
