@@ -9,6 +9,7 @@
         SELECT st.settlement_id AS settlementId,
                st.date AS date,
                u.user_id AS userId,
+               u.user_code AS userCode,
                u.name AS name,
                u.dept AS dept,
                u.position AS position,
@@ -43,13 +44,16 @@
 
     <!--정산 회원 수정-->
     <update id="updateSettlement" parameterType="com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest">
-        UPDATE settlement
+        UPDATE settlement AS s
+        JOIN time_record AS tr ON s.user_id = tr.user_id AND s.date = tr.date
         SET
-            start_time = #{startTime},
-            end_time = #{endTime},
-            working_time = #{workingTime},
-            work_state = #{workState}
-        WHERE settlement_id = #{settlementId};
+            s.start_time = #{startTime},
+            s.end_time = #{endTime},
+            s.working_time = #{workingTime},
+            s.overtime = #{overtime},
+            tr.work_state = #{workState},
+            s.date_updated = now()
+        WHERE s.settlement_id = #{settlementId};
     </update>
 
 

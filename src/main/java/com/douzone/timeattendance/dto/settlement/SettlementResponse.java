@@ -12,7 +12,8 @@ public class SettlementResponse {
 
     private Long settlementId;
     private LocalDate date;     //근무일자
-    private Long userId;        //사원번호
+    private Long userId;        //사원고유아이디
+    private String userCode;    //사원번호
     private String name;        //이름(User)
     private String dept;        //부서(User)
     private String position;    //직급(User)
