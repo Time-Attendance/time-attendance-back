@@ -102,8 +102,10 @@ public class WorkGroupController {
             timeRange.setWorkGroupId(workgroupId);
             timeRangeService.insertTimeRange(timeRange);
         }
-
         //2. DB에 있으면 수정 또는 삭제하고, 없으면 생성(복잡함. 업데이트 개념임)
+
+
+        //TODO: 근무그룹 이력 테이블에 insert
 
         return ResponseEntity.ok()
                              .build();
