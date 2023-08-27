@@ -10,4 +10,16 @@
         INSERT INTO Time_range(type, start, end, work_group_id)
         VALUES (#{type}, #{start}, #{end}, #{workGroupId})
     </insert>
+    <update id="updateTimeRange">
+        UPDATE Time_range
+        SET
+            start = #{start},
+            end = #{end}
+        WHERE work_group_id = #{workGroupId}
+          AND type = #{type}
+    </update>
+    <delete id="deleteTimeRangeByWorkGroupId">
+        DELETE FROM Time_range
+        WHERE work_group_id = #{workGroupId}
+    </delete>
 </mapper>

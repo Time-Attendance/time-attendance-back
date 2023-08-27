@@ -18,6 +18,21 @@
         VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn}, #{companyId})
     </insert>
 
+    <update id="updateWorkGroup">
+        UPDATE work_group
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            date_updated = #{dateUpdated}
+        </set>
+        WHERE work_group_id = #{workGroupId}
+    </update>
+
+
     <select id="findAllWorkGroupResponseDto" parameterType="Long" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
         SELECT wg.work_group_id AS id,
                wg.name,

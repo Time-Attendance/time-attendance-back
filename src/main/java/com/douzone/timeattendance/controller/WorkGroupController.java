@@ -77,6 +77,38 @@ public class WorkGroupController {
         return "All inserted!";
     }
 
+    @PutMapping("/api/workgroups/{workgroupId}")
+    public ResponseEntity<Void> updateWorkGroup(
+            @PathVariable Long workgroupId,
+            @RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
+        WorkGroup workGroup = new WorkGroup();
+        workGroup.setWorkGroupId(workgroupId);
+        workGroup.setName(workGroupRequestDto.getName());
+        workGroup.setType(workGroupRequestDto.getType());
+        workGroup.setDateUpdated(LocalDateTime.now());
+        workGroupService.updateWorkGroup(workGroup);
+
+        WorkDayTypeRequestDto workDayTypeRequestDto = workGroupRequestDto.getWorkDayType();
+        WorkDayType workDayType = new WorkDayType(workDayTypeRequestDto);
+        workDayType.setWorkGroupId(workgroupId);
+        workDayTypeService.updateWorkDayType(workDayType);
+
+        //TODO: 시간범위 업데이트 방법들
+        //1. DB에 저장된 거 다 지우고 수정 요청한 값으로 DB에 새로 저장(간단함. 하지만 업데이트 개념은 아님)
+        timeRangeService.deleteTimeRangeByWorkGroupId(workgroupId);
+        for (int i = 0; i < workGroupRequestDto.getTimeRangeType().toArray().length; i++) {
+            TimeRangeRequestDto timeRangeRequestDto = new TimeRangeRequestDto((String) workGroupRequestDto.getTimeRangeType().toArray()[i], (LocalTime) workGroupRequestDto.getStart().toArray()[i], (LocalTime) workGroupRequestDto.getEnd().toArray()[i]);
+            TimeRange timeRange = new TimeRange(timeRangeRequestDto);
+            timeRange.setWorkGroupId(workgroupId);
+            timeRangeService.insertTimeRange(timeRange);
+        }
+
+        //2. DB에 있으면 수정 또는 삭제하고, 없으면 생성(복잡함. 업데이트 개념임)
+
+        return ResponseEntity.ok()
+                             .build();
+    }
+
     @PostMapping("/api/workgroups/distribution")
     public String updateDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
         if (distributionRequestDto.getWorkGroupId() == null) {

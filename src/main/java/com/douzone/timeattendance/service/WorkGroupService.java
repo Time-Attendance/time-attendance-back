@@ -24,6 +24,10 @@ public class WorkGroupService {
         workGroupMapper.insertWorkGroup(workGroup);
     }
 
+    public void updateWorkGroup(WorkGroup workGroup) {
+        workGroupMapper.updateWorkGroup(workGroup);
+    }
+
     public WorkGroup findByWorkGroupName(String name) {
         return workGroupMapper.findByWorkGroupName(name);
     }

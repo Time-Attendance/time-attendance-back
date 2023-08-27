@@ -13,6 +13,8 @@ public interface WorkGroupMapper {
 
     void insertWorkGroup(WorkGroup workGroup);
 
+    void updateWorkGroup(WorkGroup workGroup);
+
     WorkGroup findByWorkGroupName(String name);
 
     Long findLatestId();
