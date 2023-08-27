@@ -12,6 +12,8 @@ import com.douzone.timeattendance.service.TimeRangeService;
 import com.douzone.timeattendance.service.UserService;
 import com.douzone.timeattendance.service.WorkDayTypeService;
 import com.douzone.timeattendance.service.WorkGroupService;
+import javax.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -40,8 +42,9 @@ public class WorkGroupController {
         return workGroupService.findAllWorkGroupResponseDto(companyId);
     }
 
+    //@Valid 어노테이션과 WorkGroupRequestDto 객체의 필드에 @NotNull과 같은 어노테이션을 적용하면 유효성 검증 가능합니다.
     @PostMapping("/api/workgroups")
-    public String newGroup(@RequestBody WorkGroupRequestDto workGroupRequestDto) {
+    public String newGroup(@RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
         WorkGroup workGroup = new WorkGroup();
         workGroup.setName(workGroupRequestDto.getName());
         workGroup.setType(workGroupRequestDto.getType());
