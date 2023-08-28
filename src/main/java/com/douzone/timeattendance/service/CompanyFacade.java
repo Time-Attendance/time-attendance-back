@@ -4,12 +4,16 @@ import com.douzone.timeattendance.domain.Company;
 import com.douzone.timeattendance.domain.TimeRange;
 import com.douzone.timeattendance.domain.WorkDayType;
 import com.douzone.timeattendance.domain.WorkGroup;
+import com.douzone.timeattendance.dto.company.CompanyCodeUpdateResponse;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
+import com.douzone.timeattendance.dto.company.CompanyUpdateDto;
+import com.douzone.timeattendance.exception.company.NoSuchCompanyException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +41,20 @@ public class CompanyFacade {
         for (TimeRange timeRange : createDefaultTimeRangeList(workGroup.getWorkGroupId())) {
             timeRangeService.insertTimeRange(timeRange);
         }
+    }
+
+    public CompanyCodeUpdateResponse updateCompanyCode(Long companyId) {
+        companyService.findByCompanyId(companyId)
+                      .orElseThrow(NoSuchCompanyException::new);
+
+        String code = UUID.randomUUID().toString();
+        CompanyUpdateDto updateParam = CompanyUpdateDto.builder()
+                                                       .code(code)
+                                                       .build();
+        companyService.update(companyId, updateParam);
+
+        //TODO: 정적 팩토리 메서드로 통일
+        return new CompanyCodeUpdateResponse(code);
     }
 
     private WorkGroup createDefaultWorkGroup(Long companyId) {

@@ -3,6 +3,7 @@ package com.douzone.timeattendance.service;
 import com.douzone.timeattendance.domain.Company;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
+import com.douzone.timeattendance.dto.company.CompanyUpdateDto;
 import com.douzone.timeattendance.exception.FileUploadException;
 import com.douzone.timeattendance.exception.company.AlreadyExistsCompanyNameException;
 import com.douzone.timeattendance.global.util.FileUtil;
@@ -10,6 +11,7 @@ import com.douzone.timeattendance.mapper.CompanyMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +53,21 @@ public class CompanyService {
         return company;
     }
 
+    public void update(Long companyId, CompanyUpdateDto updateParam) {
+        companyMapper.update(companyId, updateParam);
+    }
+
     @Transactional(readOnly = true)
     public List<CompanyResponse> findAll() {
         return companyMapper.findAll()
                             .stream()
                             .map(CompanyResponse::new)
                             .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Company> findByCompanyId(Long companyId) {
+        return companyMapper.findByCompanyId(companyId);
     }
 
     @Transactional(readOnly = true)
