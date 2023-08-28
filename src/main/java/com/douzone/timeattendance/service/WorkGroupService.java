@@ -20,8 +20,9 @@ public class WorkGroupService {
         return workGroupMapper.findAllWorkGroups();
     }
 
-    public void insertWorkGroup(WorkGroup workGroup) {
+    public WorkGroup insertWorkGroup(WorkGroup workGroup) {
         workGroupMapper.insertWorkGroup(workGroup);
+        return workGroup;
     }
 
     public WorkGroup findByWorkGroupName(String name) {
