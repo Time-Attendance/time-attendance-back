@@ -1,7 +1,10 @@
 package com.douzone.timeattendance.global.util;
 
+import com.douzone.timeattendance.exception.FileUploadException;
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtil {
 
@@ -17,6 +20,24 @@ public class FileUtil {
             "main" + File.separator +
             "resources" + File.separator +
             "upload" + File.separator;
+
+    public static String saveFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
+        String storeFilename = FileUtil.createStoreFilename(file.getOriginalFilename());
+        String fullPath = FileUtil.UPLOAD_PATH + storeFilename;
+
+        try {
+            //파일 저장
+            file.transferTo(new File(fullPath));
+        } catch (IOException e) {
+            throw new FileUploadException();
+        }
+
+        return storeFilename;
+    }
 
     public static String createStoreFilename(String originalFilename) {
         String ext = extractExt(originalFilename);

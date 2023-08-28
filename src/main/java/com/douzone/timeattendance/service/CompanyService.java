@@ -4,12 +4,9 @@ import com.douzone.timeattendance.domain.Company;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
 import com.douzone.timeattendance.dto.company.CompanyUpdateDto;
-import com.douzone.timeattendance.exception.FileUploadException;
 import com.douzone.timeattendance.exception.company.AlreadyExistsCompanyNameException;
 import com.douzone.timeattendance.global.util.FileUtil;
 import com.douzone.timeattendance.mapper.CompanyMapper;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,16 +28,7 @@ public class CompanyService {
         validateCompanyName(companyCreateRequest.getName());
 
         //파일저장
-        String storeFilename = "";
-        try {
-            if (file != null && !file.isEmpty()) {
-                storeFilename = FileUtil.createStoreFilename(file.getOriginalFilename());
-                String fullPath = FileUtil.UPLOAD_PATH + storeFilename;
-                file.transferTo(new File(fullPath));
-            }
-        } catch (IOException e) {
-            throw new FileUploadException();
-        }
+        String storeFilename = FileUtil.saveFile(file);
 
         //새 회사 생성
         Company company = new Company(
