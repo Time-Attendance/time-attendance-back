@@ -10,4 +10,15 @@
         INSERT INTO Work_day_type(mon, tue, wed, thu, fri, sat, sun, work_group_id)
         VALUES (#{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
     </insert>
+    <update id="updateWorkDayType">
+        UPDATE Work_day_type
+        SET mon = #{mon},
+            tue = #{tue},
+            wed = #{wed},
+            thu = #{thu},
+            fri = #{fri},
+            sat = #{sat},
+            sun = #{sun}
+        WHERE work_group_id = #{workGroupId}
+    </update>
 </mapper>

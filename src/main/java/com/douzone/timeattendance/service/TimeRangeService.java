@@ -21,4 +21,8 @@ public class TimeRangeService {
     public void insertTimeRange(TimeRange timeRange) {
         timeRangeMapper.insertTimeRange(timeRange);
     }
+
+    public void deleteTimeRangeByWorkGroupId(Long workGroupId) {
+        timeRangeMapper.deleteTimeRangeByWorkGroupId(workGroupId);
+    }
 }

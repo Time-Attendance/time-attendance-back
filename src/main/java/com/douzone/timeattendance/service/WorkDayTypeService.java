@@ -19,4 +19,8 @@ public class WorkDayTypeService {
     public void insertWorkDayType(WorkDayType workDayType) {
         workDayTypeMapper.insertWorkDayType(workDayType);
     }
+
+    public void updateWorkDayType(WorkDayType workDayType) {
+        workDayTypeMapper.updateWorkDayType(workDayType);
+    }
 }
