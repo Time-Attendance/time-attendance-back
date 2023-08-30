@@ -43,4 +43,16 @@ public class WorkGroupService {
     public void updateUserDistribution(List<Long> userIds, Long workGroupId) {
         workGroupMapper.updateUserDistribution(userIds, workGroupId);
     }
+
+    public void deleteWorkgroup(Long workGroupId) {
+        workGroupMapper.deleteWorkgroup(workGroupId);
+    }
+
+    public void deleteDistribution(List<Long> userIds) {
+        workGroupMapper.deleteDistribution(userIds);
+    }
+
+    public void updateWorkGroup(WorkGroup workGroup) {
+        workGroupMapper.updateWorkGroup(workGroup);
+    }
 }

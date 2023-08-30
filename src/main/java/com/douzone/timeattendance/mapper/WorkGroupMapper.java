@@ -13,6 +13,7 @@ public interface WorkGroupMapper {
 
     void insertWorkGroup(WorkGroup workGroup);
 
+    void updateWorkGroup(WorkGroup workGroup);
     WorkGroup findByWorkGroupName(String name);
 
     Long findLatestId();
@@ -21,4 +22,8 @@ public interface WorkGroupMapper {
 
     void updateDistribution(LocalDateTime date, List<Long> userIds, Long workGroupId);
     void updateUserDistribution(List<Long> userIds, Long workGroupId);
+
+    void deleteWorkgroup(Long workGroupId);
+
+    void deleteDistribution(List<Long> userIds);
 }
