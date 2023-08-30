@@ -38,6 +38,9 @@
             <if test="updateParam.logoUrl != null and updateParam.logoUrl != ''">
                 logo_url = #{updateParam.logoUrl},
             </if>
+            <if test="updateParam.logoUrl == null">
+                logo_url = null,
+            </if>
             date_updated = #{updateParam.dateUpdated},
         </set>
         WHERE company_id = #{companyId}

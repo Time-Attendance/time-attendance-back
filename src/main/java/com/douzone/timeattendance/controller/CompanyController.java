@@ -3,6 +3,7 @@ package com.douzone.timeattendance.controller;
 import com.douzone.timeattendance.dto.company.CompanyCodeUpdateResponse;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
+import com.douzone.timeattendance.dto.company.CompanyUpdateRequest;
 import com.douzone.timeattendance.service.CompanyFacade;
 import java.util.List;
 import javax.validation.Valid;
@@ -30,7 +31,7 @@ public class CompanyController {
     private final CompanyFacade companyFacade;
 
     //TODO: 관리자만 허용
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> create(
             @RequestPart(required = false) MultipartFile file,
             @RequestPart @Valid CompanyCreateRequest companyCreateRequest) {
@@ -50,5 +51,19 @@ public class CompanyController {
     public ResponseEntity<CompanyCodeUpdateResponse> updateCode(@PathVariable Long companyId) {
         return ResponseEntity.ok()
                              .body(companyFacade.updateCompanyCode(companyId));
+    }
+
+    @PatchMapping(value = "/{companyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> update(
+            @PathVariable Long companyId,
+            @RequestPart(required = false) MultipartFile file,
+            @RequestPart CompanyUpdateRequest companyUpdateRequest) {
+        //파일이 있으면 CompanyUpdateRequest 객체에 설정
+        if (file != null) {
+            companyUpdateRequest.setFile(file);
+        }
+        companyFacade.updateCompany(companyId, companyUpdateRequest);
+        return ResponseEntity.ok()
+                             .build();
     }
 }

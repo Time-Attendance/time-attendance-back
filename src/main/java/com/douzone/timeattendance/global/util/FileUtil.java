@@ -23,7 +23,7 @@ public class FileUtil {
 
     public static String saveFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            return null;
+            return "";
         }
 
         String storeFilename = FileUtil.createStoreFilename(file.getOriginalFilename());
@@ -39,6 +39,18 @@ public class FileUtil {
         return storeFilename;
     }
 
+    public static void removeFile(String filename) {
+        String fullPath = UPLOAD_PATH + filename;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            if (!file.delete()) {
+                throw new RuntimeException("Failed to delete file: " + fullPath);
+            }
+        } else {
+            throw new RuntimeException("Failed to delete file: " + fullPath);
+        }
+    }
+
     public static String createStoreFilename(String originalFilename) {
         String ext = extractExt(originalFilename);
         String uuid = UUID.randomUUID().toString();
@@ -49,5 +61,4 @@ public class FileUtil {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-
 }

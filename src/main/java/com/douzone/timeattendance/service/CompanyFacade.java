@@ -8,7 +8,9 @@ import com.douzone.timeattendance.dto.company.CompanyCodeUpdateResponse;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
 import com.douzone.timeattendance.dto.company.CompanyUpdateDto;
+import com.douzone.timeattendance.dto.company.CompanyUpdateRequest;
 import com.douzone.timeattendance.exception.company.NoSuchCompanyException;
+import com.douzone.timeattendance.global.util.FileUtil;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -55,6 +57,37 @@ public class CompanyFacade {
 
         //TODO: 정적 팩토리 메서드로 통일
         return new CompanyCodeUpdateResponse(code);
+    }
+
+    public void updateCompany(Long companyId, CompanyUpdateRequest companyUpdateRequest) {
+        Company foundCompany = companyService.findByCompanyId(companyId)
+                                        .orElseThrow(NoSuchCompanyException::new);
+
+        CompanyUpdateDto updateParam = new CompanyUpdateDto();
+        updateParam.setName(companyUpdateRequest.getName());
+
+        switch (companyUpdateRequest.getImageAction()) {
+            case DELETE:
+                // 이미지 파일 삭제 및 DB 업데이트
+                FileUtil.removeFile(foundCompany.getLogoUrl());
+                updateParam.setLogoUrl(null);
+                break;
+
+            case KEEP:
+                // 아무 작업도 수행하지 않음
+                break;
+
+            case UPDATE:
+                // 기존 이미지 파일 삭제
+                FileUtil.removeFile(foundCompany.getLogoUrl());
+
+                // 새 이미지 파일 저장 및 DB 업데이트
+                String storeFilename = FileUtil.saveFile(companyUpdateRequest.getFile());
+                updateParam.setLogoUrl(storeFilename);
+                break;
+        }
+
+        companyService.update(companyId, updateParam);
     }
 
     private WorkGroup createDefaultWorkGroup(Long companyId) {
