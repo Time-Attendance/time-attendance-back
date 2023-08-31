@@ -13,7 +13,7 @@
     <select id="findLatestId" resultType="Long">
         SELECT MAX(work_group_id) FROM Work_group;
     </select>
-    <insert id="insertWorkGroup" parameterType="WorkGroup">
+    <insert id="insertWorkGroup" parameterType="WorkGroup" useGeneratedKeys="true" keyProperty="workGroupId">
         INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on, company_id)
         VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn}, #{companyId})
     </insert>

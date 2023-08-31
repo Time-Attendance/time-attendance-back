@@ -24,7 +24,7 @@ public class CompanyService {
 
     private final CompanyMapper companyMapper;
 
-    public void createCompany(MultipartFile file, CompanyCreateRequest companyCreateRequest) {
+    public Company createCompany(MultipartFile file, CompanyCreateRequest companyCreateRequest) {
         //회사 이름 중복 검증
         validateCompanyName(companyCreateRequest.getName());
 
@@ -47,6 +47,8 @@ public class CompanyService {
                 storeFilename);
 
         companyMapper.insert(company);
+
+        return company;
     }
 
     @Transactional(readOnly = true)
