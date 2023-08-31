@@ -96,8 +96,8 @@
     </update>
     <delete id="deleteWorkgroup">
         delete
-        from holiday
-        where holiday_id = #{id}
+        from work_group
+        where work_group_id = #{workGroupId}
     </delete>
     <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
         delete
@@ -107,4 +107,8 @@
             #{userId}
         </foreach>
     </delete>
+    <insert id="insertDistribution">
+        INSERT INTO Distribution(date, user_id, work_group_id)
+        VALUES (#{date}, #{userId}, #{workGroupId})
+    </insert>
 </mapper>

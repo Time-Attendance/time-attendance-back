@@ -108,7 +108,7 @@ public class WorkGroupController {
                 .build();
     }
 
-    @PostMapping("/api/workgroups/distribution")
+    @PutMapping("/api/workgroups/distribution")
     public ResponseEntity<Void> updateDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
         Date currentDate = new Date(System.currentTimeMillis());
         java.util.Date utilDate = new java.util.Date(currentDate.getTime());
@@ -124,6 +124,28 @@ public class WorkGroupController {
                 .build();
     }
 
+    @PostMapping("/api/workgroups/distribution")
+    public ResponseEntity<Void> insertDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
+        Date currentDate = new Date(System.currentTimeMillis());
+        java.util.Date utilDate = new java.util.Date(currentDate.getTime());
+        Instant instant = utilDate.toInstant();
+        LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        distributionRequestDto.setDate(localDateTime);
+
+        List<Long> userIds = distributionRequestDto.getUserIds();
+
+        for (int i = 0; i < userIds.size(); i++) {
+            workGroupService.insertDistribution(distributionRequestDto.getDate(), userIds.get(i), distributionRequestDto.getWorkGroupId());
+        }
+
+        workGroupService.updateUserDistribution(distributionRequestDto.getUserIds(), distributionRequestDto.getWorkGroupId());
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    // JSON body
     @DeleteMapping("/api/workgroups/distribution/{userIds}")
     public ResponseEntity<Void> deleteDistribution(@PathVariable("userIds") List<Long> userIds) {
         workGroupService.deleteDistribution(userIds);
@@ -137,6 +159,8 @@ public class WorkGroupController {
     @DeleteMapping("/api/workgroups/{workGroupId}")
     public ResponseEntity<Void> deleteWorkgroup(@PathVariable("workGroupId") Long workGroupId) {
         workGroupService.deleteWorkgroup(workGroupId);
+        workDayTypeService.deleteWorkDayType(workGroupId);
+        timeRangeService.deleteTimeRangeByWorkGroupId(workGroupId);
 
         return ResponseEntity.ok()
                 .build();

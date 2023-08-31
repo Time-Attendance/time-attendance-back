@@ -21,4 +21,9 @@
             sun = #{sun}
         WHERE work_group_id = #{workGroupId}
     </update>
+    <delete id="deleteWorkDayType">
+        delete
+        from Work_day_type
+        where work_group_id = #{workGroupId}
+    </delete>
 </mapper>
