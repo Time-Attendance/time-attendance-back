@@ -55,4 +55,8 @@ public class WorkGroupService {
     public void updateWorkGroup(WorkGroup workGroup) {
         workGroupMapper.updateWorkGroup(workGroup);
     }
+
+    public void insertDistribution(LocalDateTime date, Long userId, Long workGroupId) {
+        workGroupMapper.insertDistribution(date, userId, workGroupId);
+    }
 }

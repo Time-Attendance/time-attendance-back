@@ -23,4 +23,8 @@ public class WorkDayTypeService {
     public void updateWorkDayType(WorkDayType workDayType) {
         workDayTypeMapper.updateWorkDayType(workDayType);
     }
+
+    public void deleteWorkDayType(Long workGroupId) {
+        workDayTypeMapper.deleteWorkDayType(workGroupId);
+    }
 }

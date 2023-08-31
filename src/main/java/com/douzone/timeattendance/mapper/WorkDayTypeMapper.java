@@ -9,4 +9,6 @@ public interface WorkDayTypeMapper {
 
     void insertWorkDayType(WorkDayType workDayType);
     void updateWorkDayType(WorkDayType workDayType);
+
+    void deleteWorkDayType(Long workGroupId);
 }
