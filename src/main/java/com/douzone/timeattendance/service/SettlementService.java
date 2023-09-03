@@ -1,5 +1,6 @@
 package com.douzone.timeattendance.service;
 
+import com.douzone.timeattendance.domain.Settlement;
 import com.douzone.timeattendance.dto.settlement.SettlementFindRequest;
 import com.douzone.timeattendance.dto.settlement.SettlementResponse;
 import com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest;
@@ -17,6 +18,10 @@ public class SettlementService {
 
     private final SettlementMapper settlementMapper;
 
+    public void insert(Settlement settlement) {
+        settlementMapper.insertSettlement(settlement);
+    }
+
     @Transactional(readOnly = true)
     public List<SettlementResponse> findAll(SettlementFindRequest settlementFindRequest){
         return settlementMapper.findAll(settlementFindRequest);
@@ -25,8 +30,6 @@ public class SettlementService {
     public void update(SettlementUpdateRequest settlementUpdateRequest){
         settlementMapper.updateSettlement(settlementUpdateRequest);
     }
-
-
 
 
 }
