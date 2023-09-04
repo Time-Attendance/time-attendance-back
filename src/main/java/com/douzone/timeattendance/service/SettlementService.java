@@ -1,5 +1,6 @@
 package com.douzone.timeattendance.service;
 
+import com.douzone.timeattendance.domain.Settlement;
 import com.douzone.timeattendance.dto.settlement.*;
 import com.douzone.timeattendance.mapper.SettlementMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,10 @@ import java.util.List;
 public class SettlementService {
 
     private final SettlementMapper settlementMapper;
+
+    public void insert(Settlement settlement) {
+        settlementMapper.insertSettlement(settlement);
+    }
 
     @Transactional(readOnly = true)
     public List<SettlementResponse> findAll(SettlementFindRequest settlementFindRequest){

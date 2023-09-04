@@ -13,10 +13,23 @@
     <select id="findLatestId" resultType="Long">
         SELECT MAX(work_group_id) FROM Work_group;
     </select>
-    <insert id="insertWorkGroup" parameterType="WorkGroup">
+    <insert id="insertWorkGroup" parameterType="WorkGroup" useGeneratedKeys="true" keyProperty="workGroupId">
         INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on, company_id)
         VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn}, #{companyId})
     </insert>
+    <update id="updateWorkGroup">
+        UPDATE work_group
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            date_updated = #{dateUpdated}
+        </set>
+        WHERE work_group_id = #{workGroupId}
+    </update>
 
     <select id="findAllWorkGroupResponseDto" parameterType="Long" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
         SELECT wg.work_group_id AS id,
@@ -55,7 +68,7 @@
               FROM
                   time_range
               GROUP BY work_group_id) tr ON wg.work_group_id = tr.work_group_id
-        WHERE wg.company_id = #{companyId};
+        WHERE wg.company_id = #{companyId} AND wg.is_deleted = false;
     </select>
     <update id="updateDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
         UPDATE Distribution
@@ -81,4 +94,21 @@
             #{userId}
         </foreach>
     </update>
+    <delete id="deleteWorkgroup">
+        delete
+        from work_group
+        where work_group_id = #{workGroupId}
+    </delete>
+    <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        delete
+        from Distribution
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <insert id="insertDistribution">
+        INSERT INTO Distribution(date, user_id, work_group_id)
+        VALUES (#{date}, #{userId}, #{workGroupId})
+    </insert>
 </mapper>

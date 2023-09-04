@@ -20,8 +20,9 @@ public class WorkGroupService {
         return workGroupMapper.findAllWorkGroups();
     }
 
-    public void insertWorkGroup(WorkGroup workGroup) {
+    public WorkGroup insertWorkGroup(WorkGroup workGroup) {
         workGroupMapper.insertWorkGroup(workGroup);
+        return workGroup;
     }
 
     public WorkGroup findByWorkGroupName(String name) {
@@ -42,5 +43,21 @@ public class WorkGroupService {
 
     public void updateUserDistribution(List<Long> userIds, Long workGroupId) {
         workGroupMapper.updateUserDistribution(userIds, workGroupId);
+    }
+
+    public void deleteWorkgroup(Long workGroupId) {
+        workGroupMapper.deleteWorkgroup(workGroupId);
+    }
+
+    public void deleteDistribution(List<Long> userIds) {
+        workGroupMapper.deleteDistribution(userIds);
+    }
+
+    public void updateWorkGroup(WorkGroup workGroup) {
+        workGroupMapper.updateWorkGroup(workGroup);
+    }
+
+    public void insertDistribution(LocalDateTime date, Long userId, Long workGroupId) {
+        workGroupMapper.insertDistribution(date, userId, workGroupId);
     }
 }

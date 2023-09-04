@@ -26,6 +26,26 @@
             false)
     </insert>
 
+    <update id="update">
+        UPDATE company
+        <set>
+            <if test="updateParam.name != null and updateParam.name != ''">
+                name = #{updateParam.name},
+            </if>
+            <if test="updateParam.code != null and updateParam.code != ''">
+                code = #{updateParam.code},
+            </if>
+            <if test="updateParam.logoUrl != null and updateParam.logoUrl != ''">
+                logo_url = #{updateParam.logoUrl},
+            </if>
+            <if test="updateParam.logoUrl == null">
+                logo_url = null,
+            </if>
+            date_updated = #{updateParam.dateUpdated},
+        </set>
+        WHERE company_id = #{companyId}
+    </update>
+
     <select id="findByCode" resultType="Company">
         select *
         from company

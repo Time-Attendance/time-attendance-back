@@ -10,4 +10,8 @@ public interface TimeRangeMapper {
     List<TimeRange> findByWorkGroupId(Long workGroupId);
 
     void insertTimeRange(TimeRange timeRange);
+
+    void updateTimeRange(TimeRange timeRange);
+
+    void deleteTimeRangeByWorkGroupId(Long workGroupId);
 }
