@@ -47,6 +47,12 @@ public class CompanyController {
                              .body(companyFacade.findAll());
     }
 
+    @GetMapping("/{companyId}")
+    public ResponseEntity<CompanyResponse> findByCompanyId(@PathVariable Long companyId) {
+        return ResponseEntity.ok()
+                             .body(companyFacade.findByCompanyId(companyId));
+    }
+
     @PatchMapping("/{companyId}/code")
     public ResponseEntity<CompanyCodeUpdateResponse> updateCode(@PathVariable Long companyId) {
         return ResponseEntity.ok()

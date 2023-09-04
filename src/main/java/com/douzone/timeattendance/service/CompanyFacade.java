@@ -36,6 +36,13 @@ public class CompanyFacade {
         return companyService.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public CompanyResponse findByCompanyId(Long companyId) {
+        return companyService.findByCompanyId(companyId)
+                             .map(CompanyResponse::new)
+                             .orElseThrow(NoSuchCompanyException::new);
+    }
+
     public void createCompany(MultipartFile file, CompanyCreateRequest companyCreateRequest) {
         Company company = companyService.createCompany(file, companyCreateRequest);
         WorkGroup workGroup = workGroupService.insertWorkGroup(createDefaultWorkGroup(company.getCompanyId()));
