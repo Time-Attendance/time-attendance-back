@@ -4,8 +4,10 @@ import com.douzone.timeattendance.exception.FileUploadException;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 public class FileUtil {
 
     public static final String UPLOAD_PATH = System.getProperty("user.dir") + File.separator +
@@ -44,10 +46,10 @@ public class FileUtil {
         File file = new File(fullPath);
         if (file.exists()) {
             if (!file.delete()) {
-                throw new RuntimeException("Failed to delete file: " + fullPath);
+                log.info("파일 삭제에 실패했습니다. 파일경로: {}", fullPath);
             }
         } else {
-            throw new RuntimeException("Failed to delete file: " + fullPath);
+            log.info("해당 파일이 존재하지 않습니다. 파일경로: {}", fullPath);
         }
     }
 
