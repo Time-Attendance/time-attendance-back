@@ -22,7 +22,7 @@
                wgr.start AS start,
                wgr.end AS end,
                st.working_time AS workingTime,
-               st.overtime AS overtime,
+               st.over_time AS overTime,
                tr.work_state AS workState,
                st.day_type AS dayType,
                wgr.work_group_record_id AS workGroupRecordId
@@ -38,7 +38,7 @@
 
     <!--정산 스케줄러 실행-->
     <insert id="insertSettlement" useGeneratedKeys="true" keyProperty="settlementId">
-        INSERT INTO settlement(user_id, date, start_time, end_time, working_time, overtime, day_type, date_created, date_updated, work_group_record_id)
+        INSERT INTO settlement(user_id, date, start_time, end_time, working_time, over_time, day_type, date_created, date_updated, work_group_record_id)
         VALUES(#{userId}, #{date}, #{startTime}, #{endTime}, #{workingTime}, #{overTime}, #{dayType}, #{dateCreated}, #{dateUpdated}, #{workGroupRecordId})
     </insert>
 
@@ -50,11 +50,51 @@
             s.start_time = #{startTime},
             s.end_time = #{endTime},
             s.working_time = #{workingTime},
-            s.overtime = #{overtime},
+            s.over_time = #{overTime},
             tr.work_state = #{workState},
             s.date_updated = now()
         WHERE s.settlement_id = #{settlementId};
     </update>
+
+<!--    정산 스케줄러 관련 로직   -->
+
+    <!--회사, 근무그룹 별로 조회-->
+    <select id="findCompanyAndWorkGroup" resultType="com.douzone.timeattendance.dto.settlement.SettlementFindCompanyDto"
+    parameterType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT
+            tr.date AS date,
+            tr.user_id AS userId,
+            wgr.work_group_type AS workGroupType,
+            tr.start_work AS startWork,
+            tr.leave_work AS leaveWork,
+            tr.work_state AS workState,
+            wgr.time_range_type AS timeRangeType,
+            wgr.start AS start,
+            wgr.end AS end
+        FROM time_record AS tr
+        JOIN distribution AS d ON tr.user_id = d.user_id
+        JOIN work_group_record AS wgr ON d.work_group_id = wgr.work_group_id
+        JOIN settlement AS st ON st.work_group_record_id = wgr.work_group_record_id
+        JOIN work_group AS wg ON wg.work_group_id = wgr.work_group_id
+        WHERE
+            tr.date = #{date} -- 어제 날짜로 필터링
+        AND wg.company_id = #{searchParam.companyId} -- 입력한 회사 아이디로 필터링
+        AND wgr.work_group_id = #{searchParam.workGroupId} -- 입력한 작업 그룹 아이디로 필터링
+        AND st.date = tr.date -- 추가 조건: st.date와 tr.date가 일치
+        AND st.user_id = tr.user_id -- 추가 조건: st.user_id와 tr.user_id가 일치
+
+    </select>
+
+    <!--회사와 근무그룹 id List-->
+    <select id="findCompanyIdAndWorkGroupIdList" resultType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT
+            company_id AS companyId,
+            work_group_id AS workGroupId
+        FROM
+            work_group
+        ORDER BY companyId, workGroupId
+    </select>
+
 
 
 </mapper>
