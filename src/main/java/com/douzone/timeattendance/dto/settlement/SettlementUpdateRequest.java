@@ -28,7 +28,7 @@ public class SettlementUpdateRequest {
 
     @NotNull
     @DateTimeFormat(pattern = "HH:mm:ss")
-    private LocalTime overtime;     //초과근무시간
+    private LocalTime overTime;     //초과근무시간
 
     @NotNull
     private String workState;       //근무 상태(TimeRecord)

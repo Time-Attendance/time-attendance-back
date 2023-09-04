@@ -26,7 +26,7 @@ public class SettlementResponse {
     private String start;               //근무 시작 시간(WorkGroupRecord)
     private String end;                 //근무 종료 시간(WorkGroupRecord)
     private LocalTime workingTime;  //소정근무시간
-    private LocalTime overtime;     //초과근무시간
+    private LocalTime overTime;     //초과근무시간
     private String workState;           //근무 상태(TimeRecord)
     private String dayType;             //근무,유급,무급
     private Long workGroupRecordId;     //근로제 이력 아이디

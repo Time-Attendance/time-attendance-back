@@ -620,7 +620,7 @@ BEGIN
   DECLARE start_time TIME;
   DECLARE end_time TIME;
   DECLARE working_time TIME;
-  DECLARE overtime TIME;
+  DECLARE over_time TIME;
   DECLARE work_group_record_id INT DEFAULT 1;
 
   WHILE cur_date <= '2023-08-23' DO
@@ -706,12 +706,12 @@ BEGIN
         -- 초과 근무 시간 계산
         IF i MOD 20 = 3 THEN
         -- 시차근로제 회원
-          SET overtime = TIMEDIFF(leave_work, ADDTIME(rounded_start_work, '09:00:00'));
-          SET overtime = SEC_TO_TIME(FLOOR(TIME_TO_SEC(overtime) / 1800) * 1800); -- 30분 단위 반내림
+          SET over_time = TIMEDIFF(leave_work, ADDTIME(rounded_start_work, '09:00:00'));
+          SET over_time = SEC_TO_TIME(FLOOR(TIME_TO_SEC(over_time) / 1800) * 1800); -- 30분 단위 반내림
         ELSE
         -- 일반근로제 회원
-          SET overtime = TIMEDIFF(leave_work, '18:00:00');
-          SET overtime = SEC_TO_TIME(FLOOR(TIME_TO_SEC(overtime) / 1800) * 1800); -- 30분 단위 반내림
+          SET over_time = TIMEDIFF(leave_work, '18:00:00');
+          SET over_time = SEC_TO_TIME(FLOOR(TIME_TO_SEC(over_time) / 1800) * 1800); -- 30분 단위 반내림
         END IF;
 
 
@@ -725,8 +725,8 @@ BEGIN
         END IF;
 
         -- 정산 테이블에 레코드 추가
-        INSERT INTO `settlement` (`user_id`, `date`, `start_time`, `end_time`, `working_time`, `overtime`, `day_type`, `date_created`, `date_updated`, `work_group_record_id`)
-        VALUES (i, cur_date, start_time, end_time, working_time, overtime, '근무', DATE_ADD(date_created, INTERVAL 1 DAY), DATE_ADD(date_created, INTERVAL 1 DAY), work_group_record_id);
+        INSERT INTO `settlement` (`user_id`, `date`, `start_time`, `end_time`, `working_time`, `over_time`, `day_type`, `date_created`, `date_updated`, `work_group_record_id`)
+        VALUES (i, cur_date, start_time, end_time, working_time, over_time, '근무', DATE_ADD(date_created, INTERVAL 1 DAY), DATE_ADD(date_created, INTERVAL 1 DAY), work_group_record_id);
 
         SET i = i + 1;
       END WHILE;

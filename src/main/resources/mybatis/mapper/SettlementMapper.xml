@@ -22,7 +22,7 @@
                wgr.start AS start,
                wgr.end AS end,
                st.working_time AS workingTime,
-               st.overtime AS overtime,
+               st.over_time AS overTime,
                tr.work_state AS workState,
                st.day_type AS dayType,
                wgr.work_group_record_id AS workGroupRecordId
@@ -38,7 +38,7 @@
 
     <!--정산 스케줄러 실행-->
     <insert id="insertSettlement" useGeneratedKeys="true" keyProperty="settlementId">
-        INSERT INTO settlement(user_id, date, start_time, end_time, working_time, overtime, day_type, date_created, date_updated, work_group_record_id)
+        INSERT INTO settlement(user_id, date, start_time, end_time, working_time, over_time, day_type, date_created, date_updated, work_group_record_id)
         VALUES(#{userId}, #{date}, #{startTime}, #{endTime}, #{workingTime}, #{overTime}, #{dayType}, #{dateCreated}, #{dateUpdated}, #{workGroupRecordId})
     </insert>
 
@@ -50,7 +50,7 @@
             s.start_time = #{startTime},
             s.end_time = #{endTime},
             s.working_time = #{workingTime},
-            s.overtime = #{overtime},
+            s.over_time = #{overTime},
             tr.work_state = #{workState},
             s.date_updated = now()
         WHERE s.settlement_id = #{settlementId};

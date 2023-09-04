@@ -72,7 +72,7 @@ CREATE TABLE `settlement`
     `start_time`           time                  NULL,
     `end_time`             time                  NULL,
     `working_time`         time                  NOT NULL,
-    `overtime`             time                  NOT NULL,
+    `over_time`            time                  NOT NULL,
     `day_type`             char(2)               NULL,
     `date_created`         datetime              NOT NULL,
     `date_updated`         datetime              NOT NULL,
