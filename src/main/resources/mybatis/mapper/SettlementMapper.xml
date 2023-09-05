@@ -45,14 +45,18 @@
                 #{dateUpdated}, #{workGroupRecordId})
     </insert>
 
-    <!--정산 그룹별 업데이트 진행-->
+    <!--정산 그룹별 스케줄러 업데이트 진행(실질적인 스케줄링)-->
     <update id="updateSettlementList">
 
     </update>
 
     <!--정산 그룹별 무급인 사람 삭제 진행-->
     <delete id="deleteSettlementList">
-
+        DELETE FROM settlement
+        WHERE settlement_id IN(
+        <foreach collection="settlementIds" item="settlementId" open="(" separator="," close=")">
+            #{settlementId}
+        </foreach>)
     </delete>
 
     <!--정산 회원 수정-->

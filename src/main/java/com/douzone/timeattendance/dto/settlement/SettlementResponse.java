@@ -20,8 +20,8 @@ public class SettlementResponse {
     private String workGroupType;   //근로제 타입(WorkGroupType) - ex) : 시차, 일반
     private LocalTime startTime;    //근무시작시간(인정시작시간)
     private LocalTime endTime;      //근무종료시간(인정종료시간)
-    private LocalTime startWork;    //실제 출근 시간(TimeRecord)
-    private LocalTime leaveWork;    //실제 퇴근 시간(TimeRecord)
+    private LocalDateTime startWork;    //실제 출근 시간(TimeRecord)
+    private LocalDateTime leaveWork;    //실제 퇴근 시간(TimeRecord)
     private String timeRangeType;       //시간 종류(WorkGroupRecord) - ex) 근무, 휴게, 의무, 승인
     private String start;               //근무 시작 시간(WorkGroupRecord)
     private String end;                 //근무 종료 시간(WorkGroupRecord)

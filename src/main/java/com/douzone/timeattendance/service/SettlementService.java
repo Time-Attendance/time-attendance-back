@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class SettlementService {
 
     }
 
+    //근무, 유급, 무급인 회원들을 모아서 한번에 update, delete를 하는 메서드
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void insertSchedule() {
 
@@ -57,10 +59,28 @@ public class SettlementService {
 
     }
 
+    public SettlementUpdateDto unpaidCalculationProcess(SettlementFindCompanyDto settlementFindCompanyDto, String workStatus){
+
+        LocalDateTime startTime = settlementFindCompanyDto.getStartWork();
+        LocalDateTime endTime = settlementFindCompanyDto.getLeaveWork();
+        Duration duration = Duration.between(startTime, endTime);
+
+        SettlementUpdateDto settlementUpdateDto = SettlementUpdateDto.builder()
+                .startTime(startTime.toLocalTime())
+                .endTime(endTime.toLocalTime())
+                .workingTime(LocalTime.of(0,0,0))
+                .overTime(LocalTime.ofSecondOfDay(duration.getSeconds()))
+                .dayType(workStatus)
+                .dateUpdated(LocalDateTime.now())
+                .build();
+        return settlementUpdateDto;
+    }
+
     //회원 list를 보고 회원들 한명씩 정산하는 메서드
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void settlementMembers(LocalDate date, List<SettlementFindCompanyDto> result) {
-
+        List<SettlementUpdateDto> settlementUpdateWorks = new ArrayList<>();
+        List<SettlementUpdateDto> settlementUpdateUnpaids = new ArrayList<>();
         List<Long> settlementIdsToDelete = new ArrayList<>();   // 무급일때, 삭제할 정산 id들을 모은 list
 
         for (SettlementFindCompanyDto settlementFindCompanyDto : result) {
@@ -91,11 +111,18 @@ public class SettlementService {
             } else {  // 유급, 근무, 무급일때,
                 if(workStatus.equals("무급")){
                     settlementIdsToDelete.add(settlementFindCompanyDto.getSettlementId());
+
+                }else if(workStatus.equals("유급")) {
+                    settlementUpdateUnpaids.add(unpaidCalculationProcess(settlementFindCompanyDto, workStatus));
+
+                }else if(workStatus.equals("근무")) {
+
                 }
             }
         }
     }
 
+    //실질적인 정산 시작 메서드
     public void getMembersByCompanyAndGroup() {
         List<SettlementSearchDto> companyIdAndWorkGroupIdList = findCompanyIdAndWorkGroupIdList();  //회사 id, 근무그룹 id 리스트
         LocalDate yesterday = LocalDate.now().minusDays(1); //어제
