@@ -16,9 +16,12 @@ public class SettlementFindCompanyDto {
     private LocalTime startWork;    //실제 출근 시간(TimeRecord)
     private LocalTime leaveWork;    //실제 퇴근 시간(TimeRecord)
     private String workState;           //근무 상태(TimeRecord)
+    private String dayType;
     private String timeRangeType;       //시간 종류(WorkGroupRecord) - ex) 근무, 휴게, 의무, 승인
     private String start;               //근무 시작 시간(WorkGroupRecord)
     private String end;                 //근무 종료 시간(WorkGroupRecord)
+    private String startTime;           //근무 인정 시작 시간
+    private String endTime;             //근무 인정 종료 시간
     private String mon;                 //근무/유급/무급(WorkGroupRecord)
     private String tue;
     private String wed;
