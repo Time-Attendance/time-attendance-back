@@ -30,6 +30,7 @@ public class SettlementFindCompanyDto {
     private String fri;
     private String sat;
     private String sun;
+    private Long timeRecordId;
     private Long workGroupRecordId;     //근로제 이력 아이디
     private Long companyId; //회사 아이디
 }

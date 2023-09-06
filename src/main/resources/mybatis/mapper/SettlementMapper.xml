@@ -46,7 +46,19 @@
     </insert>
 
     <!--정산 그룹별 스케줄러 업데이트 진행(실질적인 스케줄링)-->
-    <update id="updateSettlementList">
+    <update id="updateSettlementList" parameterType="java.util.List">
+        <foreach collection="updateList" item="dto" separator=",">
+            UPDATE settlement
+            SET
+                start_time = #{dto.startTime},
+                end_time = #{dto.endTime},
+                working_time = #{dto.workingTime},
+                over_time = #{dto.overTime},
+                day_type = #{dto.dayType},
+                date_updated = #{dto.dateUpdated}
+            WHERE
+                settlement_id = #{dto.settlementId}
+        </foreach>
 
     </update>
 
@@ -97,6 +109,7 @@
                wgr.fri                 AS fri,
                wgr.sat                 AS sat,
                wgr.sun                 AS sun,
+               tr.time_record_id AS timeRecordId,
                st.work_group_record_id AS workGroupRecordId,
                wg.company_id           AS companyId
         FROM distribution AS d
