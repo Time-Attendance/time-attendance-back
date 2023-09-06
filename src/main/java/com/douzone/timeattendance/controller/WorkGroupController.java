@@ -61,7 +61,8 @@ public class WorkGroupController {
         workGroup.setIsDeleted(false);
         workGroup.setIsOn(true);
         workGroupService.insertWorkGroup(workGroup);
-        Long workGroupIdToBeInserted = workGroupService.findLatestId();
+
+        Long workGroupIdToBeInserted = workGroup.getWorkGroupId();
 
         WorkDayTypeRequestDto workDayTypeRequestDto = workGroupRequestDto.getWorkDayType();
         WorkDayType workDayType = new WorkDayType(workDayTypeRequestDto);
