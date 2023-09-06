@@ -41,7 +41,7 @@ public class TimeRecordService {
         TimeRecord timeRecord = TimeRecord.builder()
                                           .userId(userId)
                                           .date(LocalDate.now())
-                                          .startWork(LocalTime.now())
+                                          .startWork(LocalDateTime.now())
                                           .workState("미처리") //TODO: enum 사용
                                           .build();
 

@@ -610,12 +610,12 @@ CREATE PROCEDURE CreateTimeRecordsAndSettlements()
 BEGIN
   DECLARE i INT DEFAULT 1;
   DECLARE cur_date DATE DEFAULT '2023-01-02';
-  DECLARE start_work TIME;
-  DECLARE leave_work TIME;
+  DECLARE start_work DATETIME;
+  DECLARE leave_work DATETIME;
   DECLARE work_state VARCHAR(10);
   DECLARE date_created DATETIME;
   DECLARE date_updated DATETIME;
-  DECLARE rounded_start_work TIME;
+  DECLARE rounded_start_work DATETIME;
   DECLARE late_day DATE;
   DECLARE start_time TIME;
   DECLARE end_time TIME;
@@ -631,20 +631,20 @@ BEGIN
 
         IF i MOD 20 = 3 THEN
         -- 시차근로제 회원
-          SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 140) * 60)); -- 08:40 ~ 10:59 랜덤 시작 시간
+          SET start_work = CONCAT(cur_date, ' ', ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 140) * 60))); -- cur_date와 08:40 ~ 10:59 랜덤 시작 시간을 결합
 
           -- 인정 출근시간을 30분 단위로 설정
           IF MINUTE(start_work) > 30 THEN
-            SET rounded_start_work = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00'); -- 다음 시간으로 설정
+            SET rounded_start_work = CONCAT(cur_date, ' ', ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00')); -- 다음 시간으로 설정
           ELSEIF MINUTE(start_work) > 0 THEN
-            SET rounded_start_work = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '00:30:00'); -- 해당 시간의 30분으로 설정
+            SET rounded_start_work = CONCAT(cur_date, ' ', ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '00:30:00')); -- 해당 시간의 30분으로 설정
           ELSE
-            SET rounded_start_work = MAKETIME(HOUR(start_work), 0, 0); -- 해당 시간으로 설정
+            SET rounded_start_work = CONCAT(cur_date, ' ', MAKETIME(HOUR(start_work), 0, 0)); -- 해당 시간으로 설정
           END IF;
 
-          SET leave_work = ADDTIME(rounded_start_work, SEC_TO_TIME((9 * 3600) + FLOOR(RAND() * 2 * 3600))); -- 퇴근 시간은 인정 출근 시간의 9~11시간 이후
+          SET leave_work = TIMESTAMPADD(SECOND, (9 * 3600) + FLOOR(RAND() * 2 * 3600), rounded_start_work); -- 퇴근 시간은 인정 출근 시간의 9~11시간 이후
 
-          IF start_work > '11:00:00' THEN
+          IF TIME(start_work) > '11:00:00' THEN
             SET work_state = '근태이상';
           ELSE
             SET work_state = '정상근무';
@@ -652,21 +652,21 @@ BEGIN
         ELSE
         -- 일반근로제 회원
           IF cur_date = late_day THEN
-            SET start_work = ADDTIME('09:01:00', SEC_TO_TIME(FLOOR(RAND() * 59) * 60)); -- 지각: 09:01 ~ 09:59
+            SET start_work = CONCAT(cur_date, ' ', ADDTIME('09:01:00', SEC_TO_TIME(FLOOR(RAND() * 59) * 60))); -- 지각: 09:01 ~ 09:59
           ELSE
-            SET start_work = ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 21) * 60)); -- 정상: 08:40 ~ 09:00
+            SET start_work = CONCAT(cur_date, ' ', ADDTIME('08:40:00', SEC_TO_TIME(FLOOR(RAND() * 21) * 60))); -- 정상: 08:40 ~ 09:00
           END IF;
 
-          SET leave_work = ADDTIME('18:00:00', SEC_TO_TIME(FLOOR(RAND() * 120) * 60)); -- 18:00 ~ 20:00 랜덤 종료 시간
+          SET leave_work = TIMESTAMPADD(SECOND, FLOOR(RAND() * 120) * 60, CONCAT(cur_date, ' ', '18:00:00')); -- 18:00 ~ 20:00 랜덤 종료 시간
 
-          IF start_work > '09:00:00' THEN
+          IF TIME(start_work) > '09:00:00' THEN
             SET work_state = '근태이상';
           ELSE
             SET work_state = '정상근무';
           END IF;
         END IF;
 
-        SET date_created = CONCAT(cur_date, ' ', start_work);
+        SET date_created = start_work;
         SET date_updated = date_created;
 
         -- 출퇴근 기록 생성
@@ -678,20 +678,20 @@ BEGIN
         -- 인정 출퇴근 시간 계산
         IF i MOD 20 = 3 THEN
         -- 시차근로제 회원
-          SET start_time = rounded_start_work;
-          SET end_time = ADDTIME(rounded_start_work, '09:00:00');
+          SET start_time = TIME(rounded_start_work);
+          SET end_time = ADDTIME(TIME(rounded_start_work), '09:00:00');
         ELSE
         -- 일반근로제 회원
-          SET start_time = start_work;
+          SET start_time = TIME(start_work);
           SET end_time = '18:00:00';
 
         -- 인정 출근시간을 30분 단위로 설정
-          IF MINUTE(start_work) > 30 THEN
-            SET start_time = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '01:00:00'); -- 다음 시간으로 설정
-          ELSEIF MINUTE(start_work) > 0 THEN
-            SET start_time = ADDTIME(MAKETIME(HOUR(start_work), 0, 0), '00:30:00'); -- 해당 시간의 30분으로 설정
+          IF MINUTE(TIME(start_work)) > 30 THEN
+            SET start_time = ADDTIME(MAKETIME(HOUR(TIME(start_work)), 0, 0), '01:00:00'); -- 다음 시간으로 설정
+          ELSEIF MINUTE(TIME(start_work)) > 0 THEN
+            SET start_time = ADDTIME(MAKETIME(HOUR(TIME(start_work)), 0, 0), '00:30:00'); -- 해당 시간의 30분으로 설정
           ELSE
-            SET start_time = MAKETIME(HOUR(start_work), 0, 0); -- 해당 시간으로 설정
+            SET start_time = MAKETIME(HOUR(TIME(start_work)), 0, 0); -- 해당 시간으로 설정
           END IF;
         END IF;
 
@@ -706,11 +706,11 @@ BEGIN
         -- 초과 근무 시간 계산
         IF i MOD 20 = 3 THEN
         -- 시차근로제 회원
-          SET over_time = TIMEDIFF(leave_work, ADDTIME(rounded_start_work, '09:00:00'));
+          SET over_time = TIMEDIFF(TIME(leave_work), ADDTIME(TIME(rounded_start_work), '09:00:00'));
           SET over_time = SEC_TO_TIME(FLOOR(TIME_TO_SEC(over_time) / 1800) * 1800); -- 30분 단위 반내림
         ELSE
         -- 일반근로제 회원
-          SET over_time = TIMEDIFF(leave_work, '18:00:00');
+          SET over_time = TIMEDIFF(TIME(leave_work), '18:00:00');
           SET over_time = SEC_TO_TIME(FLOOR(TIME_TO_SEC(over_time) / 1800) * 1800); -- 30분 단위 반내림
         END IF;
 
@@ -726,7 +726,7 @@ BEGIN
 
         -- 정산 테이블에 레코드 추가
         INSERT INTO `settlement` (`user_id`, `date`, `start_time`, `end_time`, `working_time`, `over_time`, `day_type`, `date_created`, `date_updated`, `work_group_record_id`)
-        VALUES (i, cur_date, start_time, end_time, working_time, over_time, '근무', DATE_ADD(date_created, INTERVAL 1 DAY), DATE_ADD(date_created, INTERVAL 1 DAY), work_group_record_id);
+        VALUES (i, cur_date, start_time, end_time, working_time, over_time, '근무', date_created, date_created, work_group_record_id);
 
         SET i = i + 1;
       END WHILE;

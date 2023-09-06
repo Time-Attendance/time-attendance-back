@@ -2,7 +2,7 @@ package com.douzone.timeattendance.dto.timerecord;
 
 import com.douzone.timeattendance.domain.TimeRecord;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,8 +12,8 @@ public class TimeRecordResponse {
 
     private Long timeRecordId;
     private LocalDate date;
-    private LocalTime startWork;
-    private LocalTime leaveWork;
+    private LocalDateTime startWork;
+    private LocalDateTime leaveWork;
     private String workState; //WorkState enum 사용 고려
     private Long userId;
 
