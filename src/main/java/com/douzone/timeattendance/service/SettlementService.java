@@ -8,6 +8,8 @@ import com.douzone.timeattendance.mapper.SettlementMapper;
 import com.douzone.timeattendance.mapper.TimeRecordMapper;
 import com.douzone.timeattendance.mapper.WorkGroupRecordMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class SettlementService {
 
     private final SettlementMapper settlementMapper;
@@ -43,7 +46,7 @@ public class SettlementService {
         settlementMapper.updateSettlement(settlementUpdateRequest);
     }
 
-    //    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void settlementSchedule() {
         getMembersByCompanyAndGroup();
     }
@@ -51,9 +54,15 @@ public class SettlementService {
     //근무, 유급, 무급인 회원들을 모아서 한번에 update, delete를 하는 메서드
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void insertSchedule(List<SettlementUpdateDto> settlementUpdateWorks, List<SettlementUpdateDto> settlementUpdatePaids, List<Long> settlementIdsToDelete) {
-        settlementMapper.updateSettlementList(settlementUpdateWorks);
-        settlementMapper.updateSettlementList(settlementUpdatePaids);
-        settlementMapper.deleteSettlementList(settlementIdsToDelete);
+        if (settlementUpdateWorks != null) {
+            settlementMapper.updateSettlementList(settlementUpdateWorks);
+        }
+        if (settlementUpdatePaids != null) {
+            settlementMapper.updateSettlementList(settlementUpdatePaids);
+        }
+        if (settlementIdsToDelete != null) {
+            settlementMapper.deleteSettlementList(settlementIdsToDelete);
+        }
 
     }
 
