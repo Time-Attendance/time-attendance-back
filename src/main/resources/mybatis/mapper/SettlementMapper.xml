@@ -118,7 +118,7 @@
                  LEFT JOIN work_group_record AS wgr ON st.work_group_record_id = wgr.work_group_record_id
                  LEFT JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date
         WHERE d.work_group_id = #{searchParam.workGroupId}
-#         AND tr.work_state = '미처리'
+        AND tr.work_state = '미처리'
     </select>
 
     <!--회사와 근무그룹 id List-->
