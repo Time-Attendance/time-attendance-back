@@ -94,11 +94,11 @@
             #{userId}
         </foreach>
     </update>
-    <delete id="deleteWorkgroup">
-        delete
-        from work_group
+    <update id="deleteWorkgroup">
+        UPDATE work_group
+        SET is_deleted = true, date_deleted = NOW()
         where work_group_id = #{workGroupId}
-    </delete>
+    </update>
     <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
         delete
         from Distribution

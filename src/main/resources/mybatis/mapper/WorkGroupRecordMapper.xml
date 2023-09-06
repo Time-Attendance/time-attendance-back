@@ -3,41 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.timeattendance.mapper.WorkGroupRecordMapper">
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO user(user_code,
-                         name,
-                         email,
-                         password,
-                         phone,
-                         hire_date,
-                         birthday,
-                         dept,
-                         position,
-                         distribution,
-                         date_created,
-                         date_updated,
-                         date_deleted,
-                         is_deleted,
-                         role,
-                         company_id)
-        VALUES (#{userCode},
-                #{name},
-                #{email},
-                #{password},
-                #{phone},
-                #{hireDate},
-                #{birthday},
-                #{dept},
-                #{position},
-                false,
-                NOW(),
-                NOW(),
-                null,
-                false,
-                #{role},
-                #{companyId})
-    </insert>
-
     <select id="findLatestWorkGroupRecordByUserId" resultType="WorkGroupRecord">
         SELECT work_group_record_id,
                wgr.date,
@@ -61,4 +26,8 @@
         LIMIT 1
     </select>
 
+    <insert id="insertWorkGroupRecord" parameterType="com.douzone.timeattendance.dto.workgrouprecord.WorkGroupRecordRequestDto" useGeneratedKeys="true" keyProperty="workGroupRecordId">
+        INSERT INTO Work_group_record(date, work_group_name, work_group_type, time_range_type, start, end, mon, tue, wed, thu, fri, sat, sun, work_group_id)
+        VALUES (#{date}, #{workGroupName}, #{workGroupType}, #{timeRangeType}, #{start}, #{end}, #{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
+    </insert>
 </mapper>

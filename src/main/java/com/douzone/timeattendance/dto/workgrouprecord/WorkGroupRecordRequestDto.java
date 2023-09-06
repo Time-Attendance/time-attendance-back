@@ -1,15 +1,15 @@
-package com.douzone.timeattendance.domain;
+package com.douzone.timeattendance.dto.workgrouprecord;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
-public class WorkGroupRecord {
+public class WorkGroupRecordRequestDto {
 
     private Long workGroupRecordId;     //PK
     private LocalDateTime date;
@@ -26,5 +26,4 @@ public class WorkGroupRecord {
     private String sat;
     private String sun;
     private Long workGroupId;           //FK(관계 X)
-
 }

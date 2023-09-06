@@ -8,10 +8,8 @@ import com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto;
 import com.douzone.timeattendance.dto.workgroup.DistributionRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
-import com.douzone.timeattendance.service.TimeRangeService;
-import com.douzone.timeattendance.service.UserService;
-import com.douzone.timeattendance.service.WorkDayTypeService;
-import com.douzone.timeattendance.service.WorkGroupService;
+import com.douzone.timeattendance.dto.workgrouprecord.WorkGroupRecordRequestDto;
+import com.douzone.timeattendance.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -29,12 +28,14 @@ public class WorkGroupController {
     private final WorkDayTypeService workDayTypeService;
     private final TimeRangeService timeRangeService;
     private final UserService userService;
+    private final WorkGroupRecordService workGroupRecordService;
 
-    public WorkGroupController(WorkGroupService workGroupService, WorkDayTypeService workDayTypeService, TimeRangeService timeRangeService, UserService userService) {
+    public WorkGroupController(WorkGroupService workGroupService, WorkDayTypeService workDayTypeService, TimeRangeService timeRangeService, UserService userService, WorkGroupRecordService workGroupRecordService) {
         this.workGroupService = workGroupService;
         this.workDayTypeService = workDayTypeService;
         this.timeRangeService = timeRangeService;
         this.userService = userService;
+        this.workGroupRecordService = workGroupRecordService;
     }
 
     @GetMapping("/api/workgroups")
@@ -76,6 +77,55 @@ public class WorkGroupController {
             timeRangeService.insertTimeRange(timeRange);
         }
 
+        // 근로제 이력
+        WorkGroupRecordRequestDto workGroupRecordRequestDto = new WorkGroupRecordRequestDto();
+        workGroupRecordRequestDto.setDate(localDateTime);
+        workGroupRecordRequestDto.setWorkGroupName(workGroupRequestDto.getName());
+        workGroupRecordRequestDto.setWorkGroupType(workGroupRequestDto.getType());
+        workGroupRecordRequestDto.setTimeRangeType(String.join(", ", workGroupRequestDto.getTimeRangeType()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        StringBuilder result = new StringBuilder();
+        LocalTime[] localTimes = workGroupRequestDto.getStart().toArray(new LocalTime[0]);
+
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+
+        workGroupRecordRequestDto.setStart(result.toString());
+        result.setLength(0);
+        localTimes = workGroupRequestDto.getEnd().toArray(new LocalTime[0]);
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+        workGroupRecordRequestDto.setEnd(result.toString());
+        workGroupRecordRequestDto.setMon(workGroupRequestDto.getWorkDayType().getMon());
+        workGroupRecordRequestDto.setTue(workGroupRequestDto.getWorkDayType().getTue());
+        workGroupRecordRequestDto.setWed(workGroupRequestDto.getWorkDayType().getWed());
+        workGroupRecordRequestDto.setThu(workGroupRequestDto.getWorkDayType().getThu());
+        workGroupRecordRequestDto.setFri(workGroupRequestDto.getWorkDayType().getFri());
+        workGroupRecordRequestDto.setSat(workGroupRequestDto.getWorkDayType().getSat());
+        workGroupRecordRequestDto.setSun(workGroupRequestDto.getWorkDayType().getSun());
+
+        workGroupRecordRequestDto.setWorkGroupId(workGroupIdToBeInserted);
+
+        workGroupRecordService.insertWorkGroupRecord(workGroupRecordRequestDto);
+
         return ResponseEntity.ok()
                 .build();
     }
@@ -104,6 +154,56 @@ public class WorkGroupController {
             timeRange.setWorkGroupId(workgroupId);
             timeRangeService.insertTimeRange(timeRange);
         }
+
+
+        // 근로제 이력
+        WorkGroupRecordRequestDto workGroupRecordRequestDto = new WorkGroupRecordRequestDto();
+        workGroupRecordRequestDto.setDate(LocalDateTime.now());
+        workGroupRecordRequestDto.setWorkGroupName(workGroupRequestDto.getName());
+        workGroupRecordRequestDto.setWorkGroupType(workGroupRequestDto.getType());
+        workGroupRecordRequestDto.setTimeRangeType(String.join(", ", workGroupRequestDto.getTimeRangeType()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        StringBuilder result = new StringBuilder();
+        LocalTime[] localTimes = workGroupRequestDto.getStart().toArray(new LocalTime[0]);
+
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+
+        workGroupRecordRequestDto.setStart(result.toString());
+        result.setLength(0);
+        localTimes = workGroupRequestDto.getEnd().toArray(new LocalTime[0]);
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+        workGroupRecordRequestDto.setEnd(result.toString());
+        workGroupRecordRequestDto.setMon(workGroupRequestDto.getWorkDayType().getMon());
+        workGroupRecordRequestDto.setTue(workGroupRequestDto.getWorkDayType().getTue());
+        workGroupRecordRequestDto.setWed(workGroupRequestDto.getWorkDayType().getWed());
+        workGroupRecordRequestDto.setThu(workGroupRequestDto.getWorkDayType().getThu());
+        workGroupRecordRequestDto.setFri(workGroupRequestDto.getWorkDayType().getFri());
+        workGroupRecordRequestDto.setSat(workGroupRequestDto.getWorkDayType().getSat());
+        workGroupRecordRequestDto.setSun(workGroupRequestDto.getWorkDayType().getSun());
+
+        workGroupRecordRequestDto.setWorkGroupId(workgroupId);
+
+        workGroupRecordService.insertWorkGroupRecord(workGroupRecordRequestDto);
 
         return ResponseEntity.ok()
                 .build();
@@ -160,8 +260,62 @@ public class WorkGroupController {
     @DeleteMapping("/api/workgroups/{workGroupId}")
     public ResponseEntity<Void> deleteWorkgroup(@PathVariable("workGroupId") Long workGroupId) {
         workGroupService.deleteWorkgroup(workGroupId);
-        workDayTypeService.deleteWorkDayType(workGroupId);
-        timeRangeService.deleteTimeRangeByWorkGroupId(workGroupId);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PostMapping("/api/workgroups/workgroup-record")
+    public ResponseEntity<Void> insertWorkGroupRecord(@RequestBody WorkGroupRequestDto workGroupRequestDto) {
+        WorkGroupRecordRequestDto workGroupRecordRequestDto = new WorkGroupRecordRequestDto();
+        Date currentDate = new Date(System.currentTimeMillis());
+        java.util.Date utilDate = new java.util.Date(currentDate.getTime());
+        Instant instant = utilDate.toInstant();
+        LocalDateTime localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+        workGroupRecordRequestDto.setDate(localDateTime);
+        workGroupRecordRequestDto.setWorkGroupName(workGroupRecordRequestDto.getWorkGroupName());
+        workGroupRecordRequestDto.setWorkGroupType(workGroupRecordRequestDto.getWorkGroupType());
+        workGroupRecordRequestDto.setTimeRangeType(String.join(", ", workGroupRequestDto.getTimeRangeType()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        StringBuilder result = new StringBuilder();
+        LocalTime[] localTimes = workGroupRequestDto.getStart().toArray(new LocalTime[0]);
+
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+
+        workGroupRecordRequestDto.setStart(result.toString());
+        result.setLength(0);
+        localTimes = workGroupRequestDto.getEnd().toArray(new LocalTime[0]);
+        for (int i = 0; i < localTimes.length; i++) {
+            String formattedTime = localTimes[i].format(formatter);
+
+            result.append(formattedTime);
+
+            // Append a comma after each element except the last one
+            if (i < localTimes.length - 1) {
+                result.append(", ");
+            }
+        }
+        workGroupRecordRequestDto.setEnd(result.toString());
+        workGroupRecordRequestDto.setMon(workGroupRequestDto.getWorkDayType().getMon());
+        workGroupRecordRequestDto.setTue(workGroupRequestDto.getWorkDayType().getTue());
+        workGroupRecordRequestDto.setWed(workGroupRequestDto.getWorkDayType().getWed());
+        workGroupRecordRequestDto.setThu(workGroupRequestDto.getWorkDayType().getThu());
+        workGroupRecordRequestDto.setFri(workGroupRequestDto.getWorkDayType().getFri());
+        workGroupRecordRequestDto.setSat(workGroupRequestDto.getWorkDayType().getSat());
+        workGroupRecordRequestDto.setSun(workGroupRequestDto.getWorkDayType().getSun());
+
 
         return ResponseEntity.ok()
                 .build();
