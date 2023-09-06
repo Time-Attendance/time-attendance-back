@@ -86,7 +86,7 @@ public class TimeRecordService {
         TimeRecordUpdateDto updateParam = TimeRecordUpdateDto.builder()
                                                              .userId(userId)
                                                              .date(LocalDate.now())
-                                                             .leaveWork(LocalTime.now())
+                                                             .leaveWork(LocalDateTime.now())
                                                              .build();
         timeRecordMapper.update(updateParam);
     }
