@@ -36,6 +36,13 @@ public class CompanyFacade {
         return companyService.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public CompanyResponse findByCompanyId(Long companyId) {
+        return companyService.findByCompanyId(companyId)
+                             .map(CompanyResponse::new)
+                             .orElseThrow(NoSuchCompanyException::new);
+    }
+
     public void createCompany(MultipartFile file, CompanyCreateRequest companyCreateRequest) {
         Company company = companyService.createCompany(file, companyCreateRequest);
         WorkGroup workGroup = workGroupService.insertWorkGroup(createDefaultWorkGroup(company.getCompanyId()));
@@ -46,12 +53,13 @@ public class CompanyFacade {
     }
 
     public CompanyCodeUpdateResponse updateCompanyCode(Long companyId) {
-        companyService.findByCompanyId(companyId)
-                      .orElseThrow(NoSuchCompanyException::new);
+        Company company = companyService.findByCompanyId(companyId)
+                                        .orElseThrow(NoSuchCompanyException::new);
 
         String code = UUID.randomUUID().toString();
         CompanyUpdateDto updateParam = CompanyUpdateDto.builder()
                                                        .code(code)
+                                                       .logoUrl(company.getLogoUrl())
                                                        .build();
         companyService.update(companyId, updateParam);
 
@@ -60,7 +68,7 @@ public class CompanyFacade {
     }
 
     public void updateCompany(Long companyId, CompanyUpdateRequest companyUpdateRequest) {
-        Company foundCompany = companyService.findByCompanyId(companyId)
+        Company company = companyService.findByCompanyId(companyId)
                                         .orElseThrow(NoSuchCompanyException::new);
 
         CompanyUpdateDto updateParam = new CompanyUpdateDto();
@@ -68,20 +76,21 @@ public class CompanyFacade {
 
         switch (companyUpdateRequest.getImageAction()) {
             case DELETE:
-                // 이미지 파일 삭제 및 DB 업데이트
-                FileUtil.removeFile(foundCompany.getLogoUrl());
+                //이미지 파일 삭제 및 DB 업데이트
+                FileUtil.removeFile(company.getLogoUrl());
                 updateParam.setLogoUrl(null);
                 break;
 
             case KEEP:
-                // 아무 작업도 수행하지 않음
+                //기존 로고 파일 적용
+                updateParam.setLogoUrl(company.getLogoUrl());
                 break;
 
             case UPDATE:
-                // 기존 이미지 파일 삭제
-                FileUtil.removeFile(foundCompany.getLogoUrl());
+                //기존 이미지 파일 삭제
+                FileUtil.removeFile(company.getLogoUrl());
 
-                // 새 이미지 파일 저장 및 DB 업데이트
+                //새 이미지 파일 저장 및 DB 업데이트
                 String storeFilename = FileUtil.saveFile(companyUpdateRequest.getFile());
                 updateParam.setLogoUrl(storeFilename);
                 break;
