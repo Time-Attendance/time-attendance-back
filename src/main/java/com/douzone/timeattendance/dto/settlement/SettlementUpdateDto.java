@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Builder
 public class SettlementUpdateDto {
 
+    private Long settlementId;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalTime workingTime;
