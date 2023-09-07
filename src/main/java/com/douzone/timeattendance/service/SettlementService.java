@@ -46,34 +46,42 @@ public class SettlementService {
         settlementMapper.updateSettlement(settlementUpdateRequest);
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+//    @Scheduled(cron = "0 */30 * * * *")
     public void settlementSchedule() {
+        log.info("정산 시작");
         getMembersByCompanyAndGroup();
     }
 
     //근무, 유급, 무급인 회원들을 모아서 한번에 update, delete를 하는 메서드
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void insertSchedule(List<SettlementUpdateDto> settlementUpdateWorks, List<SettlementUpdateDto> settlementUpdatePaids, List<Long> settlementIdsToDelete) {
-        if (settlementUpdateWorks != null) {
+        if (settlementUpdateWorks != null && !settlementUpdateWorks.isEmpty()) {
+            log.info("근무인 회원들 업데이트");
             settlementMapper.updateSettlementList(settlementUpdateWorks);
+//            settlementMapper.updateTimeList(settlementUpdateWorks);
         }
-        if (settlementUpdatePaids != null) {
+        if (settlementUpdatePaids != null && !settlementUpdatePaids.isEmpty()) {
+            log.info("유급인 회원들 업데이트");
             settlementMapper.updateSettlementList(settlementUpdatePaids);
+//            settlementMapper.updateTimeList(settlementUpdatePaids);
         }
-        if (settlementIdsToDelete != null) {
+        if (settlementIdsToDelete != null && !settlementIdsToDelete.isEmpty()) {
+            log.info("무급인 회원들 삭제");
             settlementMapper.deleteSettlementList(settlementIdsToDelete);
         }
-
+        log.info("정산종료");
     }
 
     //회사와 근무그룹 ID 리스트
     public List<SettlementSearchDto> findCompanyIdAndWorkGroupIdList() {
+        log.info("회사와 근무그룹 ID 리스트 DB에서 가져옴");
         return settlementMapper.findCompanyIdAndWorkGroupIdList();
 
     }
 
     //근무일때, 정산 로직
     public SettlementUpdateDto workCalculationProcess(SettlementFindCompanyDto settlementFindCompanyDto, String workStatus) {
+        log.info("근무인 회원들 정산 시작");
         LocalDateTime startWork = settlementFindCompanyDto.getStartWork();  //출근 시각
         LocalDateTime leaveWork = settlementFindCompanyDto.getLeaveWork();  //퇴근 시각
         List<Integer> workIndexList = new ArrayList<>();    //근무시간 인덱스 리스트
@@ -98,8 +106,8 @@ public class SettlementService {
         LocalTime endTime = LocalTime.of(0, 0);
         LocalTime workingTime = LocalTime.of(0, 0);
         LocalTime overTime = LocalTime.of(0, 0);
-        ;                //정산 테이블
 
+        //정산 테이블
         for (int i = 0; i < timeRangeList.length; i++) {
             if (timeRangeList[i].equals("근무")) {
                 workIndexList.add(i);
@@ -143,13 +151,15 @@ public class SettlementService {
         //근무 종료 시간 로직
 
         if (leaveWork == null) {
-            if (ChronoUnit.DAYS.between(LocalDate.now(), settlementFindCompanyDto.getDate()) >= 2) {
+            if (ChronoUnit.DAYS.between(LocalDate.now(), settlementFindCompanyDto.getDate()) > 2) {
                 SettlementUpdateDto updateDto = SettlementUpdateDto.builder()
                         .settlementId(settlementFindCompanyDto.getSettlementId())
+//                        .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
                         .startTime(startTime)
                         .workingTime(LocalTime.of(0, 0))
                         .overTime(LocalTime.of(0, 0))
                         .dayType(workStatus)
+//                        .workState(workState)
                         .dateUpdated(LocalDateTime.now())
                         .build();
                 return updateDto;
@@ -158,7 +168,7 @@ public class SettlementService {
             endTime = leaveWork.toLocalTime();
         }
 
-        //소정 근로시간 계산 로직
+        //휴게시간 계산 로직
         LocalTime sum = LocalTime.of(0, 0);
         for (Integer i : restIndexList) {
             if ((startTime.isBefore(startTimeList[i]) || startTime.equals(startTimeList[i])) &&
@@ -173,6 +183,7 @@ public class SettlementService {
             }
         }
 
+        //초과 근무 계산 로직
         if (timeDiffer(startTime, endTime).isBefore(timeDiffer(startTimeList[0], endTimeList[0]))) {
             workingTime = timeDiffer(sum, timeDiffer(startTime, endTime));
             workState = "근태이상";
@@ -191,14 +202,23 @@ public class SettlementService {
             }
         }
 
+        //소정근로시작시간보다 계약근로종료시간이 작을 경우 그 차이만큼 초과근무에서 뺴는 로직
+        if(endTimeList[workIndexList.get(0)].isBefore(startTimeList[approveIndexList.get(0)])){
+            overTime = timeDiffer(timeDiffer(endTimeList[workIndexList.get(0)],startTimeList[approveIndexList.get(0)]),overTime);
+            if(overTime.isBefore(LocalTime.of(0,0))){
+                overTime = LocalTime.of(0,0);
+            }
+        }
 
         SettlementUpdateDto settlementUpdateDto = SettlementUpdateDto.builder()
                 .settlementId(settlementFindCompanyDto.getSettlementId())
+//                .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
                 .startTime(startTime)
                 .endTime(endTime)
                 .workingTime(workingTime)
                 .overTime(overTime)
                 .dayType(workStatus)
+//                .workState(workState)
                 .dateUpdated(LocalDateTime.now())
                 .build();
         return settlementUpdateDto;
@@ -206,18 +226,21 @@ public class SettlementService {
 
     //유급일때, 정산 계산 로직
     public SettlementUpdateDto paidCalculationProcess(SettlementFindCompanyDto settlementFindCompanyDto, String workStatus) {
-
+        log.info("유급인 회원들 정산");
         LocalDateTime startTime = settlementFindCompanyDto.getStartWork();
         LocalDateTime endTime = settlementFindCompanyDto.getLeaveWork();
         Duration duration = Duration.between(startTime, endTime);
+        String workState = "정상처리";
 
         SettlementUpdateDto settlementUpdateDto = SettlementUpdateDto.builder()
                 .settlementId(settlementFindCompanyDto.getSettlementId())
+//                .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
                 .startTime(startTime.toLocalTime())
                 .endTime(endTime.toLocalTime())
                 .workingTime(LocalTime.of(0, 0))
                 .overTime(LocalTime.ofSecondOfDay(duration.getSeconds()))
                 .dayType(workStatus)
+//                .workState(workState)
                 .dateUpdated(LocalDateTime.now())
                 .build();
         return settlementUpdateDto;
@@ -226,10 +249,10 @@ public class SettlementService {
     //회원 list를 보고 회원들 한명씩 정산하는 메서드
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void settlementMembers(LocalDate date, List<SettlementFindCompanyDto> result) {
+        log.info("회원 리스트를 가져와서 1명씩 정산 시작");
         List<SettlementUpdateDto> settlementUpdateWorks = new ArrayList<>();    //근무일때, 정산 정보 모음
         List<SettlementUpdateDto> settlementUpdatePaids = new ArrayList<>();  //유급일때, 정산 정보 모음
         List<Long> settlementIdsToDelete = new ArrayList<>();   // 무급일때, 삭제할 정산 id들을 모은 list
-        List<String> timeRecordUpdate = new ArrayList<>();
 
         for (SettlementFindCompanyDto settlementFindCompanyDto : result) {
             String workStatus = processWeekday(settlementFindCompanyDto, date); //해당 요일의 근무 상태
@@ -250,6 +273,7 @@ public class SettlementService {
                             .date(date)
                             .workingTime(LocalTime.of(0, 0))
                             .overTime(LocalTime.of(0, 0))
+                            .dayType(workStatus)
                             .dateCreated(LocalDateTime.now())
                             .dateUpdated(LocalDateTime.now())
                             .workGroupRecordId(getWorkGroupRecord.getWorkGroupRecordId())
@@ -292,6 +316,7 @@ public class SettlementService {
 
     //회사와 근무그룹 ID에 맞는 회원 정보 리스트
     public List<SettlementFindCompanyDto> findCompanyAndWorkGroup(LocalDate date, SettlementSearchDto settlementSearchDto) {
+        log.info("해당 근무그룹 ID에 맞는 회원 정보 리스트 DB에서 가져옴");
         return settlementMapper.findCompanyAndWorkGroup(date, settlementSearchDto);
     }
 
