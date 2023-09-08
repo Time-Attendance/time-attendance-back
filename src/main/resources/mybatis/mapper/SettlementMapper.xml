@@ -115,14 +115,14 @@
                tr.time_record_id AS timeRecordId,
                wg.company_id           AS companyId
         FROM distribution AS d
-                 LEFT JOIN settlement AS st ON st.user_id = d.user_id AND st.date = #{date}
-                 LEFT JOIN work_group AS wg ON d.work_group_id = wg.work_group_id
-                 LEFT JOIN work_group_record AS wgr ON  wgr.work_group_record_id = st.work_group_record_id
-                 LEFT JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date AND tr.date_created = st.date_created
+                 LEFT OUTER JOIN settlement AS st ON st.user_id = d.user_id AND st.date = #{date}
+                 LEFT OUTER JOIN work_group AS wg ON d.work_group_id = wg.work_group_id
+                 LEFT OUTER JOIN work_group_record AS wgr ON wgr.work_group_record_id = st.work_group_record_id
+                 LEFT OUTER JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date AND tr.date_created = st.date_created
         WHERE
             d.work_group_id = #{searchParam.workGroupId}
           AND
-            (tr.work_state is null OR tr.work_state = '미처리')
+            (st.date is null OR tr.work_state = '미처리')
 
     </select>
 

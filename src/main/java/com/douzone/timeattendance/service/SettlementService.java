@@ -1,5 +1,6 @@
 package com.douzone.timeattendance.service;
 
+import ch.qos.logback.classic.Logger;
 import com.douzone.timeattendance.domain.Settlement;
 import com.douzone.timeattendance.domain.TimeRecord;
 import com.douzone.timeattendance.domain.WorkGroupRecord;
@@ -33,6 +34,7 @@ public class SettlementService {
     private final WorkGroupRecordMapper workGroupRecordMapper;
     private final TimeRecordMapper timeRecordMapper;
 
+    @Transactional
     public void insert(Settlement settlement) {
         settlementMapper.insertSettlement(settlement);
     }
@@ -42,11 +44,12 @@ public class SettlementService {
         return settlementMapper.findAll(settlementFindRequest);
     }
 
+    @Transactional
     public void update(SettlementUpdateRequest settlementUpdateRequest) {
         settlementMapper.updateSettlement(settlementUpdateRequest);
     }
 
-//    @Scheduled(cron = "0 */30 * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void settlementSchedule() {
         getMembersByCompanyAndGroup();
     }
@@ -291,8 +294,7 @@ public class SettlementService {
             }
         }
         insertSchedule(settlementUpdateWorks, settlementUpdatePaids, settlementIdsToDelete);
-        log.info("정산 종료 : 날짜 = {}",date);
-        log.info("정산 종료 : {}",uuid);
+        log.info("정산 종료 : UUID = {}, 날짜 = {}",uuid,date);
     }
 
     //실질적인 정산 시작 메서드
@@ -302,22 +304,24 @@ public class SettlementService {
         LocalDate beforeYesterday = yesterday.minusDays(1); //그제
 
         for (SettlementSearchDto settlementSearchDto : companyIdAndWorkGroupIdList) {//회사 id, 근무그룹 id 리스트를 하나하나 뽑아냄
-            UUID beforeOne = UUID.randomUUID();
             // 어제 날짜에 대한 근무그룹 1개에 있는 회원 list
             List<SettlementFindCompanyDto> yesterdayResult = findCompanyAndWorkGroup(yesterday, settlementSearchDto);
-            // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
-            log.info("정산 시작 : {}",beforeOne);
-            log.info("정산 시작 : 날짜 = {},회사 아이디 = {},근무그룹 = {}",yesterday,settlementSearchDto.getCompanyId(),settlementSearchDto.getWorkGroupId());
-            settlementMembers(yesterday, yesterdayResult,beforeOne);
+            if(yesterdayResult.size() != 0 && yesterdayResult != null) {
+                UUID beforeOne = UUID.randomUUID();
+                // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
+                log.info("정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}",beforeOne, yesterday, settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
+                settlementMembers(yesterday, yesterdayResult, beforeOne);
+            }
 
 
-            UUID beforeTwo = UUID.randomUUID();
             // 그제 날짜에 대한 근무그룹 1개에 있는 회원 list
             List<SettlementFindCompanyDto> beforeResult = findCompanyAndWorkGroup(beforeYesterday, settlementSearchDto);
-            // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
-            log.info("정산 시작 : {}",beforeTwo);
-            log.info("정산 시작 : 날짜 = {},회사 아이디 = {},근무그룹 = {}",beforeYesterday,settlementSearchDto.getCompanyId(),settlementSearchDto.getWorkGroupId());
-            settlementMembers(beforeYesterday, beforeResult,beforeTwo);
+            if(beforeResult.size() != 0 && beforeResult != null) {
+                UUID beforeTwo = UUID.randomUUID();
+                // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
+                log.info("정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}",beforeTwo, beforeYesterday, settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
+                settlementMembers(beforeYesterday, beforeResult, beforeTwo);
+            }
         }
     }
 
