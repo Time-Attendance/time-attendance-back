@@ -46,18 +46,21 @@
     </insert>
 
     <!--정산 그룹별 스케줄러 업데이트 진행(실질적인 스케줄링)-->
-    <update id="updateSettlementList">
-        <foreach collection="updateList" item="dto" separator=";">
-            UPDATE settlement
+    <update id="updateSettlementList" parameterType="java.util.List">
+        <foreach collection="updateList" item="dto" separator=";" open="" close="">
+            UPDATE settlement as st, time_record as tr
             SET
-                start_time = #{dto.startTime},
-                end_time = #{dto.endTime},
-                working_time = #{dto.workingTime},
-                over_time = #{dto.overTime},
-                day_type = #{dto.dayType},
-                date_updated = #{dto.dateUpdated}
+                st.start_time = #{dto.startTime},
+                st.end_time = #{dto.endTime},
+                st.working_time = #{dto.workingTime},
+                st.over_time = #{dto.overTime},
+                st.day_type = #{dto.dayType},
+                tr.work_state = #{dto.workState},
+                st.date_updated = #{dto.dateUpdated}
             WHERE
-                settlement_id = #{dto.settlementId}
+                st.settlement_id = #{dto.settlementId}
+            AND
+                tr.time_record_id = #{dto.timeRecordId}
         </foreach>
     </update>
 
@@ -117,7 +120,8 @@
                  LEFT JOIN work_group_record AS wgr ON  wgr.work_group_record_id = st.work_group_record_id
                  LEFT JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date AND tr.date_created = st.date_created
         WHERE
-            d.work_group_id = #{searchParam.workGroupId} AND
+            d.work_group_id = #{searchParam.workGroupId}
+          AND
             (tr.work_state is null OR tr.work_state = '미처리')
 
     </select>

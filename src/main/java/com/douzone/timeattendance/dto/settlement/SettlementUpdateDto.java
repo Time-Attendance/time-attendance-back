@@ -12,12 +12,12 @@ import java.time.LocalTime;
 public class SettlementUpdateDto {
 
     private Long settlementId;
-//    private Long timeRecordId;
+    private Long timeRecordId;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalTime workingTime;
     private LocalTime overTime;
     private String dayType;
-//    private String workState;
+    private String workState;
     private LocalDateTime dateUpdated;
 }
