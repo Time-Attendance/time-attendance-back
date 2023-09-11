@@ -49,7 +49,7 @@ public class SettlementService {
         settlementMapper.updateSettlement(settlementUpdateRequest);
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
+//    @Scheduled(cron = "0 */5 * * * *")
     public void settlementSchedule() {
         getMembersByCompanyAndGroup();
     }
