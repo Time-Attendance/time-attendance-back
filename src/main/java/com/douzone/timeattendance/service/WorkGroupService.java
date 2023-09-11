@@ -60,4 +60,12 @@ public class WorkGroupService {
     public void insertDistribution(LocalDateTime date, Long userId, Long workGroupId) {
         workGroupMapper.insertDistribution(date, userId, workGroupId);
     }
+
+    public List<Long> getUserIds(Long workGroupId) {
+        return workGroupMapper.getUserIds(workGroupId);
+    }
+
+    public void updateActivation(Long workGroupId) {
+        workGroupMapper.updateActivation(workGroupId);
+    }
 }

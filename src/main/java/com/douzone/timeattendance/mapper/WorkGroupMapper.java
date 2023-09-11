@@ -31,4 +31,8 @@ public interface WorkGroupMapper {
     void deleteDistribution(List<Long> userIds);
 
     void insertDistribution(LocalDateTime date, Long userId, Long workGroupId);
+
+    List<Long> getUserIds(Long workGroupId);
+
+    void updateActivation(Long workGroupId);
 }
