@@ -260,6 +260,8 @@ public class WorkGroupController {
     @DeleteMapping("/api/workgroups/{workGroupId}")
     public ResponseEntity<Void> deleteWorkgroup(@PathVariable("workGroupId") Long workGroupId) {
         workGroupService.deleteWorkgroup(workGroupId);
+        workDayTypeService.deleteWorkDayType(workGroupId);
+        timeRangeService.deleteTimeRangeByWorkGroupId(workGroupId);
 
         return ResponseEntity.ok()
                 .build();
@@ -316,6 +318,21 @@ public class WorkGroupController {
         workGroupRecordRequestDto.setSat(workGroupRequestDto.getWorkDayType().getSat());
         workGroupRecordRequestDto.setSun(workGroupRequestDto.getWorkDayType().getSun());
 
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @GetMapping("/api/workgroups/distribution/{selectedWorkGroupId}")
+    public ResponseEntity<List<Long>> getUserIds(@PathVariable("selectedWorkGroupId") Long workGroupId) {
+
+        return ResponseEntity.ok()
+                .body(workGroupService.getUserIds(workGroupId));
+    }
+
+    @PutMapping("/api/workgroups/activation/{workgroupId}")
+    public ResponseEntity<Void> updateActivation(@PathVariable("workgroupId") Long workgroupId) {
+        workGroupService.updateActivation(workgroupId);
 
         return ResponseEntity.ok()
                 .build();

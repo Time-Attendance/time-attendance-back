@@ -111,4 +111,14 @@
         INSERT INTO Distribution(date, user_id, work_group_id)
         VALUES (#{date}, #{userId}, #{workGroupId})
     </insert>
+    <select id="getUserIds" parameterType="Long" resultType="Long">
+        SELECT user_id
+        FROM distribution
+        WHERE work_group_id = #{workGroupId}
+    </select>
+    <update id="updateActivation">
+        UPDATE work_group
+        SET is_on = CASE WHEN is_on = true THEN false ELSE true END
+        where work_group_id = #{workGroupId}
+    </update>
 </mapper>
