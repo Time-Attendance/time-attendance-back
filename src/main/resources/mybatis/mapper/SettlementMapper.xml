@@ -68,7 +68,7 @@
     <delete id="deleteSettlementList">
         DELETE FROM settlement
         WHERE settlement_id IN(
-        <foreach collection="settlementIds" item="settlementId" open="(" separator="," close=")">
+        <foreach collection="settlementIds" item="settlementId" open="" separator="," close="">
             #{settlementId}
         </foreach>)
     </delete>
