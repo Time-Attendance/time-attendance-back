@@ -647,7 +647,7 @@ BEGIN
           IF TIME(start_work) > '11:00:00' THEN
             SET work_state = '근태이상';
           ELSE
-            SET work_state = '정상근무';
+            SET work_state = '정상처리';
           END IF;
         ELSE
         -- 일반근로제 회원
@@ -662,7 +662,7 @@ BEGIN
           IF TIME(start_work) > '09:00:00' THEN
             SET work_state = '근태이상';
           ELSE
-            SET work_state = '정상근무';
+            SET work_state = '정상처리';
           END IF;
         END IF;
 
