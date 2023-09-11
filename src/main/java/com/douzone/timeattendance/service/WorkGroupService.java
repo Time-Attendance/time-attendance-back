@@ -68,4 +68,8 @@ public class WorkGroupService {
     public void updateActivation(Long workGroupId) {
         workGroupMapper.updateActivation(workGroupId);
     }
+
+    public void applySettlementNow(Long workGroupId, List<Long> userIds) {
+        workGroupMapper.applySettlementNow(workGroupId, userIds);
+    }
 }

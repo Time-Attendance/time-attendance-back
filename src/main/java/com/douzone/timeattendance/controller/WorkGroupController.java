@@ -209,8 +209,8 @@ public class WorkGroupController {
                 .build();
     }
 
-    @PutMapping("/api/workgroups/distribution")
-    public ResponseEntity<Void> updateDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
+    @PutMapping("/api/workgroups/distribution/{applyNow}")
+    public ResponseEntity<Void> updateDistribution(@PathVariable("applyNow") Boolean applyNow, @RequestBody DistributionRequestDto distributionRequestDto) {
         Date currentDate = new Date(System.currentTimeMillis());
         java.util.Date utilDate = new java.util.Date(currentDate.getTime());
         Instant instant = utilDate.toInstant();
@@ -220,6 +220,10 @@ public class WorkGroupController {
 
         workGroupService.updateDistribution(distributionRequestDto.getDate(), distributionRequestDto.getUserIds(), distributionRequestDto.getWorkGroupId());
         workGroupService.updateUserDistribution(distributionRequestDto.getUserIds(), distributionRequestDto.getWorkGroupId());
+
+        if (applyNow) {
+            workGroupService.applySettlementNow(distributionRequestDto.getWorkGroupId(), distributionRequestDto.getUserIds());
+        }
 
         return ResponseEntity.ok()
                 .build();
