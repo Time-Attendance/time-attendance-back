@@ -95,8 +95,8 @@
         </foreach>
     </update>
     <update id="deleteWorkgroup">
-        UPDATE work_group
-        SET is_deleted = true, date_deleted = NOW()
+        UPDATE
+        NOW()from work_group
         where work_group_id = #{workGroupId}
     </update>
     <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
@@ -120,5 +120,18 @@
         UPDATE work_group
         SET is_on = CASE WHEN is_on = true THEN false ELSE true END
         where work_group_id = #{workGroupId}
+    </update>
+    <update id="applySettlementNow">
+        UPDATE settlement
+        SET work_group_record_id = (SELECT work_group_record_id
+                                    FROM work_group_record
+                                    WHERE work_group_id = #{workGroupId}
+                                    ORDER BY date DESC
+            LIMIT 1), date_updated = NOW()
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        AND date = CURDATE();
     </update>
 </mapper>

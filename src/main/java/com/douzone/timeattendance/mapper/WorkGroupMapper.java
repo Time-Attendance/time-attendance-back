@@ -35,4 +35,6 @@ public interface WorkGroupMapper {
     List<Long> getUserIds(Long workGroupId);
 
     void updateActivation(Long workGroupId);
+
+    void applySettlementNow(Long workGroupId, List<Long> userIds);
 }
