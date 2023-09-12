@@ -29,10 +29,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class SettlementService {
-
     private final SettlementMapper settlementMapper;
     private final WorkGroupRecordMapper workGroupRecordMapper;
     private final TimeRecordMapper timeRecordMapper;
+
+    @Scheduled(cron = "0 0 17 * * *")
+    public void settlementSchedule() {
+        getMembersByCompanyAndGroup();
+    }
 
     @Transactional
     public void insert(Settlement settlement) {
@@ -47,11 +51,6 @@ public class SettlementService {
     @Transactional
     public void update(SettlementUpdateRequest settlementUpdateRequest) {
         settlementMapper.updateSettlement(settlementUpdateRequest);
-    }
-
-//    @Scheduled(cron = "0 */5 * * * *")
-    public void settlementSchedule() {
-        getMembersByCompanyAndGroup();
     }
 
     //근무, 유급, 무급인 회원들을 모아서 한번에 update, delete를 하는 메서드
@@ -153,7 +152,7 @@ public class SettlementService {
         //근무 종료 시간 로직
 
         if (leaveWork == null) {
-            if (ChronoUnit.DAYS.between(LocalDate.now(), settlementFindCompanyDto.getDate()) > 2) {
+            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(), LocalDate.now()) >= 2) {
                 SettlementUpdateDto updateDto = SettlementUpdateDto.builder()
                         .settlementId(settlementFindCompanyDto.getSettlementId())
                         .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
@@ -228,11 +227,31 @@ public class SettlementService {
 
     //유급일때, 정산 계산 로직
     public SettlementUpdateDto paidCalculationProcess(SettlementFindCompanyDto settlementFindCompanyDto, String workStatus) {
+        String workState = "정상처리";
 
+        if (settlementFindCompanyDto.getLeaveWork() == null) {
+            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(), LocalDate.now()) >= 2) {
+                SettlementUpdateDto updateDto = SettlementUpdateDto.builder()
+                        .settlementId(settlementFindCompanyDto.getSettlementId())
+                        .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
+                        .startTime(settlementFindCompanyDto.getStartWork().toLocalTime())
+                        .workingTime(LocalTime.of(0, 0))
+                        .overTime(LocalTime.of(0, 0))
+                        .dayType(workStatus)
+                        .workState(workState)
+                        .dateUpdated(LocalDateTime.now())
+                        .build();
+                return updateDto;
+            }
+        }
         LocalDateTime startTime = settlementFindCompanyDto.getStartWork();
         LocalDateTime endTime = settlementFindCompanyDto.getLeaveWork();
+
         Duration duration = Duration.between(startTime, endTime);
-        String workState = "정상처리";
+        long totalSeconds = duration.getSeconds();
+        long hours = totalSeconds / 3600; // 시간으로 변환 (1시간 = 3600초)
+        long minutes = (totalSeconds % 3600) / 60; // 분으로 변환 (1분 = 60초)
+        LocalTime localTime = LocalTime.of((int) hours, (int) minutes);
 
         SettlementUpdateDto settlementUpdateDto = SettlementUpdateDto.builder()
                 .settlementId(settlementFindCompanyDto.getSettlementId())
@@ -240,7 +259,7 @@ public class SettlementService {
                 .startTime(startTime.toLocalTime())
                 .endTime(endTime.toLocalTime())
                 .workingTime(LocalTime.of(0, 0))
-                .overTime(LocalTime.ofSecondOfDay(duration.getSeconds()))
+                .overTime(localTime)
                 .dayType(workStatus)
                 .workState(workState)
                 .dateUpdated(LocalDateTime.now())
