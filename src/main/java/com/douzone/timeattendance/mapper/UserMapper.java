@@ -3,6 +3,7 @@ package com.douzone.timeattendance.mapper;
 import com.douzone.timeattendance.domain.User;
 import com.douzone.timeattendance.dto.user.UserSearchDto;
 import com.douzone.timeattendance.dto.user.UserUpdateDto;
+import com.douzone.timeattendance.dto.user.UserWorkGroupResponse;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,6 +21,8 @@ public interface UserMapper {
     Optional<User> findByEmail(String email);
 
     List<User> findAll(UserSearchDto searchDto);
+
+    Optional<UserWorkGroupResponse> findByUserWorkGroup(Long userId);
 
     int getNextSequence(Long companyId);
 

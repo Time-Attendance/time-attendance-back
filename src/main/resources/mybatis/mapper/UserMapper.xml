@@ -3,6 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.douzone.timeattendance.mapper.UserMapper">
 
+    <resultMap id="userWorkGroupResultMap" type="com.douzone.timeattendance.dto.user.UserWorkGroupResponse">
+        <id property="workGroupId" column="work_group_id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="work_group_type"/>
+        <association property="workDayType" javaType="com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto">
+            <result property="mon" column="mon"/>
+            <result property="tue" column="tue"/>
+            <result property="wed" column="wed"/>
+            <result property="thu" column="thu"/>
+            <result property="fri" column="fri"/>
+            <result property="sat" column="sat"/>
+            <result property="sun" column="sun"/>
+        </association>
+        <collection property="timeRangeList" ofType="com.douzone.timeattendance.dto.timerange.TimeRangeRequestDto">
+            <result property="type" column="time_range_type"/>
+            <result property="start" column="start"/>
+            <result property="end" column="end"/>
+        </collection>
+    </resultMap>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user(user_code,
                          name,
@@ -106,6 +126,27 @@
         WHERE company_id = #{companyId}
           AND MONTH(hire_date) = MONTH(CURDATE())
           AND YEAR(hire_date) = YEAR(CURDATE())
+    </select>
+
+    <select id="findByUserWorkGroup" resultMap="userWorkGroupResultMap">
+        SELECT wg.work_group_id,
+               wg.name,
+               wg.type as work_group_type,
+               tr.type as time_range_type,
+               tr.start,
+               tr.end,
+               wdt.mon,
+               wdt.tue,
+               wdt.wed,
+               wdt.thu,
+               wdt.fri,
+               wdt.sat,
+               wdt.sun
+        FROM work_group AS wg
+                 JOIN distribution AS d ON wg.work_group_id = d.work_group_id
+                 LEFT JOIN time_range AS tr ON wg.work_group_id = tr.work_group_id
+                 LEFT JOIN work_day_type AS wdt ON wg.work_group_id = wdt.work_group_id
+        WHERE d.user_id = #{userId}
     </select>
 
 </mapper>

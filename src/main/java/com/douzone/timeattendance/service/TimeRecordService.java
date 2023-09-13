@@ -5,12 +5,17 @@ import com.douzone.timeattendance.domain.TimeRecord;
 import com.douzone.timeattendance.domain.WorkGroupRecord;
 import com.douzone.timeattendance.dto.timerecord.TimeRecordResponse;
 import com.douzone.timeattendance.dto.timerecord.TimeRecordUpdateDto;
+import com.douzone.timeattendance.dto.timerecord.TimeRecordSettlementResponse;
+import com.douzone.timeattendance.dto.user.MyPageSelectedTimeRecordResponse;
+import com.douzone.timeattendance.dto.user.MyPageWeeklyTimeRecordResponse;
 import com.douzone.timeattendance.exception.timerecord.AlreadyExistsWorkRecordException;
 import com.douzone.timeattendance.exception.timerecord.ImpossibleLeaveWorkException;
 import com.douzone.timeattendance.mapper.TimeRecordMapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +94,34 @@ public class TimeRecordService {
                                                              .leaveWork(LocalDateTime.now())
                                                              .build();
         timeRecordMapper.update(updateParam);
+    }
+
+    /**
+     * 주간 근무기록 조회
+     */
+    public MyPageWeeklyTimeRecordResponse findWeeklyTimeRecordByUserId(Long userId, LocalDate startDate) {
+        //TODO: 정산에서 주간 근무시간, 연장근무시간 계산해서 응답
+        LocalDate endDate = startDate.plusDays(6);
+        List<TimeRecordSettlementResponse> timeRecordSettlementList = timeRecordMapper.findTimeRecordByUserIdBetweenStartDateAndEndDate(userId, startDate, endDate);
+
+        MyPageWeeklyTimeRecordResponse response = new MyPageWeeklyTimeRecordResponse();
+        response.setList(timeRecordSettlementList);
+
+        return response;
+    }
+
+    /**
+     * 출퇴근 기록 조회
+     */
+    public MyPageSelectedTimeRecordResponse findTimeRecordByUserIdBetweenStartDateAndEndDate(Long userId, LocalDate startDate, LocalDate endDate) {
+        //TODO: 정산에서 소정근로일, 시간 계산해서 응답
+        List<TimeRecordSettlementResponse> timeRecordSettlementList = new ArrayList<>(
+                timeRecordMapper.findTimeRecordByUserIdBetweenStartDateAndEndDate(userId, startDate, endDate));
+
+        MyPageSelectedTimeRecordResponse response = new MyPageSelectedTimeRecordResponse();
+        response.setList(timeRecordSettlementList);
+
+        return response;
     }
 
     @Transactional(readOnly = true)

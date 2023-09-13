@@ -9,6 +9,7 @@ import com.douzone.timeattendance.dto.user.UserResponse;
 import com.douzone.timeattendance.dto.user.UserSearchDto;
 import com.douzone.timeattendance.dto.user.UserUpdateDto;
 import com.douzone.timeattendance.dto.user.UserUpdateRequest;
+import com.douzone.timeattendance.dto.user.UserWorkGroupResponse;
 import com.douzone.timeattendance.exception.user.AlreadyExistsEmailException;
 import com.douzone.timeattendance.exception.company.InvalidCompanyCodeException;
 import com.douzone.timeattendance.exception.user.NoSuchUserException;
@@ -98,6 +99,11 @@ public class UserService {
                          .collect(Collectors.toList());
     }
 
+    public UserWorkGroupResponse getUserWorkGroup(Long userId) {
+        return userMapper.findByUserWorkGroup(userId)
+                         .orElseGet(UserWorkGroupResponse::new);
+    }
+
     public void updateUser(Long userId, String role) {
         userMapper.findByUserId(userId)
                   .orElseThrow(NoSuchUserException::new);
@@ -116,7 +122,6 @@ public class UserService {
 
     /**
      * 회원가입 시, 이미 가입된 이메일의 경우 예외를 발생시킵니다.
-     * @param email
      */
     @Transactional(readOnly = true)
     public void validateEmail(String email) {
