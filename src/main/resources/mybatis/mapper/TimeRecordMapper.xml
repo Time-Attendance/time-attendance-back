@@ -35,6 +35,21 @@
           AND date = #{date}
     </select>
 
+    <select id="findTimeRecordByUserIdBetweenStartDateAndEndDate" resultType="com.douzone.timeattendance.dto.timerecord.TimeRecordSettlementResponse">
+        SELECT time_record_id,
+               tr.user_id,
+               tr.date,
+               start_work,
+               leave_work,
+               work_state,
+               s.working_time,
+               s.over_time
+        FROM time_record tr
+                 JOIN settlement s ON tr.user_id = s.user_id AND tr.date = s.date
+        WHERE tr.user_id = #{userId}
+          AND tr.date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
     <select id="existsByUserIdAndDate" resultType="java.lang.Boolean">
         SELECT EXISTS(SELECT time_record_id
                       FROM time_record

@@ -2,15 +2,21 @@ package com.douzone.timeattendance.controller;
 
 import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.user.LoginUserResponse;
+import com.douzone.timeattendance.dto.user.MyPageSelectedTimeRecordResponse;
 import com.douzone.timeattendance.dto.user.UserCreateRequest;
 import com.douzone.timeattendance.dto.user.UserResponse;
 import com.douzone.timeattendance.dto.user.UserSearchDto;
 import com.douzone.timeattendance.dto.user.UserUpdateRequest;
+import com.douzone.timeattendance.dto.user.UserWorkGroupResponse;
+import com.douzone.timeattendance.dto.user.MyPageWeeklyTimeRecordResponse;
 import com.douzone.timeattendance.global.auth.LoginUser;
+import com.douzone.timeattendance.service.TimeRecordService;
 import com.douzone.timeattendance.service.UserService;
+import java.time.LocalDate;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final TimeRecordService timeRecordService;
 
     /**
      * 회원 목록 조회
@@ -91,5 +98,34 @@ public class UserController {
         userService.updateUsers(userUpdateRequests);
         return ResponseEntity.ok()
                              .build();
+    }
+
+    @GetMapping("/{userId}/workgroup")
+    public ResponseEntity<UserWorkGroupResponse> getUserWorkGroup(@PathVariable Long userId) {
+        return ResponseEntity.ok()
+                             .body(userService.getUserWorkGroup(userId));
+    }
+
+    /**
+     * 사용자의 주간 근무기록 조회
+     */
+    @GetMapping(value = "/{userId}/time-records/weekly")
+    public ResponseEntity<MyPageWeeklyTimeRecordResponse> findWeeklyTimeRecords(
+            @PathVariable Long userId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate) {
+        return ResponseEntity.ok()
+                             .body(timeRecordService.findWeeklyTimeRecordByUserId(userId, startDate));
+    }
+
+    /**
+     * 지정 날짜 범위의 사용자 출퇴근 기록 조회
+     */
+    @GetMapping(value = "/{userId}/time-records")
+    public ResponseEntity<MyPageSelectedTimeRecordResponse> findTimeRecordByUserIdBetweenStartDateAndEndDate(
+            @PathVariable Long userId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        return ResponseEntity.ok()
+                             .body(timeRecordService.findTimeRecordByUserIdBetweenStartDateAndEndDate(userId, startDate, endDate));
     }
 }
