@@ -30,6 +30,7 @@ public class SettlementResponse {
     private String workState;           //근무 상태(TimeRecord)
     private String dayType;             //근무,유급,무급
     private Long workGroupRecordId;     //근로제 이력 아이디
+    private String workGroupName;
 
 
 }

@@ -25,7 +25,8 @@
                st.over_time             AS overTime,
                tr.work_state            AS workState,
                st.day_type              AS dayType,
-               wgr.work_group_record_id AS workGroupRecordId
+               wgr.work_group_record_id AS workGroupRecordId,
+               wgr.work_group_name AS workGroupName
         FROM settlement AS st
                  JOIN user AS u ON st.user_id = u.user_id AND u.company_id = #{companyId}
                  JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date
