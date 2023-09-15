@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.douzone.timeattendance.mapper.WorkDayTypeMapper">
-    <select id="findByWorkGroupId" parameterType="Long" resultType="WorkDayType">
-        SELECT *
-        FROM Work_day_type
-        WHERE work_group_id = #{workGroupId}
-    </select>
     <insert id="insertWorkDayType" parameterType="WorkDayType">
         INSERT INTO Work_day_type(mon, tue, wed, thu, fri, sat, sun, work_group_id)
         VALUES (#{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
