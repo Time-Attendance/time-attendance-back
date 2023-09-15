@@ -82,8 +82,8 @@
         </foreach>
     </update>
     <update id="deleteWorkgroup">
-        UPDATE
-        NOW()from work_group
+        UPDATE work_group
+        SET is_deleted = true, date_deleted = NOW()
         where work_group_id = #{workGroupId}
     </update>
     <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
