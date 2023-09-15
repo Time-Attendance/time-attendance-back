@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
-import java.util.List;
 
 @Service
 @Transactional
@@ -28,9 +27,10 @@ public class TimeRangeService {
     }
 
     public void insertTimeRangeAll(WorkGroupRequestDto workGroupRequestDto, Long workGroupIdToBeInserted) {
-        String[] timeRangeTypeArr = (String[]) workGroupRequestDto.getTimeRangeType().toArray();
-        LocalTime[] startArr = (LocalTime[]) workGroupRequestDto.getStart().toArray();
-        LocalTime[] endArr = (LocalTime[]) workGroupRequestDto.getEnd().toArray();
+        String[] timeRangeTypeArr = workGroupRequestDto.getTimeRangeType().toArray(new String[0]);
+        LocalTime[] startArr = workGroupRequestDto.getStart().toArray(new LocalTime[0]);
+        LocalTime[] endArr = workGroupRequestDto.getEnd().toArray(new LocalTime[0]);
+
 
         for (int i = 0; i < timeRangeTypeArr.length; i++) {
             TimeRangeRequestDto timeRangeRequestDto = new TimeRangeRequestDto(timeRangeTypeArr[i], startArr[i], endArr[i]);
