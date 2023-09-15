@@ -5,10 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface WorkDayTypeMapper {
-    WorkDayType findByWorkGroupId(Long workGroupId);
-
     void insertWorkDayType(WorkDayType workDayType);
     void updateWorkDayType(WorkDayType workDayType);
-
     void deleteWorkDayType(Long workGroupId);
 }

@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface WorkGroupRecordMapper {
-
     WorkGroupRecord findLatestWorkGroupRecordByUserId(Long userId);
-
     void insertWorkGroupRecord(WorkGroupRecordRequestDto workGroupRecordRequestDto);
 }
