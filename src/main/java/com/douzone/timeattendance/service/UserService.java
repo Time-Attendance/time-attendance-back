@@ -84,6 +84,7 @@ public class UserService {
         return LoginUserResponse.builder()
                                 .email(user.getEmail())
                                 .name(user.getName())
+                                .position(user.getPosition())
                                 .userId(user.getUserId())
                                 .role(user.getRole())
                                 .companyId(company.getCompanyId())
