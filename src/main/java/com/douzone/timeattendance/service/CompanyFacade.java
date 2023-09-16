@@ -44,12 +44,23 @@ public class CompanyFacade {
     }
 
     public void createCompany(MultipartFile file, CompanyCreateRequest companyCreateRequest) {
+        //회사 생성
         Company company = companyService.createCompany(file, companyCreateRequest);
-        WorkGroup workGroup = workGroupService.insertWorkGroup(createDefaultWorkGroup(company.getCompanyId()));
-        workDayTypeService.insertWorkDayType(createDefaultWorkDayType(workGroup.getWorkGroupId()));
-        for (TimeRange timeRange : createDefaultTimeRangeList(workGroup.getWorkGroupId())) {
+
+        //기본 근로그룹 생성
+        WorkGroup defaultWorkGroup = createDefaultWorkGroup(company.getCompanyId());
+        workGroupService.insertWorkGroup(defaultWorkGroup);
+
+        WorkDayType defaultWorkDayType = createDefaultWorkDayType(defaultWorkGroup.getWorkGroupId());
+        List<TimeRange> defaultTimeRangeList = createDefaultTimeRangeList(defaultWorkGroup.getWorkGroupId());
+
+        workDayTypeService.insertWorkDayType(defaultWorkDayType);
+        for (TimeRange timeRange : defaultTimeRangeList) {
             timeRangeService.insertTimeRange(timeRange);
         }
+
+        //근로제 이력 테이블 insert
+        companyService.insertWorkGroupRecord(defaultWorkGroup, defaultTimeRangeList, defaultWorkDayType);
     }
 
     public CompanyCodeUpdateResponse updateCompanyCode(Long companyId) {
@@ -133,7 +144,7 @@ public class CompanyFacade {
         timeRangeList.add(
                 createDefaultTimeRange("의무", LocalTime.parse("09:00:00"), LocalTime.parse("12:00:00"), workGroupId));
         timeRangeList.add(
-                createDefaultTimeRange("승인", LocalTime.parse("18:00:00"), LocalTime.parse("23:59:59"), workGroupId));
+                createDefaultTimeRange("승인", LocalTime.parse("18:00:00"), LocalTime.parse("00:00:00"), workGroupId));
         return timeRangeList;
     }
 
