@@ -79,8 +79,14 @@ public class CompanyFacade {
     }
 
     public void updateCompany(Long companyId, CompanyUpdateRequest companyUpdateRequest) {
+        //수정할 회사가 존재하는지 검증
         Company company = companyService.findByCompanyId(companyId)
                                         .orElseThrow(NoSuchCompanyException::new);
+
+        //수정할 회사 이름 중복 검증
+        if(!company.getName().equals(companyUpdateRequest.getName())) {
+            companyService.validateCompanyName(companyUpdateRequest.getName());
+        }
 
         CompanyUpdateDto updateParam = new CompanyUpdateDto();
         updateParam.setName(companyUpdateRequest.getName());
