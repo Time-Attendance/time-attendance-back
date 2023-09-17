@@ -10,6 +10,10 @@ public class FileUploadException extends TimeAttendanceException {
         super(MESSAGE);
     }
 
+    public FileUploadException(String message) {
+        super(message);
+    }
+
     @Override
     public int getStatusCode() {
         return HttpStatus.BAD_REQUEST.value();

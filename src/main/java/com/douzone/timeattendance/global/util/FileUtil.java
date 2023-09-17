@@ -28,6 +28,12 @@ public class FileUtil {
             return "";
         }
 
+        //이미지 파일 검증
+        String contentType = file.getContentType();
+        if(!"image/png".equals(contentType) && !"image/jpeg".equals(contentType) && !"image/svg+xml".equals(contentType)) {
+            throw new FileUploadException("이미지 파일만 업로드 가능합니다.");
+        }
+
         String storeFilename = FileUtil.createStoreFilename(file.getOriginalFilename());
         String fullPath = FileUtil.UPLOAD_PATH + storeFilename;
 

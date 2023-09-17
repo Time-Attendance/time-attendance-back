@@ -46,5 +46,6 @@ public class User {
     //@Setter 사용보다는 변경 메서드를 제공하는 것이 좋습니다.
     public void grantAdmin() {
         this.role = "ADMIN";
+        this.position = "CEO";
     }
 }
