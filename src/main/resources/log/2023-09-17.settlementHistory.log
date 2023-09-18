@@ -1,0 +1,40 @@
+2023-09-17 17:57:59.146 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = b3219dc3-5bd9-4744-b7a3-3a23a135a6ae, 날짜 = 2023-09-16, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-17 17:57:59.184 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = b3219dc3-5bd9-4744-b7a3-3a23a135a6ae, 날짜 = 2023-09-16
+2023-09-17 17:57:59.266 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = b5f3384f-00b1-4df0-a162-e1453f8ec9b0, 날짜 = 2023-09-16, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-17 17:57:59.269 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = b5f3384f-00b1-4df0-a162-e1453f8ec9b0, 날짜 = 2023-09-16
+2023-09-17 17:57:59.334 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 99f76970-110c-4dfe-8c2d-be623e080e78, 날짜 = 2023-09-16, 회사 아이디 = 2, 근무그룹 = 3
+2023-09-17 17:57:59.360 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 99f76970-110c-4dfe-8c2d-be623e080e78, 날짜 = 2023-09-16
+2023-09-17 17:57:59.429 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = f316f52d-bdcf-4b71-bac6-33d95eb8cf1c, 날짜 = 2023-09-16, 회사 아이디 = 2, 근무그룹 = 4
+2023-09-17 17:57:59.432 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = f316f52d-bdcf-4b71-bac6-33d95eb8cf1c, 날짜 = 2023-09-16
+2023-09-17 17:57:59.499 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 205c0323-6e18-4f15-a6d1-258f334c0bf8, 날짜 = 2023-09-16, 회사 아이디 = 3, 근무그룹 = 5
+2023-09-17 17:57:59.532 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 205c0323-6e18-4f15-a6d1-258f334c0bf8, 날짜 = 2023-09-16
+2023-09-17 17:57:59.601 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 9b39037b-0ce5-427b-84b3-ea9de59c47cc, 날짜 = 2023-09-16, 회사 아이디 = 3, 근무그룹 = 6
+2023-09-17 17:57:59.604 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 9b39037b-0ce5-427b-84b3-ea9de59c47cc, 날짜 = 2023-09-16
+2023-09-17 17:57:59.674 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = d65ac110-078a-4cc8-89fa-ef1ae02eb754, 날짜 = 2023-09-16, 회사 아이디 = 4, 근무그룹 = 7
+2023-09-17 17:57:59.698 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = d65ac110-078a-4cc8-89fa-ef1ae02eb754, 날짜 = 2023-09-16
+2023-09-17 17:57:59.763 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = d6c02e78-5d70-4c62-a232-c93aa2ca4521, 날짜 = 2023-09-16, 회사 아이디 = 4, 근무그룹 = 8
+2023-09-17 17:57:59.765 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = d6c02e78-5d70-4c62-a232-c93aa2ca4521, 날짜 = 2023-09-16
+2023-09-17 17:57:59.831 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 03387080-0ccb-477f-864c-8984902ed681, 날짜 = 2023-09-16, 회사 아이디 = 5, 근무그룹 = 9
+2023-09-17 17:57:59.861 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 03387080-0ccb-477f-864c-8984902ed681, 날짜 = 2023-09-16
+2023-09-17 17:57:59.931 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 42eb7dde-ec48-4eab-a405-a8405c778796, 날짜 = 2023-09-16, 회사 아이디 = 5, 근무그룹 = 10
+2023-09-17 17:57:59.934 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 42eb7dde-ec48-4eab-a405-a8405c778796, 날짜 = 2023-09-16
+2023-09-17 17:58:00.002 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 01324dd7-6c35-42f7-b0c1-995b9f943216, 날짜 = 2023-09-16, 회사 아이디 = 6, 근무그룹 = 11
+2023-09-17 17:58:00.029 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 01324dd7-6c35-42f7-b0c1-995b9f943216, 날짜 = 2023-09-16
+2023-09-17 17:58:00.096 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 2f60a672-f872-4ba9-92df-cc228b46b6e6, 날짜 = 2023-09-16, 회사 아이디 = 6, 근무그룹 = 12
+2023-09-17 17:58:00.099 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 2f60a672-f872-4ba9-92df-cc228b46b6e6, 날짜 = 2023-09-16
+2023-09-17 17:58:00.166 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 2f23731f-259b-4807-b516-f0824d1de46b, 날짜 = 2023-09-16, 회사 아이디 = 7, 근무그룹 = 13
+2023-09-17 17:58:00.192 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 2f23731f-259b-4807-b516-f0824d1de46b, 날짜 = 2023-09-16
+2023-09-17 17:58:00.261 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = abe4bfa9-37ad-4efb-91e5-d2cafe43f512, 날짜 = 2023-09-16, 회사 아이디 = 7, 근무그룹 = 14
+2023-09-17 17:58:00.263 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = abe4bfa9-37ad-4efb-91e5-d2cafe43f512, 날짜 = 2023-09-16
+2023-09-17 17:58:00.332 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 1158a58e-eb8c-41b7-a73d-f9e11f73bcf4, 날짜 = 2023-09-16, 회사 아이디 = 8, 근무그룹 = 15
+2023-09-17 17:58:00.356 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 1158a58e-eb8c-41b7-a73d-f9e11f73bcf4, 날짜 = 2023-09-16
+2023-09-17 17:58:00.425 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 0a4edc11-5ba8-427c-95f8-f5ea749b8aee, 날짜 = 2023-09-16, 회사 아이디 = 8, 근무그룹 = 16
+2023-09-17 17:58:00.427 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 0a4edc11-5ba8-427c-95f8-f5ea749b8aee, 날짜 = 2023-09-16
+2023-09-17 17:58:00.497 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 8124c8c4-3f80-4c1d-97fc-84c5cd31f987, 날짜 = 2023-09-16, 회사 아이디 = 9, 근무그룹 = 17
+2023-09-17 17:58:00.520 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 8124c8c4-3f80-4c1d-97fc-84c5cd31f987, 날짜 = 2023-09-16
+2023-09-17 17:58:00.589 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 56f04ae9-7f39-4e3b-8104-aaa2a2600388, 날짜 = 2023-09-16, 회사 아이디 = 9, 근무그룹 = 18
+2023-09-17 17:58:00.592 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 56f04ae9-7f39-4e3b-8104-aaa2a2600388, 날짜 = 2023-09-16
+2023-09-17 17:58:00.665 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = b311d212-03ea-4335-979a-06a850747d01, 날짜 = 2023-09-16, 회사 아이디 = 10, 근무그룹 = 19
+2023-09-17 17:58:00.689 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = b311d212-03ea-4335-979a-06a850747d01, 날짜 = 2023-09-16
+2023-09-17 17:58:00.762 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 시작 : UUID = 1afeb529-5c1b-4092-9a7b-ac0c292a4bda, 날짜 = 2023-09-16, 회사 아이디 = 10, 근무그룹 = 20
+2023-09-17 17:58:00.765 [scheduling-1] INFO  c.d.t.service.SettlementService - 정산 종료 : UUID = 1afeb529-5c1b-4092-9a7b-ac0c292a4bda, 날짜 = 2023-09-16

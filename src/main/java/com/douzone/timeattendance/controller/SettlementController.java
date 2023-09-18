@@ -2,6 +2,7 @@ package com.douzone.timeattendance.controller;
 
 
 import com.douzone.timeattendance.dto.settlement.SettlementFindRequest;
+import com.douzone.timeattendance.dto.settlement.SettlementReplayRequest;
 import com.douzone.timeattendance.dto.settlement.SettlementResponse;
 import com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest;
 import com.douzone.timeattendance.service.SettlementService;
@@ -28,6 +29,12 @@ public class SettlementController {
     @PatchMapping
     public ResponseEntity<Void> updateSettlement(@RequestBody SettlementUpdateRequest settlementUpdateRequest){
         settlementService.update(settlementUpdateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> reSettlement(@RequestBody SettlementReplayRequest settlementReplayRequest){
+        settlementService.reSettlement(settlementReplayRequest);
         return ResponseEntity.ok().build();
     }
 }

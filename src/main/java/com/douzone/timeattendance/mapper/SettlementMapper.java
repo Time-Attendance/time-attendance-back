@@ -27,4 +27,6 @@ public interface SettlementMapper {
 
     //회사, 근무그룹 찾기
     List<SettlementSearchDto> findCompanyIdAndWorkGroupIdList();
+
+    List<SettlementSearchDto> contactCompanyIdList(@Param("companyId") Long companyId);
 }

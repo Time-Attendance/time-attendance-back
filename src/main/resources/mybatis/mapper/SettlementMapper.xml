@@ -136,5 +136,14 @@
         ORDER BY companyId, workGroupId
     </select>
 
+    <select id="contactCompanyIdList"
+            resultType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT company_id    AS companyId,
+               work_group_id AS workGroupId
+        FROM work_group
+        WHERE company_id = #{companyId}
+        ORDER BY companyId, workGroupId
+    </select>
+
 
 </mapper>
