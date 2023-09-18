@@ -16,10 +16,9 @@ public class UserCreateRequest {
     private String email;
 
     @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,16}$",
+        message = "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 포함해야 합니다.")
     private String password;
-
-    @NotBlank(message = "비밀번호 확인은 공백일 수 없습니다.")
-    private String passwordCheck;
 
     @NotBlank(message = "이름은 공백일 수 없습니다.")
     private String name;
