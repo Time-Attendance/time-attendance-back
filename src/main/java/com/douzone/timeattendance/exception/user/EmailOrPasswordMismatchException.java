@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class EmailOrPasswordMismatchException extends TimeAttendanceException {
 
-    private static final String MESSAGE = "이메일 또는 비밀번호를 확인해주세요.";
+    private static final String MESSAGE = "이메일 또는 비밀번호가 일치하지 않습니다.";
 
     public EmailOrPasswordMismatchException() {
         super(MESSAGE);
