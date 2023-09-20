@@ -45,7 +45,7 @@
                s.working_time,
                s.over_time
         FROM time_record tr
-                 JOIN settlement s ON tr.user_id = s.user_id AND tr.date = s.date
+                 LEFT JOIN settlement s ON tr.user_id = s.user_id AND tr.date = s.date
         WHERE tr.user_id = #{userId}
           AND tr.date BETWEEN #{startDate} AND #{endDate}
     </select>
