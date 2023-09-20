@@ -63,7 +63,7 @@ public class CompanyController {
     public ResponseEntity<Void> update(
             @PathVariable Long companyId,
             @RequestPart(required = false) MultipartFile file,
-            @RequestPart CompanyUpdateRequest companyUpdateRequest) {
+            @RequestPart @Valid CompanyUpdateRequest companyUpdateRequest) {
         //파일이 있으면 CompanyUpdateRequest 객체에 설정
         if (file != null) {
             companyUpdateRequest.setFile(file);

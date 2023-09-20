@@ -26,6 +26,11 @@
             false)
     </insert>
 
+    <insert id="insertWorkGroupRecord">
+        INSERT INTO work_group_record(date, work_group_name, work_group_type, time_range_type, start, end, mon, tue, wed, thu, fri, sat, sun, work_group_id)
+        VALUES (#{date}, #{workGroupName}, #{workGroupType}, #{timeRangeType}, #{start}, #{end}, #{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
+    </insert>
+
     <update id="update">
         UPDATE company
         <set>

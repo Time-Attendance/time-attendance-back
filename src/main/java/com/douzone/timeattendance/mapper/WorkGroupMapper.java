@@ -12,14 +12,9 @@ import java.util.Optional;
 
 @Mapper
 public interface WorkGroupMapper {
-    List<WorkGroup> findAllWorkGroups();
-
     void insertWorkGroup(WorkGroup workGroup);
 
     void updateWorkGroup(WorkGroup workGroup);
-    WorkGroup findByWorkGroupName(String name);
-
-    Long findLatestId();
 
     List<WorkGroupResponseDto> findAllWorkGroupResponseDto(Long companyId);
 

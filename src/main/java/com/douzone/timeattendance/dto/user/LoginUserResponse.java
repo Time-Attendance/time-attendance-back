@@ -14,6 +14,7 @@ public class LoginUserResponse {
 
     private final String email;
     private final String name;
+    private final String position;
     private final Long userId;
     private final String role;
     private final Long companyId;

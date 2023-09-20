@@ -4,11 +4,13 @@ import com.douzone.timeattendance.domain.WorkGroup;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
 import com.douzone.timeattendance.mapper.WorkGroupMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class WorkGroupService {
     private final WorkGroupMapper workGroupMapper;
 
@@ -16,23 +18,12 @@ public class WorkGroupService {
         this.workGroupMapper = workGroupMapper;
     }
 
-    public List<WorkGroup> findAllWorkGroups() {
-        return workGroupMapper.findAllWorkGroups();
-    }
-
     public WorkGroup insertWorkGroup(WorkGroup workGroup) {
         workGroupMapper.insertWorkGroup(workGroup);
         return workGroup;
     }
 
-    public WorkGroup findByWorkGroupName(String name) {
-        return workGroupMapper.findByWorkGroupName(name);
-    }
-
-    public Long findLatestId() {
-        return workGroupMapper.findLatestId();
-    }
-
+    @Transactional(readOnly = true)
     public List<WorkGroupResponseDto> findAllWorkGroupResponseDto(Long companyId) {
         return workGroupMapper.findAllWorkGroupResponseDto(companyId);
     }
@@ -61,6 +52,7 @@ public class WorkGroupService {
         workGroupMapper.insertDistribution(date, userId, workGroupId);
     }
 
+    @Transactional(readOnly = true)
     public List<Long> getUserIds(Long workGroupId) {
         return workGroupMapper.getUserIds(workGroupId);
     }
