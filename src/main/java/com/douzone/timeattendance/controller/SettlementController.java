@@ -37,4 +37,10 @@ public class SettlementController {
         settlementService.reSettlement(settlementReplayRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteSettlement(@RequestBody List<Long> settlementIds){
+        settlementService.delete(settlementIds);
+        return ResponseEntity.ok().build();
+    }
 }
