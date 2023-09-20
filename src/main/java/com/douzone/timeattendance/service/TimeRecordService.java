@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,7 +103,10 @@ public class TimeRecordService {
     public MyPageWeeklyTimeRecordResponse findWeeklyTimeRecordByUserId(Long userId, LocalDate startDate) {
         //TODO: 정산에서 주간 근무시간, 연장근무시간 계산해서 응답
         LocalDate endDate = startDate.plusDays(6);
-        List<TimeRecordSettlementResponse> timeRecordSettlementList = timeRecordMapper.findTimeRecordByUserIdBetweenStartDateAndEndDate(userId, startDate, endDate);
+        List<TimeRecordSettlementResponse> timeRecordSettlementList = timeRecordMapper.findTimeRecordByUserIdBetweenStartDateAndEndDate(userId, startDate, endDate)
+                                                                                      .stream()
+                                                                                      .filter(timeRecordSettlementResponse -> timeRecordSettlementResponse.getWorkingTime() != null)
+                                                                                      .collect(Collectors.toList());
 
         MyPageWeeklyTimeRecordResponse response = new MyPageWeeklyTimeRecordResponse();
         response.setList(timeRecordSettlementList);
