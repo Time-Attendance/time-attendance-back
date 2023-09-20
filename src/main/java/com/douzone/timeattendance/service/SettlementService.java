@@ -39,7 +39,7 @@ public class SettlementService {
     }
 
     @Transactional
-    public void delete(List<Long> settlement){
+    public void delete(List<Long> settlement) {
         settlementMapper.deleteSettlementList(settlement);
     }
 
@@ -186,16 +186,18 @@ public class SettlementService {
 
         //휴게시간 계산 로직
         LocalTime sum = LocalTime.of(0, 0);
-        for (Integer i : restIndexList) {
-            if ((startTime.isBefore(startTimeList[i]) || startTime.equals(startTimeList[i])) &&
-                    (endTime.isAfter(endTimeList[i]) || endTime.equals(endTimeList[i]))) {
-                sum = timePlus(sum, timeDiffer(startTimeList[i], endTimeList[i]));
-            } else if (startTime.isAfter(startTimeList[i]) &&
-                    (endTime.isAfter(endTimeList[i]) || endTime.equals(endTimeList[i]))) {
-                sum = timePlus(sum, timeDiffer(startTime, endTimeList[i]));
-            } else if ((startTime.isBefore(startTimeList[i]) || startTime.equals(startTimeList[i])) &&
-                    endTime.isBefore(endTimeList[i])) {
-                sum = timePlus(sum, timeDiffer(startTimeList[i], endTime));
+        if (restIndexList.size() != 0) {
+            for (Integer i : restIndexList) {
+                if ((startTime.isBefore(startTimeList[i]) || startTime.equals(startTimeList[i])) &&
+                        (endTime.isAfter(endTimeList[i]) || endTime.equals(endTimeList[i]))) {
+                    sum = timePlus(sum, timeDiffer(startTimeList[i], endTimeList[i]));
+                } else if (startTime.isAfter(startTimeList[i]) &&
+                        (endTime.isAfter(endTimeList[i]) || endTime.equals(endTimeList[i]))) {
+                    sum = timePlus(sum, timeDiffer(startTime, endTimeList[i]));
+                } else if ((startTime.isBefore(startTimeList[i]) || startTime.equals(startTimeList[i])) &&
+                        endTime.isBefore(endTimeList[i])) {
+                    sum = timePlus(sum, timeDiffer(startTimeList[i], endTime));
+                }
             }
         }
 
@@ -206,23 +208,27 @@ public class SettlementService {
         } else {
             LocalTime differ = timeDiffer(timeDiffer(startTimeList[0], endTimeList[0]), timeDiffer(startTime, endTime));
             workingTime = timeDiffer(sum, timeDiffer(startTimeList[0], endTimeList[0]));
-            for (Integer i : approveIndexList) {
-                if ((startTimeList[i].isBefore(endTime) || startTimeList[i].equals(endTime)) &&
-                        (endTimeList[i].isAfter(endTime) || endTimeList[i].equals(endTime))) {
-                    overTime = differ;
-                } else if (endTimeList[i].isBefore(endTime)) {
-                    overTime = timeDiffer(workingTime, timeDiffer(startTime, endTimeList[i]));
-                } else if (endTime.isBefore(startTimeList[i])) {
-                    overTime = LocalTime.of(0, 0);
+            if (approveIndexList.size() != 0) {
+                for (Integer i : approveIndexList) {
+                    if ((startTimeList[i].isBefore(endTime) || startTimeList[i].equals(endTime)) &&
+                            (endTimeList[i].isAfter(endTime) || endTimeList[i].equals(endTime))) {
+                        overTime = differ;
+                    } else if (endTimeList[i].isBefore(endTime)) {
+                        overTime = timeDiffer(workingTime, timeDiffer(startTime, endTimeList[i]));
+                    } else if (endTime.isBefore(startTimeList[i])) {
+                        overTime = LocalTime.of(0, 0);
+                    }
                 }
             }
         }
 
-        //소정근로시작시간보다 계약근로종료시간이 작을 경우 그 차이만큼 초과근무에서 뺴는 로직
-        if (endTimeList[workIndexList.get(0)].isBefore(startTimeList[approveIndexList.get(0)])) {
-            overTime = timeDiffer(timeDiffer(endTimeList[workIndexList.get(0)], startTimeList[approveIndexList.get(0)]), overTime);
-            if (overTime.isBefore(LocalTime.of(0, 0))) {
-                overTime = LocalTime.of(0, 0);
+        if (approveIndexList.size() != 0) {
+            //소정근로시작시간보다 계약근로종료시간이 작을 경우 그 차이만큼 초과근무에서 뺴는 로직
+            if (endTimeList[workIndexList.get(0)].isBefore(startTimeList[approveIndexList.get(0)])) {
+                overTime = timeDiffer(timeDiffer(endTimeList[workIndexList.get(0)], startTimeList[approveIndexList.get(0)]), overTime);
+                if (overTime.isBefore(LocalTime.of(0, 0))) {
+                    overTime = LocalTime.of(0, 0);
+                }
             }
         }
 
@@ -296,7 +302,7 @@ public class SettlementService {
 
     //회원 list를 보고 회원들 한명씩 정산하는 메서드
     @Transactional
-    public void settlementMembers(LocalDate date,LocalDate now ,List<SettlementFindCompanyDto> result, UUID uuid) {
+    public void settlementMembers(LocalDate date, LocalDate now, List<SettlementFindCompanyDto> result, UUID uuid) {
         List<SettlementUpdateDto> settlementUpdateWorks = new ArrayList<>();    //근무일때, 정산 정보 모음
         List<SettlementUpdateDto> settlementUpdatePaids = new ArrayList<>();  //유급일때, 정산 정보 모음
         List<Long> settlementIdsToDelete = new ArrayList<>();   // 무급일때, 삭제할 정산 id들을 모은 list
@@ -356,7 +362,7 @@ public class SettlementService {
                 UUID beforeOne = UUID.randomUUID();
                 // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
                 log.info("정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", beforeOne, yesterday, settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(yesterday,LocalDate.now(),yesterdayResult, beforeOne);
+                settlementMembers(yesterday, LocalDate.now(), yesterdayResult, beforeOne);
             }
 
 
@@ -366,7 +372,7 @@ public class SettlementService {
                 UUID beforeTwo = UUID.randomUUID();
                 // 회원 list를 judgeMembers메서드에 넣어서 정산 시작
                 log.info("정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", beforeTwo, beforeYesterday, settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(beforeYesterday,LocalDate.now(),beforeResult, beforeTwo);
+                settlementMembers(beforeYesterday, LocalDate.now(), beforeResult, beforeTwo);
             }
         }
     }
@@ -381,7 +387,7 @@ public class SettlementService {
             if (result.size() != 0 && result != null) {
                 UUID contact = UUID.randomUUID();
                 log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate(), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(settlementReplayRequest.getDate(),settlementReplayRequest.getDate(),result, contact);
+                settlementMembers(settlementReplayRequest.getDate(), settlementReplayRequest.getDate(), result, contact);
             }
         }
 
@@ -390,7 +396,7 @@ public class SettlementService {
             if (beforeResult.size() != 0 && beforeResult != null) {
                 UUID contact = UUID.randomUUID();
                 log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate(), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(settlementReplayRequest.getDate().minusDays(1),settlementReplayRequest.getDate(),beforeResult, contact);
+                settlementMembers(settlementReplayRequest.getDate().minusDays(1), settlementReplayRequest.getDate(), beforeResult, contact);
             }
         }
 
