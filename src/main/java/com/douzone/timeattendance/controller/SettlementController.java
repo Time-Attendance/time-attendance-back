@@ -1,10 +1,12 @@
 package com.douzone.timeattendance.controller;
 
 
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.settlement.SettlementFindRequest;
 import com.douzone.timeattendance.dto.settlement.SettlementReplayRequest;
 import com.douzone.timeattendance.dto.settlement.SettlementResponse;
 import com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest;
+import com.douzone.timeattendance.global.auth.LoginUser;
 import com.douzone.timeattendance.service.SettlementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +24,24 @@ public class SettlementController {
     private final SettlementService settlementService;
 
     @GetMapping
-    public ResponseEntity<List<SettlementResponse>> findAll(@ModelAttribute @Valid SettlementFindRequest settlementFindRequest) {
+    public ResponseEntity<List<SettlementResponse>> findAll(@LoginUser AuthInfo authInfo, @ModelAttribute @Valid SettlementFindRequest settlementFindRequest) {
         return ResponseEntity.ok().body(settlementService.findAll(settlementFindRequest));
     }
 
     @PatchMapping
-    public ResponseEntity<Void> updateSettlement(@RequestBody SettlementUpdateRequest settlementUpdateRequest){
+    public ResponseEntity<Void> updateSettlement(@LoginUser AuthInfo authInfo, @RequestBody SettlementUpdateRequest settlementUpdateRequest) {
         settlementService.update(settlementUpdateRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity<Void> reSettlement(@RequestBody SettlementReplayRequest settlementReplayRequest){
+    public ResponseEntity<Void> reSettlement(@LoginUser AuthInfo authInfo, @RequestBody SettlementReplayRequest settlementReplayRequest) {
         settlementService.reSettlement(settlementReplayRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteSettlement(@RequestBody List<Long> settlementIds){
+    public ResponseEntity<Void> deleteSettlement(@LoginUser AuthInfo authInfo, @RequestBody List<Long> settlementIds) {
         settlementService.delete(settlementIds);
         return ResponseEntity.ok().build();
     }
