@@ -43,6 +43,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<List<UserResponse>> getUsers(
+            @LoginUser AuthInfo authInfo,
             @ModelAttribute @Valid UserSearchDto searchDto) {
         return ResponseEntity.ok()
                              .body(userService.getUsers(searchDto));
@@ -84,7 +85,10 @@ public class UserController {
      * 단일 회원 권한 변경
      */
     @PatchMapping("/{userId}")
-    public ResponseEntity<Void> updateUserRole(@PathVariable Long userId, @RequestParam String role) {
+    public ResponseEntity<Void> updateUserRole(
+            @LoginUser AuthInfo authInfo,
+            @PathVariable Long userId,
+            @RequestParam String role) {
         userService.updateUser(userId, role);
         return ResponseEntity.ok()
                              .build();
@@ -94,14 +98,18 @@ public class UserController {
      * 다중 회원 권한 변경
      */
     @PatchMapping
-    public ResponseEntity<Void> updateUsersRole(@RequestBody List<UserUpdateRequest> userUpdateRequests) {
+    public ResponseEntity<Void> updateUsersRole(
+            @LoginUser AuthInfo authInfo,
+            @RequestBody List<UserUpdateRequest> userUpdateRequests) {
         userService.updateUsers(userUpdateRequests);
         return ResponseEntity.ok()
                              .build();
     }
 
     @GetMapping("/{userId}/workgroup")
-    public ResponseEntity<UserWorkGroupResponse> getUserWorkGroup(@PathVariable Long userId) {
+    public ResponseEntity<UserWorkGroupResponse> getUserWorkGroup(
+            @LoginUser AuthInfo authInfo,
+            @PathVariable Long userId) {
         return ResponseEntity.ok()
                              .body(userService.getUserWorkGroup(userId));
     }
@@ -111,6 +119,7 @@ public class UserController {
      */
     @GetMapping(value = "/{userId}/time-records/weekly")
     public ResponseEntity<MyPageWeeklyTimeRecordResponse> findWeeklyTimeRecords(
+            @LoginUser AuthInfo authInfo,
             @PathVariable Long userId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate) {
         return ResponseEntity.ok()
@@ -122,6 +131,7 @@ public class UserController {
      */
     @GetMapping(value = "/{userId}/time-records")
     public ResponseEntity<MyPageSelectedTimeRecordResponse> findTimeRecordByUserIdBetweenStartDateAndEndDate(
+            @LoginUser AuthInfo authInfo,
             @PathVariable Long userId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {

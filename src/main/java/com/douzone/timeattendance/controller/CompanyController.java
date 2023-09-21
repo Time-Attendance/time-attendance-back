@@ -1,9 +1,11 @@
 package com.douzone.timeattendance.controller;
 
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.company.CompanyCodeUpdateResponse;
 import com.douzone.timeattendance.dto.company.CompanyCreateRequest;
 import com.douzone.timeattendance.dto.company.CompanyResponse;
 import com.douzone.timeattendance.dto.company.CompanyUpdateRequest;
+import com.douzone.timeattendance.global.auth.LoginUser;
 import com.douzone.timeattendance.service.CompanyFacade;
 import java.util.List;
 import javax.validation.Valid;
@@ -33,6 +35,7 @@ public class CompanyController {
     //TODO: 관리자만 허용
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> create(
+            @LoginUser AuthInfo authInfo,
             @RequestPart(required = false) MultipartFile file,
             @RequestPart @Valid CompanyCreateRequest companyCreateRequest) {
         companyFacade.createCompany(file, companyCreateRequest);
@@ -42,25 +45,30 @@ public class CompanyController {
 
     //TODO: 관리자만 허용
     @GetMapping
-    public ResponseEntity<List<CompanyResponse>> findAll() {
+    public ResponseEntity<List<CompanyResponse>> findAll(@LoginUser AuthInfo authInfo) {
         return ResponseEntity.ok()
                              .body(companyFacade.findAll());
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<CompanyResponse> findByCompanyId(@PathVariable Long companyId) {
+    public ResponseEntity<CompanyResponse> findByCompanyId(
+            @LoginUser AuthInfo authInfo,
+            @PathVariable Long companyId) {
         return ResponseEntity.ok()
                              .body(companyFacade.findByCompanyId(companyId));
     }
 
     @PatchMapping("/{companyId}/code")
-    public ResponseEntity<CompanyCodeUpdateResponse> updateCode(@PathVariable Long companyId) {
+    public ResponseEntity<CompanyCodeUpdateResponse> updateCode(
+            @LoginUser AuthInfo authInfo,
+            @PathVariable Long companyId) {
         return ResponseEntity.ok()
                              .body(companyFacade.updateCompanyCode(companyId));
     }
 
     @PatchMapping(value = "/{companyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> update(
+            @LoginUser AuthInfo authInfo,
             @PathVariable Long companyId,
             @RequestPart(required = false) MultipartFile file,
             @RequestPart @Valid CompanyUpdateRequest companyUpdateRequest) {
