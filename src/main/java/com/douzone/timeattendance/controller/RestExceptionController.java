@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
-public class ControllerAdvice {
+public class RestExceptionController {
 
     @Value("${spring.servlet.multipart.max-file-size}")
     private String maxFileSize;
