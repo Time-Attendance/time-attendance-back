@@ -2,10 +2,12 @@ package com.douzone.timeattendance.controller;
 
 import com.douzone.timeattendance.domain.WorkDayType;
 import com.douzone.timeattendance.domain.WorkGroup;
+import com.douzone.timeattendance.dto.auth.AuthInfo;
 import com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto;
 import com.douzone.timeattendance.dto.workgroup.DistributionRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupRequestDto;
 import com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto;
+import com.douzone.timeattendance.global.auth.LoginUser;
 import com.douzone.timeattendance.service.TimeRangeService;
 import com.douzone.timeattendance.service.WorkDayTypeService;
 import com.douzone.timeattendance.service.WorkGroupRecordService;
@@ -32,12 +34,12 @@ public class WorkGroupController {
     }
 
     @GetMapping("/api/workgroups")
-    public ResponseEntity<List<WorkGroupResponseDto>> getWorkGroupResponseDtoList(@RequestParam(value = "companyId", required = true) Long companyId) {
+    public ResponseEntity<List<WorkGroupResponseDto>> getWorkGroupResponseDtoList(@LoginUser AuthInfo authInfo, @RequestParam(value = "companyId", required = true) Long companyId) {
         return ResponseEntity.ok().body(workGroupService.findAllWorkGroupResponseDto(companyId));
     }
 
     @PostMapping("/api/workgroups")
-    public ResponseEntity<Void> newGroup(@RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
+    public ResponseEntity<Void> newGroup(@LoginUser AuthInfo authInfo, @RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
         LocalDateTime localDateTime = LocalDateTime.now();
         WorkGroup workGroup = WorkGroup.builder().name(workGroupRequestDto.getName()).type(workGroupRequestDto.getType()).companyId(workGroupRequestDto.getCompanyId()).isDeleted(false).isOn(true).dateCreated(localDateTime).dateUpdated(localDateTime).build();
         workGroupService.insertWorkGroup(workGroup);
@@ -55,7 +57,7 @@ public class WorkGroupController {
     }
 
     @PutMapping("/api/workgroups/{workgroupId}")
-    public ResponseEntity<Void> updateWorkGroup(@PathVariable Long workgroupId, @RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
+    public ResponseEntity<Void> updateWorkGroup(@LoginUser AuthInfo authInfo, @PathVariable Long workgroupId, @RequestBody @Valid WorkGroupRequestDto workGroupRequestDto) {
         LocalDateTime localDateTime = LocalDateTime.now();
         WorkGroup workGroup = WorkGroup.builder().workGroupId(workgroupId).name(workGroupRequestDto.getName()).type(workGroupRequestDto.getType()).dateUpdated(localDateTime).build();
         workGroupService.updateWorkGroup(workGroup);
@@ -74,7 +76,7 @@ public class WorkGroupController {
     }
 
     @PutMapping("/api/workgroups/distribution/{applyNow}")
-    public ResponseEntity<Void> updateDistribution(@PathVariable("applyNow") Boolean applyNow, @RequestBody DistributionRequestDto distributionRequestDto) {
+    public ResponseEntity<Void> updateDistribution(@LoginUser AuthInfo authInfo, @PathVariable("applyNow") Boolean applyNow, @RequestBody DistributionRequestDto distributionRequestDto) {
         LocalDateTime localDateTime = LocalDateTime.now();
         distributionRequestDto.setDate(localDateTime);
 
@@ -89,7 +91,7 @@ public class WorkGroupController {
     }
 
     @PostMapping("/api/workgroups/distribution")
-    public ResponseEntity<Void> insertDistribution(@RequestBody DistributionRequestDto distributionRequestDto) {
+    public ResponseEntity<Void> insertDistribution(@LoginUser AuthInfo authInfo, @RequestBody DistributionRequestDto distributionRequestDto) {
         LocalDateTime localDateTime = LocalDateTime.now();
         distributionRequestDto.setDate(localDateTime);
         List<Long> userIds = distributionRequestDto.getUserIds();
@@ -105,7 +107,7 @@ public class WorkGroupController {
 
     // JSON body
     @DeleteMapping("/api/workgroups/distribution/{userIds}")
-    public ResponseEntity<Void> deleteDistribution(@PathVariable("userIds") List<Long> userIds) {
+    public ResponseEntity<Void> deleteDistribution(@LoginUser AuthInfo authInfo, @PathVariable("userIds") List<Long> userIds) {
         workGroupService.deleteDistribution(userIds);
         workGroupService.updateUserDistribution(userIds, 0L);
 
@@ -114,7 +116,7 @@ public class WorkGroupController {
 
 
     @DeleteMapping("/api/workgroups/{workGroupId}")
-    public ResponseEntity<Void> deleteWorkgroup(@PathVariable("workGroupId") Long workGroupId) {
+    public ResponseEntity<Void> deleteWorkgroup(@LoginUser AuthInfo authInfo, @PathVariable("workGroupId") Long workGroupId) {
         workGroupService.deleteWorkgroup(workGroupId);
         workDayTypeService.deleteWorkDayType(workGroupId);
         timeRangeService.deleteTimeRangeByWorkGroupId(workGroupId);
@@ -123,13 +125,13 @@ public class WorkGroupController {
     }
 
     @GetMapping("/api/workgroups/distribution/{selectedWorkGroupId}")
-    public ResponseEntity<List<Long>> getUserIds(@PathVariable("selectedWorkGroupId") Long workGroupId) {
+    public ResponseEntity<List<Long>> getUserIds(@LoginUser AuthInfo authInfo, @PathVariable("selectedWorkGroupId") Long workGroupId) {
 
         return ResponseEntity.ok().body(workGroupService.getUserIds(workGroupId));
     }
 
     @PutMapping("/api/workgroups/activation/{workgroupId}")
-    public ResponseEntity<Void> updateActivation(@PathVariable("workgroupId") Long workgroupId) {
+    public ResponseEntity<Void> updateActivation(@LoginUser AuthInfo authInfo, @PathVariable("workgroupId") Long workgroupId) {
         workGroupService.updateActivation(workgroupId);
 
         return ResponseEntity.ok().build();
