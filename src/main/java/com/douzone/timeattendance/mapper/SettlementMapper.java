@@ -29,4 +29,6 @@ public interface SettlementMapper {
     List<SettlementSearchDto> findCompanyIdAndWorkGroupIdList();
 
     List<SettlementSearchDto> contactCompanyIdList(@Param("companyId") Long companyId);
+
+    void deleteSettlement(Long settlementId);
 }

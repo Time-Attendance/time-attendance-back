@@ -74,6 +74,11 @@
         </foreach>)
     </delete>
 
+    <delete id="deleteSettlement">
+        DELETE FROM settlement
+        WHERE settlement_id = #{settlementId};
+    </delete>
+
     <!--정산 회원 수정-->
     <update id="updateSettlement" parameterType="com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest">
         UPDATE settlement AS s
