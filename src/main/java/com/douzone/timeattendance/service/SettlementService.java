@@ -44,6 +44,11 @@ public class SettlementService {
     }
 
     @Transactional
+    public void deleteSettlement(Long settlementId){
+        settlementMapper.deleteSettlement(settlementId);
+    }
+
+    @Transactional
     public void insert(Settlement settlement) {
         settlementMapper.insertSettlement(settlement);
     }

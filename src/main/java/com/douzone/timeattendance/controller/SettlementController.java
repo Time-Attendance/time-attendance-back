@@ -35,14 +35,14 @@ public class SettlementController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> reSettlement(@LoginUser AuthInfo authInfo, @RequestBody SettlementReplayRequest settlementReplayRequest) {
+    public ResponseEntity<Void> reSettlement(@RequestBody SettlementReplayRequest settlementReplayRequest) {
         settlementService.reSettlement(settlementReplayRequest);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteSettlement(@LoginUser AuthInfo authInfo, @RequestBody List<Long> settlementIds) {
-        settlementService.delete(settlementIds);
+    @DeleteMapping("/{settlementId}")
+    public ResponseEntity<Void> deleteSettlement(@LoginUser AuthInfo authInfo, @PathVariable Long settlementId) {
+        settlementService.deleteSettlement(settlementId);
         return ResponseEntity.ok().build();
     }
 }
