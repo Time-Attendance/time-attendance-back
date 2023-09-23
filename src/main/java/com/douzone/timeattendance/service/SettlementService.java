@@ -33,7 +33,7 @@ public class SettlementService {
     private final WorkGroupRecordMapper workGroupRecordMapper;
     private final TimeRecordMapper timeRecordMapper;
 
-    @Scheduled(cron = "0 0 17 * * *")
+    @Scheduled(cron = "0 0 04 * * *")
     public void settlementSchedule() {
         getMembersByCompanyAndGroup();
     }
@@ -161,7 +161,8 @@ public class SettlementService {
         //근무 종료 시간 로직
 
         if (leaveWork == null) {
-            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(), now) >= 2) {
+            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(),now) >= 2) {
+                workState = "근태이상";
                 SettlementUpdateDto updateDto = SettlementUpdateDto.builder()
                         .settlementId(settlementFindCompanyDto.getSettlementId())
                         .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
@@ -256,7 +257,7 @@ public class SettlementService {
         String workState = "정상처리";
 
         if (settlementFindCompanyDto.getLeaveWork() == null) {
-            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(), now) >= 2) {
+            if (ChronoUnit.DAYS.between(settlementFindCompanyDto.getDate(),now) >= 2) {
                 SettlementUpdateDto updateDto = SettlementUpdateDto.builder()
                         .settlementId(settlementFindCompanyDto.getSettlementId())
                         .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
@@ -392,7 +393,7 @@ public class SettlementService {
             if (result.size() != 0 && result != null) {
                 UUID contact = UUID.randomUUID();
                 log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate(), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(settlementReplayRequest.getDate(), settlementReplayRequest.getDate(), result, contact);
+                settlementMembers(settlementReplayRequest.getDate(), LocalDate.now(), result, contact);
             }
         }
 
@@ -401,7 +402,7 @@ public class SettlementService {
             if (beforeResult.size() != 0 && beforeResult != null) {
                 UUID contact = UUID.randomUUID();
                 log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate(), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
-                settlementMembers(settlementReplayRequest.getDate().minusDays(1), settlementReplayRequest.getDate(), beforeResult, contact);
+                settlementMembers(settlementReplayRequest.getDate().minusDays(1), LocalDate.now(), beforeResult, contact);
             }
         }
 
