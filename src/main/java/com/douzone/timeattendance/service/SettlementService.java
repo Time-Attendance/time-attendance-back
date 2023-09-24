@@ -228,16 +228,6 @@ public class SettlementService {
             }
         }
 
-        if (approveIndexList.size() != 0) {
-            //소정근로시작시간보다 계약근로종료시간이 작을 경우 그 차이만큼 초과근무에서 뺴는 로직
-            if (endTimeList[workIndexList.get(0)].isBefore(startTimeList[approveIndexList.get(0)])) {
-                overTime = timeDiffer(timeDiffer(endTimeList[workIndexList.get(0)], startTimeList[approveIndexList.get(0)]), overTime);
-                if (overTime.isBefore(LocalTime.of(0, 0))) {
-                    overTime = LocalTime.of(0, 0);
-                }
-            }
-        }
-
         SettlementUpdateDto settlementUpdateDto = SettlementUpdateDto.builder()
                 .settlementId(settlementFindCompanyDto.getSettlementId())
                 .timeRecordId(settlementFindCompanyDto.getTimeRecordId())
@@ -360,6 +350,8 @@ public class SettlementService {
         List<SettlementSearchDto> companyIdAndWorkGroupIdList = findCompanyIdAndWorkGroupIdList();  //회사 id, 근무그룹 id 리스트
         LocalDate yesterday = LocalDate.now().minusDays(1); //어제
         LocalDate beforeYesterday = yesterday.minusDays(1); //그제
+
+
 
         for (SettlementSearchDto settlementSearchDto : companyIdAndWorkGroupIdList) {//회사 id, 근무그룹 id 리스트를 하나하나 뽑아냄
             // 어제 날짜에 대한 근무그룹 1개에 있는 회원 list
