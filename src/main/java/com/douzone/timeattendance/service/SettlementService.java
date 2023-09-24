@@ -401,7 +401,7 @@ public class SettlementService {
             List<SettlementFindCompanyDto> beforeResult = findCompanyAndWorkGroup(settlementReplayRequest.getDate().minusDays(1), settlementSearchDto);
             if (beforeResult.size() != 0 && beforeResult != null) {
                 UUID contact = UUID.randomUUID();
-                log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate(), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
+                log.info("재정산 시작 : UUID = {}, 날짜 = {}, 회사 아이디 = {}, 근무그룹 = {}", contact, settlementReplayRequest.getDate().minusDays(1), settlementSearchDto.getCompanyId(), settlementSearchDto.getWorkGroupId());
                 settlementMembers(settlementReplayRequest.getDate().minusDays(1), LocalDate.now(), beforeResult, contact);
             }
         }

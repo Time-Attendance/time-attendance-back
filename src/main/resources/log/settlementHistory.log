@@ -1,14 +1,40 @@
-2023-09-23 18:11:40.104 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = e230b9ea-4fbc-4f81-a44e-30c6589404a9, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 1
-2023-09-23 18:11:40.147 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = e230b9ea-4fbc-4f81-a44e-30c6589404a9, 날짜 = 2023-09-20
-2023-09-23 18:11:40.205 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = 195812c6-1b99-482c-87b0-c7b796dfe49c, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 2
-2023-09-23 18:11:40.208 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = 195812c6-1b99-482c-87b0-c7b796dfe49c, 날짜 = 2023-09-20
-2023-09-23 18:18:50.133 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 재정산 시작 : UUID = acab1dd8-8c54-4763-ab14-eac4cfa7d977, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 1
-2023-09-23 18:18:50.158 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 정산 종료 : UUID = acab1dd8-8c54-4763-ab14-eac4cfa7d977, 날짜 = 2023-09-20
-2023-09-23 18:18:50.207 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 재정산 시작 : UUID = 31e840eb-7588-4539-9a38-9d3b4e04ebc7, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 2
-2023-09-23 18:18:50.209 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 정산 종료 : UUID = 31e840eb-7588-4539-9a38-9d3b4e04ebc7, 날짜 = 2023-09-20
-2023-09-23 18:23:11.427 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = b03854c5-3fb8-42e9-b270-85d0181e8474, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 1
-2023-09-23 18:27:49.059 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = 1b0c0de6-8d90-44b5-b5a3-dabe5d042141, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 1
-2023-09-23 18:31:08.279 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 재정산 시작 : UUID = 3ef8fac8-1e02-4457-8163-947a2c430076, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 1
-2023-09-23 18:31:31.194 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 정산 종료 : UUID = 3ef8fac8-1e02-4457-8163-947a2c430076, 날짜 = 2023-09-20
-2023-09-23 18:31:33.890 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 재정산 시작 : UUID = 529d7373-a8b9-42a7-9197-0ba655dc286c, 날짜 = 2023-09-20, 회사 아이디 = 1, 근무그룹 = 2
-2023-09-23 18:31:37.331 INFO  [http-nio-8080-exec-2] c.d.t.service.SettlementService - 정산 종료 : UUID = 529d7373-a8b9-42a7-9197-0ba655dc286c, 날짜 = 2023-09-20
+2023-09-24 14:32:11.743 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 재정산 시작 : UUID = 6dd18bf4-604f-4391-84de-960539185c29, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:32:11.783 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 정산 종료 : UUID = 6dd18bf4-604f-4391-84de-960539185c29, 날짜 = 2023-09-24
+2023-09-24 14:32:11.835 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 재정산 시작 : UUID = 239cbb16-6b2c-4c9a-9115-27a9b33780b1, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:32:11.837 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 정산 종료 : UUID = 239cbb16-6b2c-4c9a-9115-27a9b33780b1, 날짜 = 2023-09-24
+2023-09-24 14:32:11.921 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 재정산 시작 : UUID = 09cb71bc-cfda-4b8f-93a9-6886d4bac028, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:32:11.923 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 정산 종료 : UUID = 09cb71bc-cfda-4b8f-93a9-6886d4bac028, 날짜 = 2023-09-23
+2023-09-24 14:32:11.959 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 재정산 시작 : UUID = 2afbb964-727e-4f60-8b6b-325ba49a948f, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:32:11.959 INFO  [http-nio-8080-exec-6] c.d.t.service.SettlementService - 정산 종료 : UUID = 2afbb964-727e-4f60-8b6b-325ba49a948f, 날짜 = 2023-09-23
+2023-09-24 14:34:54.064 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 재정산 시작 : UUID = 4e117123-e46f-4de8-b7a2-785b9281e7dd, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:34:54.094 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 정산 종료 : UUID = 4e117123-e46f-4de8-b7a2-785b9281e7dd, 날짜 = 2023-09-24
+2023-09-24 14:34:54.138 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 재정산 시작 : UUID = e7428955-7dd0-4197-aa28-aa252001febc, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:34:54.140 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 정산 종료 : UUID = e7428955-7dd0-4197-aa28-aa252001febc, 날짜 = 2023-09-24
+2023-09-24 14:34:54.211 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 재정산 시작 : UUID = b2d62949-cfc1-4583-bcff-120a71bf6ec0, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:34:54.213 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 정산 종료 : UUID = b2d62949-cfc1-4583-bcff-120a71bf6ec0, 날짜 = 2023-09-23
+2023-09-24 14:34:54.250 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 재정산 시작 : UUID = 602a1ccc-fd9e-4a15-8b60-4290a997a256, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:34:54.250 INFO  [http-nio-8080-exec-7] c.d.t.service.SettlementService - 정산 종료 : UUID = 602a1ccc-fd9e-4a15-8b60-4290a997a256, 날짜 = 2023-09-23
+2023-09-24 14:35:47.851 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = 5deb8eff-e2d1-4a4d-ab99-6c15eceed14d, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:35:47.872 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 정산 종료 : UUID = 5deb8eff-e2d1-4a4d-ab99-6c15eceed14d, 날짜 = 2023-09-24
+2023-09-24 14:35:47.909 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = 89d61a99-f904-4666-896d-dd25d2d59ca0, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:35:47.910 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 정산 종료 : UUID = 89d61a99-f904-4666-896d-dd25d2d59ca0, 날짜 = 2023-09-24
+2023-09-24 14:35:47.980 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = 186dd197-eac9-460a-a6ef-71a8e851c439, 날짜 = 2023-09-23, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:35:47.981 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 정산 종료 : UUID = 186dd197-eac9-460a-a6ef-71a8e851c439, 날짜 = 2023-09-23
+2023-09-24 14:35:48.015 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 재정산 시작 : UUID = 633ff605-774d-4aa1-8364-50e607f48939, 날짜 = 2023-09-23, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:35:48.015 INFO  [http-nio-8080-exec-1] c.d.t.service.SettlementService - 정산 종료 : UUID = 633ff605-774d-4aa1-8364-50e607f48939, 날짜 = 2023-09-23
+2023-09-24 14:38:21.642 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = 474a8f81-3196-46c8-8e84-73db746c4a57, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:38:21.685 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = 474a8f81-3196-46c8-8e84-73db746c4a57, 날짜 = 2023-09-24
+2023-09-24 14:38:21.793 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = 267c6209-fecf-43ca-9935-4f5a514944e0, 날짜 = 2023-09-24, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:38:21.794 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = 267c6209-fecf-43ca-9935-4f5a514944e0, 날짜 = 2023-09-24
+2023-09-24 14:38:21.869 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = 8ae710d7-26bc-4832-8311-d294343c8413, 날짜 = 2023-09-23, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:38:21.869 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = 8ae710d7-26bc-4832-8311-d294343c8413, 날짜 = 2023-09-23
+2023-09-24 14:38:21.911 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 재정산 시작 : UUID = fb1e634a-c50f-4ee9-8088-b5360cc8282f, 날짜 = 2023-09-23, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:38:21.911 INFO  [http-nio-8080-exec-3] c.d.t.service.SettlementService - 정산 종료 : UUID = fb1e634a-c50f-4ee9-8088-b5360cc8282f, 날짜 = 2023-09-23
+2023-09-24 14:42:27.323 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 재정산 시작 : UUID = 1b354451-95a5-4145-a377-7de2a627e12c, 날짜 = 2023-09-22, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:42:27.435 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 정산 종료 : UUID = 1b354451-95a5-4145-a377-7de2a627e12c, 날짜 = 2023-09-22
+2023-09-24 14:42:27.490 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 재정산 시작 : UUID = aa6828ce-454f-4720-90ce-48f3bbbcb9bf, 날짜 = 2023-09-22, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:42:27.494 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 정산 종료 : UUID = aa6828ce-454f-4720-90ce-48f3bbbcb9bf, 날짜 = 2023-09-22
+2023-09-24 14:42:27.566 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 재정산 시작 : UUID = 2d6764af-e62d-4c01-b3aa-c3e1dfbd75f7, 날짜 = 2023-09-21, 회사 아이디 = 1, 근무그룹 = 1
+2023-09-24 14:42:27.641 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 정산 종료 : UUID = 2d6764af-e62d-4c01-b3aa-c3e1dfbd75f7, 날짜 = 2023-09-21
+2023-09-24 14:42:27.679 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 재정산 시작 : UUID = 7d0b4413-8e8a-4439-8ae5-32373989c35e, 날짜 = 2023-09-21, 회사 아이디 = 1, 근무그룹 = 2
+2023-09-24 14:42:27.681 INFO  [http-nio-8080-exec-10] c.d.t.service.SettlementService - 정산 종료 : UUID = 7d0b4413-8e8a-4439-8ae5-32373989c35e, 날짜 = 2023-09-21
