@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.CompanyMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="companyId">
+        INSERT INTO company(
+            name,
+            code,
+            <if test="logoUrl != null and logoUrl != ''">
+                logo_url,
+            </if>
+            date_created,
+            date_updated,
+            date_deleted,
+            is_deleted)
+        VALUES (
+            #{name},
+            #{code},
+            <if test="logoUrl != null and logoUrl != ''">
+                #{logoUrl},
+            </if>
+            NOW(),
+            NOW(),
+            NULL,
+            false)
+    </insert>
+
+    <insert id="insertWorkGroupRecord">
+        INSERT INTO work_group_record(date, work_group_name, work_group_type, time_range_type, start, end, mon, tue, wed, thu, fri, sat, sun, work_group_id)
+        VALUES (#{date}, #{workGroupName}, #{workGroupType}, #{timeRangeType}, #{start}, #{end}, #{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
+    </insert>
+
+    <update id="update">
+        UPDATE company
+        <set>
+            <if test="updateParam.name != null and updateParam.name != ''">
+                name = #{updateParam.name},
+            </if>
+            <if test="updateParam.code != null and updateParam.code != ''">
+                code = #{updateParam.code},
+            </if>
+            <if test="updateParam.logoUrl != null and updateParam.logoUrl != ''">
+                logo_url = #{updateParam.logoUrl},
+            </if>
+            <if test="updateParam.logoUrl == null">
+                logo_url = null,
+            </if>
+            date_updated = #{updateParam.dateUpdated},
+        </set>
+        WHERE company_id = #{companyId}
+    </update>
+
+    <select id="findByCode" resultType="Company">
+        select *
+        from company
+        where code = #{code}
+    </select>
+
+    <select id="existsUserInCompany" resultType="java.lang.Boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+        FROM user
+        WHERE company_id = #{companyId}
+    </select>
+
+    <select id="existsName" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT *
+                      FROM company
+                      WHERE name = #{name})
+    </select>
+
+    <select id="findAll" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE is_deleted = false
+    </select>
+
+    <select id="findByCompanyId" resultType="Company">
+        SELECT *
+        FROM company
+        WHERE company_id = #{companyId}
+          AND is_deleted = false
+    </select>
+
+</mapper>

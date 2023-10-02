@@ -1,14 +1,16 @@
 package com.douzone.timeattendance.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class WorkGroup {
 
-    private Long workGroupId;
+    private Long workGroupId;       //PK
     private String name;
     private String type;
     private LocalDateTime dateCreated;
@@ -16,4 +18,5 @@ public class WorkGroup {
     private LocalDateTime dateDeleted;
     private Boolean isDeleted;
     private Boolean isOn;
+    private Long companyId;         //FK
 }

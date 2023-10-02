@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.SettlementMapper">
+
+    <!--정산 테이블 전체 조회-->
+    <select id="findAll" resultType="com.douzone.timeattendance.dto.settlement.SettlementResponse"
+            parameterType="com.douzone.timeattendance.dto.settlement.SettlementFindRequest">
+        SELECT st.settlement_id         AS settlementId,
+               st.date                  AS date,
+               u.user_id                AS userId,
+               u.user_code              AS userCode,
+               u.name                   AS name,
+               u.dept                   AS dept,
+               u.position               AS position,
+               wgr.work_group_type      AS workGroupType,
+               st.start_time            AS startTime,
+               st.end_time              AS endTime,
+               tr.start_work            AS startWork,
+               tr.leave_work            AS leaveWork,
+               wgr.time_range_type      AS timeRangeType,
+               wgr.start                AS start,
+               wgr.end                  AS end,
+               st.working_time          AS workingTime,
+               st.over_time             AS overTime,
+               tr.work_state            AS workState,
+               st.day_type              AS dayType,
+               wgr.work_group_record_id AS workGroupRecordId,
+               wgr.work_group_name AS workGroupName
+        FROM settlement AS st
+                 JOIN user AS u ON st.user_id = u.user_id AND u.company_id = #{companyId}
+                 JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date
+                 JOIN work_group_record AS wgr ON st.work_group_record_id = wgr.work_group_record_id
+         <![CDATA[
+        WHERE st.date >= #{start}
+          AND st.date <= #{end}
+        ]]>
+
+    </select>
+
+    <!--정산 스케줄러 실행-->
+    <insert id="insertSettlement" useGeneratedKeys="true" keyProperty="settlementId">
+        INSERT INTO settlement(user_id, date, start_time, end_time, working_time, over_time, day_type, date_created,
+                               date_updated, work_group_record_id)
+        VALUES (#{userId}, #{date}, #{startTime}, #{endTime}, #{workingTime}, #{overTime}, #{dayType}, #{dateCreated},
+                #{dateUpdated}, #{workGroupRecordId})
+    </insert>
+
+    <!--정산 그룹별 스케줄러 업데이트 진행(실질적인 스케줄링)-->
+    <update id="updateSettlementList" parameterType="java.util.List">
+        <foreach collection="updateList" item="dto" separator=";" open="" close="">
+            UPDATE settlement as st, time_record as tr
+            SET
+                st.start_time = #{dto.startTime},
+                st.end_time = #{dto.endTime},
+                st.working_time = #{dto.workingTime},
+                st.over_time = #{dto.overTime},
+                st.day_type = #{dto.dayType},
+                tr.work_state = #{dto.workState},
+                st.date_updated = #{dto.dateUpdated}
+            WHERE
+                st.settlement_id = #{dto.settlementId}
+            AND
+                tr.time_record_id = #{dto.timeRecordId}
+        </foreach>
+    </update>
+
+    <!--정산 그룹별 무급인 사람 삭제 진행-->
+    <delete id="deleteSettlementList">
+        DELETE FROM settlement
+        WHERE settlement_id IN(
+        <foreach collection="settlementIds" item="settlementId" open="" separator="," close="">
+            #{settlementId}
+        </foreach>)
+    </delete>
+
+    <delete id="deleteSettlement">
+        DELETE FROM settlement
+        WHERE settlement_id = #{settlementId};
+    </delete>
+
+    <!--정산 회원 수정-->
+    <update id="updateSettlement" parameterType="com.douzone.timeattendance.dto.settlement.SettlementUpdateRequest">
+        UPDATE settlement AS s
+            JOIN time_record AS tr ON s.user_id = tr.user_id AND s.date = tr.date
+        SET s.start_time   = #{startTime},
+            s.end_time     = #{endTime},
+            s.working_time = #{workingTime},
+            s.over_time    = #{overTime},
+            tr.work_state  = #{workState},
+            s.date_updated = now()
+        WHERE s.settlement_id = #{settlementId};
+    </update>
+
+    <!--    정산 스케줄러 관련 로직   -->
+
+    <!--회사, 근무그룹 별로 회원조회-->
+    <select id="findCompanyAndWorkGroup" resultType="com.douzone.timeattendance.dto.settlement.SettlementFindCompanyDto"
+            parameterType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT
+            st.settlement_id        AS settlementId,
+               st.date                 AS date,
+               d.user_id               AS userId,
+               wgr.work_group_type     AS workGroupType,
+               tr.start_work           AS startWork,
+               tr.leave_work           AS leaveWork,
+               tr.work_state           AS workState,
+               st.day_type             AS dayType,
+               wgr.time_range_type     AS timeRangeType,
+               wgr.start               AS start,
+               wgr.end                 AS end,
+               st.start_time           AS startTime,
+               st.end_time             AS endTime,
+               wgr.mon                 AS mon,
+               wgr.tue                 AS tue,
+               wgr.wed                 AS wed,
+               wgr.thu                 AS thu,
+               wgr.fri                 AS fri,
+               wgr.sat                 AS sat,
+               wgr.sun                 AS sun,
+               tr.time_record_id AS timeRecordId,
+               wg.company_id           AS companyId
+        FROM distribution AS d
+                 LEFT OUTER JOIN settlement AS st ON st.user_id = d.user_id AND st.date = #{date}
+                 LEFT OUTER JOIN work_group AS wg ON d.work_group_id = wg.work_group_id
+                 LEFT OUTER JOIN work_group_record AS wgr ON wgr.work_group_record_id = st.work_group_record_id
+                 LEFT OUTER JOIN time_record AS tr ON tr.user_id = st.user_id AND tr.date = st.date AND tr.date_created = st.date_created
+        WHERE
+            d.work_group_id = #{searchParam.workGroupId}
+          AND
+            (st.date is null OR tr.work_state = '미처리')
+
+    </select>
+
+    <!--회사와 근무그룹 id List-->
+    <select id="findCompanyIdAndWorkGroupIdList"
+            resultType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT company_id    AS companyId,
+               work_group_id AS workGroupId
+        FROM work_group
+        ORDER BY companyId, workGroupId
+    </select>
+
+    <select id="contactCompanyIdList"
+            resultType="com.douzone.timeattendance.dto.settlement.SettlementSearchDto">
+        SELECT company_id    AS companyId,
+               work_group_id AS workGroupId
+        FROM work_group
+        WHERE company_id = #{companyId}
+        ORDER BY companyId, workGroupId
+    </select>
+
+
+</mapper>

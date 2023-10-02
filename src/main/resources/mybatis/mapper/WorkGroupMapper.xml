@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.douzone.timeattendance.mapper.WorkGroupMapper">
+    <insert id="insertWorkGroup" parameterType="WorkGroup" useGeneratedKeys="true" keyProperty="workGroupId">
+        INSERT INTO Work_group(name, type, date_created, date_updated, date_deleted, is_deleted, is_on, company_id)
+        VALUES (#{name}, #{type}, #{dateCreated}, #{dateUpdated}, #{dateDeleted}, #{isDeleted}, #{isOn}, #{companyId})
+    </insert>
+    <update id="updateWorkGroup">
+        UPDATE work_group
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            date_updated = #{dateUpdated}
+        </set>
+        WHERE work_group_id = #{workGroupId}
+    </update>
+    <select id="findAllWorkGroupResponseDto" parameterType="Long" resultType="com.douzone.timeattendance.dto.workgroup.WorkGroupResponseDto">
+        SELECT wg.work_group_id AS id,
+               wg.name,
+               wg.type,
+               wg.is_on,
+               wg.date_updated,
+               (SELECT COUNT(*)
+                FROM distribution d
+                WHERE d.work_group_id = wg.work_group_id) AS numOfMembers,
+               CONCAT(wdt.mon,
+                      ', ',
+                      wdt.tue,
+                      ', ',
+                      wdt.wed,
+                      ', ',
+                      wdt.thu,
+                      ', ',
+                      wdt.fri,
+                      ', ',
+                      wdt.sat,
+                      ', ',
+                      wdt.sun)                            AS workDays,
+               tr.timeRangeType,
+               tr.start,
+               tr.end
+        FROM work_group wg
+                 LEFT JOIN
+             work_day_type wdt ON wg.work_group_id = wdt.work_group_id
+                 LEFT JOIN
+             (SELECT work_group_id,
+                     GROUP_CONCAT(type SEPARATOR ', ')  AS timeRangeType,
+                     GROUP_CONCAT(start SEPARATOR ', ') AS start,
+                     GROUP_CONCAT(end
+                SEPARATOR ', ') AS end
+              FROM
+                  time_range
+              GROUP BY work_group_id) tr ON wg.work_group_id = tr.work_group_id
+        WHERE wg.company_id = #{companyId} AND wg.is_deleted = false;
+    </select>
+    <update id="updateDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        UPDATE Distribution
+        SET work_group_id = #{workGroupId}, date = #{date}
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
+    <update id="updateUserDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        UPDATE User
+        SET distribution =
+        <choose>
+            <when test="workGroupId != 0">
+                true
+            </when>
+            <otherwise>
+                false
+            </otherwise>
+        </choose>
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
+    <update id="deleteWorkgroup">
+        UPDATE work_group
+        SET is_deleted = true, date_deleted = NOW()
+        where work_group_id = #{workGroupId}
+    </update>
+    <delete id="deleteDistribution" parameterType="com.douzone.timeattendance.dto.workgroup.DistributionRequestDto">
+        delete
+        from Distribution
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <insert id="insertDistribution">
+        INSERT INTO Distribution(date, user_id, work_group_id)
+        VALUES (#{date}, #{userId}, #{workGroupId})
+    </insert>
+    <select id="getUserIds" parameterType="Long" resultType="Long">
+        SELECT user_id
+        FROM distribution
+        WHERE work_group_id = #{workGroupId}
+    </select>
+    <update id="updateActivation">
+        UPDATE work_group
+        SET is_on = CASE WHEN is_on = true THEN false ELSE true END
+        where work_group_id = #{workGroupId}
+    </update>
+    <update id="applySettlementNow">
+        UPDATE settlement
+        SET work_group_record_id = (SELECT work_group_record_id
+                                    FROM work_group_record
+                                    WHERE work_group_id = #{workGroupId}
+                                    ORDER BY date DESC
+            LIMIT 1), date_updated = NOW()
+        WHERE user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        AND date = CURDATE();
+    </update>
+</mapper>

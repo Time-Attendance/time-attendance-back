@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.WorkGroupRecordMapper">
+    <select id="findLatestWorkGroupRecordByUserId" resultType="WorkGroupRecord">
+        SELECT work_group_record_id,
+               wgr.date,
+               work_group_name,
+               work_group_type,
+               time_range_type,
+               start,
+               end,
+               mon,
+               tue,
+               wed,
+               thu,
+               fri,
+               sat,
+               sun,
+               wgr.work_group_id
+        FROM work_group_record wgr
+        JOIN distribution d ON wgr.work_group_id = d.work_group_id
+        WHERE d.user_id = #{userId}
+        ORDER BY wgr.date DESC
+        LIMIT 1
+    </select>
+    <insert id="insertWorkGroupRecord" parameterType="com.douzone.timeattendance.dto.workgrouprecord.WorkGroupRecordRequestDto" useGeneratedKeys="true" keyProperty="workGroupRecordId">
+        INSERT INTO Work_group_record(date, work_group_name, work_group_type, time_range_type, start, end, mon, tue, wed, thu, fri, sat, sun, work_group_id)
+        VALUES (#{date}, #{workGroupName}, #{workGroupType}, #{timeRangeType}, #{start}, #{end}, #{mon}, #{tue}, #{wed}, #{thu}, #{fri}, #{sat}, #{sun}, #{workGroupId})
+    </insert>
+</mapper>

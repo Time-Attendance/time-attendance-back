@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.douzone.timeattendance.mapper.UserMapper">
+
+    <resultMap id="userWorkGroupResultMap" type="com.douzone.timeattendance.dto.user.UserWorkGroupResponse">
+        <id property="workGroupId" column="work_group_id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="work_group_type"/>
+        <association property="workDayType" javaType="com.douzone.timeattendance.dto.workdaytype.WorkDayTypeRequestDto">
+            <result property="mon" column="mon"/>
+            <result property="tue" column="tue"/>
+            <result property="wed" column="wed"/>
+            <result property="thu" column="thu"/>
+            <result property="fri" column="fri"/>
+            <result property="sat" column="sat"/>
+            <result property="sun" column="sun"/>
+        </association>
+        <collection property="timeRangeList" ofType="com.douzone.timeattendance.dto.timerange.TimeRangeRequestDto">
+            <result property="type" column="time_range_type"/>
+            <result property="start" column="start"/>
+            <result property="end" column="end"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user(user_code,
+                         name,
+                         email,
+                         password,
+                         phone,
+                         hire_date,
+                         birthday,
+                         dept,
+                         position,
+                         distribution,
+                         date_created,
+                         date_updated,
+                         date_deleted,
+                         is_deleted,
+                         role,
+                         company_id)
+        VALUES (#{userCode},
+                #{name},
+                #{email},
+                #{password},
+                #{phone},
+                #{hireDate},
+                #{birthday},
+                #{dept},
+                #{position},
+                false,
+                NOW(),
+                NOW(),
+                null,
+                false,
+                #{role},
+                #{companyId})
+    </insert>
+
+    <!-- TODO: 동적 쿼리 적용 -->
+    <update id="update">
+        UPDATE user
+        SET role = #{updateDto.role}
+        WHERE user_id = #{userId};
+    </update>
+
+    <select id="existsEmail" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT *
+                      FROM user
+                      WHERE email = #{email})
+    </select>
+
+    <select id="findByUserId" resultType="User">
+        SELECT user_id,
+               name,
+               email,
+               password,
+               phone,
+               hire_date,
+               birthday,
+               dept,
+               position,
+               distribution,
+               date_created,
+               date_updated,
+               date_deleted,
+               is_deleted,
+               role,
+               company_id
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByEmail" resultType="User">
+        SELECT user_id,
+               name,
+               email,
+               password,
+               phone,
+               hire_date,
+               birthday,
+               dept,
+               position,
+               distribution,
+               date_created,
+               date_updated,
+               date_deleted,
+               is_deleted,
+               role,
+               company_id
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <select id="findAll" resultType="User">
+        SELECT *
+        FROM user
+        WHERE company_id = #{companyId}
+          AND is_deleted = false
+    </select>
+
+    <select id="getNextSequence" resultType="Integer">
+        SELECT COUNT(*) + 1
+        FROM user
+        WHERE company_id = #{companyId}
+          AND MONTH(hire_date) = MONTH(CURDATE())
+          AND YEAR(hire_date) = YEAR(CURDATE())
+    </select>
+
+    <select id="findByUserWorkGroup" resultMap="userWorkGroupResultMap">
+        SELECT wg.work_group_id,
+               wg.name,
+               wg.type as work_group_type,
+               tr.type as time_range_type,
+               tr.start,
+               tr.end,
+               wdt.mon,
+               wdt.tue,
+               wdt.wed,
+               wdt.thu,
+               wdt.fri,
+               wdt.sat,
+               wdt.sun
+        FROM work_group AS wg
+                 JOIN distribution AS d ON wg.work_group_id = d.work_group_id
+                 LEFT JOIN time_range AS tr ON wg.work_group_id = tr.work_group_id
+                 LEFT JOIN work_day_type AS wdt ON wg.work_group_id = wdt.work_group_id
+        WHERE d.user_id = #{userId}
+    </select>
+
+</mapper>

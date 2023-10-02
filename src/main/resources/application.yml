@@ -1,6 +1,12 @@
 spring:
+  servlet:
+    # 파일 업로드 크기제한
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   datasource:
-    url: jdbc:mysql://localhost:3306/time_attendance
+    url: jdbc:mysql://localhost:3306/time_attendance?allowMultiQueries=true
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -13,3 +19,8 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+# jwt 시크릿키는 32바이트 이상이어야 함.
+# 원칙적으로 시크릿 키는 절대 외부로 노출되면 안되지만, 현재는 임의로 진행하겠습니다.
+jwt:
+  token:
+    secret-key: "douzone_timeattendance_secret_key"
